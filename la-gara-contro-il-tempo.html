@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Linea del Tempo · Sfidante</title>
+  <meta name="theme-color" content="#0a0a0a">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="immagini_sitomotivazionale/logo.PNG">
+  <style>
+    :root{
+      --bg:#0a0a0a;
+      --panel:#111;
+      --muted:#9aa0a6;
+      --text:#e8eaed;
+      --brand:#39ff14;
+      --bot:#1479ff;
+      --accent:#ffffff;
+      --ring: rgba(57,255,20,.25);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+   body {
+  margin: 0;
+  font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: url("immagini_sitomotivazionale/tempooo.jpg") no-repeat center center fixed;
+  background-size: cover;   /* copre tutto lo schermo */
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+    /* 🔹 Navbar + auth */
+    nav {
+      position: fixed; top: 0; left: 0; width: 100%;
+      background: rgba(0,0,0,0.6);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 20px; z-index: 1000; transition: opacity .5s ease;
+    }
+    .nav-hidden{ opacity:0; pointer-events:none; }
+
+    .logo { display:flex; align-items:center; }
+    .logo img {
+      height: 50px; width: auto; display:block; cursor:pointer; transition: transform .3s ease;
+    }
+    .logo img:hover{ transform: scale(1.05); }
+
+    #authArea{ display:flex; align-items:center; gap:12px; }
+    #authArea button{
+      background: transparent; border: 2px solid #0ea5e9; color: #0ea5e9;
+      padding: 6px 16px; border-radius: 25px; cursor: pointer; font-size: .85em; font-weight: 600;
+      transition: all .3s ease;
+    }
+    #authArea button:hover{ background:#0ea5e9; color:#fff; transform: translateY(-2px); }
+    #authArea button:active{ transform: translateY(0); }
+
+    /* 🔹 Hamburger + side menu */
+    .hamburger {
+      position: fixed; top: 15px; left: 15px;
+      width: 30px; height: 22px; display:flex; flex-direction:column; justify-content:space-between;
+      cursor:pointer; z-index: 1100;
+    }
+    .hamburger span{ display:block; height:4px; background:#fff; border-radius:2px; transition: all .3s ease; }
+
+    .topbar{
+      position: fixed; top:0; left:-250px; width: 250px; height: 100%;
+      background: rgba(0,0,0,0.9); backdrop-filter: blur(8px);
+      display:flex; flex-direction:column; padding:60px 20px; gap:15px;
+      transition:left .3s ease; z-index:1000; overflow-y:auto; -webkit-overflow-scrolling:touch;
+    }
+    .topbar.open{ left:0; }
+    .topbar a{
+      text-decoration:none; color:#fff; background:#2d2d2d;
+      padding:10px 14px; border-radius:8px; font-weight:600; transition: background .2s;
+    }
+    .topbar a:hover{ background:#444; }
+
+    /* 🔹 Header sticky */
+    header{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter:saturate(1.2) blur(10px);
+      background:linear-gradient(180deg, rgba(10,10,10,.9), rgba(10,10,10,.6));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .wrap{max-width:1100px; margin:0 auto; padding:20px}
+    .title{ display:flex; align-items:center; gap:14px; }
+    .brandmark{
+      width:40px; height:40px; border-radius:10px;
+      background:conic-gradient(from 210deg at 50% 50%, var(--brand), #0cf, #f04, var(--brand));
+      filter:saturate(1.1) contrast(1.1);
+      box-shadow:0 0 0 6px rgba(255,255,255,.03), 0 10px 30px rgba(0,0,0,.5), 0 0 50px var(--ring) inset;
+    }
+    h1{font-size:clamp(22px,3.2vw,34px); margin:0; letter-spacing:.2px}
+    .tagline{color:var(--muted); font-size:clamp(13px,2.2vw,15px); margin-top:4px}
+
+    /* 🔹 Layout */
+    main{padding:24px 0 80px}
+    .grid{ display:grid; gap:22px; grid-template-columns: 1.1fr .9fr; }
+    @media (max-width:960px){ .grid{grid-template-columns:1fr} }
+
+    /* 🔹 Card */
+    .card {
+  background: rgba(0,0,0,0.65); /* più scuro e uniforme */
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:16px;
+  padding:20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.5);
+}
+
+    .card h2{margin:0 0 10px; font-size:20px}
+
+    /* card timeline con altezza bloccata */
+section.card[aria-labelledby="timelineTitle"] {
+  height: 350px;   /* regola tu */
+  overflow: hidden;
+}
+
+    .small{color:var(--muted); font-size:13px; line-height:1.4}
+
+    /* 🔹 Timeline */
+    .age-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:10px 0 18px; }
+    .age-row input[type="number"]{
+      width:120px; padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.12);
+      background:#0f0f0f; color:var(--text); font-size:16px; outline:none;
+      box-shadow:0 0 0 0 var(--ring); transition:.2s box-shadow, .2s border-color, .2s transform;
+    }
+    .age-row input[type="number"]:focus{ border-color:var(--brand); box-shadow:0 0 0 6px var(--ring); }
+    .age-row button{
+      padding:12px 16px; border:none; border-radius:12px; cursor:pointer; font-weight:600;
+      background:linear-gradient(180deg, var(--brand), #1aff7a); color:#041b0b;
+      box-shadow:0 10px 30px rgba(57,255,20,.15), 0 0 0 1px rgba(0,0,0,.4) inset; transition:.2s transform, .2s filter;
+    }
+    .age-row button:active{transform: translateY(1px)}
+    .age-row .ghost{ background:transparent; color:var(--text); border:1px solid rgba(255,255,255,.16); box-shadow:none; }
+
+    .meter{ margin:6px 0; height:22px; border-radius:999px; background:#121212; border:1px solid rgba(255,255,255,.08); overflow:hidden; position:relative; }
+    .meter .fill{ height:100%; width:0%; background: linear-gradient(90deg, var(--brand), #00ffa2); box-shadow: 0 0 30px rgba(57,255,20,.35); transition: width .8s cubic-bezier(.2,.8,.2,1); }
+    .meter .tick{ position:absolute; top:0; bottom:0; width:2px; background:rgba(255,255,255,.08); }
+    .legend{ display:flex; justify-content:space-between; align-items:center; font-size:13px; color:var(--muted); margin-top:6px; }
+    .stat{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+    .pill{ background:#0f0f0f; border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:12px 14px; text-align:center; }
+    /* Giorni vissuti = verde motivazionale */
+.pill.vissuti {
+  background: linear-gradient(180deg, rgba(57,255,20,.25), rgba(57,255,20,.15));
+  border: 1px solid rgba(57,255,20,.4);
+  border-radius:12px;
+  padding:12px 14px;
+  text-align:center;
+  backdrop-filter: blur(6px);
+  color:#eaffea;
+}
+
+/* Giorni che restano = blu (colore del Sfidante) */
+.pill.restano {
+  background: linear-gradient(180deg, rgba(20,121,255,.25), rgba(20,121,255,.15));
+  border: 1px solid rgba(20,121,255,.4);
+  border-radius:12px;
+  padding:12px 14px;
+  text-align:center;
+  backdrop-filter: blur(6px);
+  color:#e8f2ff;
+}
+
+.pill strong {
+  display:block;
+  font-size:18px;
+}
+
+    /* 🔹 Chat */
+    .chat{ display:flex; flex-direction:column; gap:10px; padding-bottom:4px; max-height:560px; overflow:auto; scrollbar-width:thin; scrollbar-color: rgba(255,255,255,.25) transparent; }
+    .chat::-webkit-scrollbar{height:10px;width:10px}
+    .chat::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25); border-radius:999px}
+
+  .msg {
+  padding: 10px 14px;
+  border-radius: 12px;
+  margin: 10px 0;
+  font-size: 14px;
+  line-height: 1.4;
+  font-family: Poppins, sans-serif;
+  color: #fff;
+  border: 1px solid transparent;
+}
+
+/* Positivi (verde chiaro) */
+.msg.positive {
+  background: #6EE787;
+  border-color: #4ec06a;
+  color: #0a0a0a; /* testo scuro per leggibilità */
+}
+
+/* Negativi (rosso soft) */
+.msg.negative {
+  background: #F56C6C;
+  border-color: #d64545;
+  color: #0a0a0a;
+}
+
+/* Bot/System (azzurro soft) */
+.msg.bot {
+  background: #5DAEFF;
+  border-color: #3587d6;
+  color: #0a0a0a;
+}
+    .msg .when{display:block; font-size:11px; color:rgba(255,255,255,.65); margin-top:6px}
+    .chip{ display:inline-flex; gap:8px; align-items:center; font-size:12px; color:var(--muted); margin:6px 0 2px; }
+    .controls{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px }
+    .controls button{
+      padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.16);
+      background:#0f0f0f; color:var(--text); cursor:pointer; font-weight:600
+    }
+    .controls button.primary{
+      background:linear-gradient(180deg, #1479ff, #0f62d9);
+      border:1px solid rgba(20,121,255,.5); color:#eaf3ff
+    }
+    .notice{ margin-top:8px; font-size:12px; color:var(--muted) }
+    .hr{ height:1px; background:linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent); margin:14px 0; }
+    footer{ color:var(--muted); font-size:12px; padding:30px 0 60px; text-align:center }
+    .ok{color:#5ef78d} .warn{color:#f6c86e} .err{color:#ff8a8a}
+
+  #loginPopup {
+      display:none;
+      position:fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background:rgba(0,0,0,0.7);
+      z-index:2000;
+      justify-content:center;
+      align-items:center;
+    }
+    #loginPopup > div {
+      background:#fff; 
+      color:#000; 
+      padding:30px; 
+      border-radius:12px; 
+      max-width:400px; 
+      text-align:center;
+      box-shadow:0 8px 20px rgba(0,0,0,0.4);
+    }
+    #loginPopup p { font-size:1.2em; margin-bottom:20px; }
+    #closePopupBtn {
+      padding:10px 20px; 
+      border:none; 
+      border-radius:8px; 
+      background:#0ea5e9; 
+      color:#fff; 
+      font-weight:bold; 
+      cursor:pointer;
+    }
+
+    /* --- Modal Base --- */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+.modal-content {
+  background: #111;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: none;
+}
+.modal-content button {
+  width: 100%;
+  padding: 10px;
+  background: #2563eb;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.modal-content button:hover { background:#3b82f6; }
+.close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #fff;
+}
+#loginMsg,#registerMsg{margin-top:10px;font-size:.9em;}
+
+.chat {
+  max-width: 500px;
+  margin: 40px auto;
+  background: transparent;
+  border-radius: 12px;
+  padding: 15px;
+  color: #e8eaed;
+  font-family: 'Poppins', sans-serif;
+}
+
+.msg {
+  padding: 10px 14px;
+  margin: 10px 0;
+  border-radius: 10px;
+  max-width: 80%;
+}
+
+.msg.user {
+  background: #39ff14;
+  color: #000;
+  text-align: right;
+  margin-left: auto;
+}
+
+  footer {
+      background: #000;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      border-top: 1px solid #222;
+    }
+</style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo"><img src="immagini_sitomotivazionale/logo.PNG" alt="Logo"></div>
+    <div id="authArea">
+      <button id="loginBtn">Accedi</button>
+      <button id="registerBtn">Registrati</button>
+    </div>
+  </nav>
+
+  <!-- 🔑 Modale Login -->
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-close="loginModal">&times;</span>
+    <h2>Accedi</h2>
+    <form id="loginForm">
+<input type="email" id="loginEmail" placeholder="Email" required autocomplete="username">
+  <input type="password" id="loginPassword" placeholder="Password" required autocomplete="current-password">
+      <button type="submit">Accedi</button>
+      <p id="loginMsg"></p>
+    </form>
+  </div>
+</div>
+
+<!-- 🔑 Modale Registrazione -->
+<div id="registerModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-close="registerModal">&times;</span>
+    <h2>Registrati</h2>
+    <form id="registerForm">
+<input type="email" id="registerEmail" placeholder="Email" required autocomplete="username">
+  <input type="password" id="registerPassword" placeholder="Password" required autocomplete="current-password">
+      <button type="submit">Registrati</button>
+      <p id="registerMsg"></p>
+    </form>
+  </div>
+</div>
+
+<!-- 🔔 Popup Logout -->
+<div id="logoutModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-close="logoutModal">&times;</span>
+    <h2>Logout effettuato</h2>
+    <p>Sei uscito dal tuo account con successo.</p>
+    <button id="logoutOkBtn">Chiudi</button>
+  </div>
+</div>
+
+  <!-- Popup login rapido per azioni protette -->
+  <div id="loginPopup">
+    <div>
+      <p>⚠️ Devi accedere o registrarti per poter continuare.</p>
+      <button id="closePopupBtn">Continua</button>
+    </div>
+  </div>
+
+  <!-- Hamburger -->
+  <div class="hamburger" aria-label="Apri menu" role="button" tabindex="0">
+    <span></span><span></span><span></span>
+  </div>
+
+  <!-- Side menu -->
+  <div class="topbar" aria-hidden="true">
+    <a href="index.html" class="btn">← Torna alla Home</a>
+    <a href="storie-motivazionali-personaggi-famosi.html" class="btn">← Leggi la storia di chi ce l’ha fatta</a>
+    <a href="interpreta-i-tuoi-sogni.html" class="btn">← Impara ad interpretare i tuoi sogni</a>
+    <a href="scrivi-il-tuo-obiettivo.html" class="btn">← Scrivi il tuo obiettivo con il mondo</a>
+    <a href="paure-umane.html" class="btn">← Scopri le tue paure</a>
+    <a href="invenzioni-incredibili-dell-uomo.html" class="btn">← Leggi invenzioni ed idee</a>
+    <a href="abitudini-comuni-umane.html" class="btn">← Sfoglia l’elenco delle abitudini più comuni</a>
+    <a href="coming-soon.html" class="btn">← COMING SOON</a>
+    <a href="contatta-il-creatore.html" class="btn">← Contatta il creatore</a>
+    <a href="https://www.paypal.me/christianLenti" class="btn">← Offri supporto al creatore</a>
+  </div>
+
+  <header>
+    <div class="wrap">
+      <div class="title">
+        <div class="brandmark" aria-hidden="true"></div>
+        <div>
+          <h1>Linea del Tempo · Sfidante</h1>
+          <div class="tagline">Se lui agisce e tu no, indovina chi vince.</div>
+        </div>
+      </div>
+    </div>
+    <div id="todayLabel" style="margin-top:8px; font-size:14px; color:#9aa0a6;"></div>
+
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div class="grid">
+        <section class="card" aria-labelledby="timelineTitle">
+          <h2 id="timelineTitle">La tua linea della vita</h2>
+          <p class="small">Inserisci l’età. Salviamo solo sul tuo dispositivo.</p>
+
+          <div class="age-row">
+            <input id="age" type="number" min="0" max="120" step="1" placeholder="Età" inputmode="numeric">
+            <button id="saveAge">Aggiorna</button>
+            <button id="resetAge" class="ghost" title="Rimuovi età salvata">Reset</button>
+          </div>
+
+          <div class="meter" role="progressbar" aria-valuemin="0" aria-valuemax="85" aria-valuenow="0" aria-label="Età su 85">
+            <div class="fill" id="meterFill"></div>
+            <div class="tick" style="left:0%"></div>
+            <div class="tick" style="left:21.17%"></div>
+            <div class="tick" style="left:47.05%"></div>
+            <div class="tick" style="left:76.47%"></div>
+            <div class="tick" style="left:100%"></div>
+          </div>
+
+          <div class="legend"><span>0</span><span>85</span></div>
+
+          <div class="stat">
+            <div class="pill vissuti">
+              <span class="small">Giorni vissuti</span>
+              <strong id="daysLived">—</strong>
+            </div>
+            <div class="pill restano">
+              <span class="small">Giorni che restano*</span>
+              <strong id="daysLeft">—</strong>
+            </div>
+          </div>
+          <p class="small" style="margin-top:10px">*Stima su 85 anni (media). Cambia età per aggiornare.</p>
+        </section>
+
+        <section class="card" aria-labelledby="botTitle">
+  <h2 id="botTitle">Chat dello sfidante</h2>
+ <p class="small">
+  Questa chat nasce da un istinto profondo: l’essere umano si accende davvero quando sente la competizione.  
+  Cliccando su <strong>Nuova esperienza</strong> ti verrà chiesto di scrivere il tuo obiettivo. Da quel momento il sistema ti affiancherà uno sfidante virtuale, con lo stesso traguardo da raggiungere.  
+  Ogni giorno, in tre momenti fissi, riceverai aggiornamenti su cosa fa questa persona per avvicinarsi al suo obiettivo: saranno stimoli concreti che ti ricordano che, se tu ti fermi, qualcun altro va avanti.
+</p>
+
+<div id="botChat">
+  <div class="chat" id="chat">
+    <div class="msg positive">
+  <strong>Sfidante · Mattina</strong><br>
+  Si è alzato alle 07:30 e ha iniziato subito 45' sul progetto.
+  <span class="when">07:30</span>
+</div>
+
+    <div class="msg negative">
+      <strong>Sfidante · Pomeriggio</strong><br>
+      Ha perso 40 minuti scrollando i social invece di lavorare.
+      <span class="when">15:00</span>
+    </div>
+  </div>
+  </div>
+
+  <!-- 🔹 Anteprima e bottone -->
+  <div id="ExperiencesPreview">
+    <div class="notice">
+      Anteprima: così appariranno i messaggi reali che riceverai ogni giorno.
+    </div>
+    <div style="margin-top:15px; text-align:center;">
+      <button id="startExperiences" class="primary" style="padding:12px 18px; border:none; border-radius:10px; cursor:pointer;">
+        Nuova esperienza
+      </button>
+    </div>
+  </div>
+
+  <!-- 🔹 Chat (inizialmente nascosta) -->
+  <div id="chatContainer" style="display:none; margin-top:20px;">
+    <div class="chat" id="chatMessages"></div>
+  </div>
+</section>
+
+<!-- 🔹 Modal per configurazione esperienza -->
+<div id="ExperiencesModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-close="ExperiencesModal">&times;</span>
+    <h2>Nuova esperienza</h2>
+    <form id="ExperiencesForm">
+      <label for="obiettivo" style="display:block; text-align:left; margin-top:10px; font-weight:600;">
+        Descrivi il tuo obiettivo
+      </label>
+      <input type="text" id="obiettivo" placeholder="Scrivi qui il tuo obiettivo" required>
+
+      <label for="canale" style="display:block; text-align:left; margin-top:15px; font-weight:600;">
+        Vuoi ricevere notifiche?
+      </label>
+      <select id="canale" required>
+        <option value="">-- Seleziona --</option>
+        <option value="email">Email</option>
+        <option value="none">Non voglio attivare le notifiche</option>
+      </select>
+
+      <div id="contattoWrapper" style="display:none; margin-top:15px;">
+        <input type="text" id="contatto" placeholder="">
+      </div>
+
+      <button type="submit" style="margin-top:20px;">Avanti</button>
+    </form>
+  </div>
+</div>
+
+</section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Firebase (Compat SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <script>
+  /* =========================
+     Firebase config + init
+     ========================= */
+  const firebaseConfig = {
+    apiKey: "AIzaSyCYtTpOIpmjd4v-01Z2MPSDiQr6enUFNSg",
+    authDomain: "sito-motivazionale.firebaseapp.com",
+    projectId: "sito-motivazionale",
+    storageBucket: "sito-motivazionale.firebasestorage.app",
+    messagingSenderId: "839022857622",
+    appId: "1:839022857622:web:49d4f20245ddafc0f5e1b7",
+    measurementId: "G-8H2TBGYYXZ"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  /* =========================
+     Helpers base
+     ========================= */
+  const EL = sel => document.querySelector(sel);
+  function clamp(n,min,max){return Math.max(min, Math.min(max, n))}
+  function fmt(n){ return n.toLocaleString('it-IT'); }
+
+  /* =========================
+     Riferimenti UI
+     ========================= */
+  const ageInput   = EL('#age');
+  const btnSave    = EL('#saveAge');
+  const btnReset   = EL('#resetAge');
+  const fill       = EL('#meterFill');
+  const daysLived  = EL('#daysLived');
+  const daysLeft   = EL('#daysLeft');
+  const chatEl     = EL('#chat');
+  const todayLabel = EL('#todayLabel');
+
+  /* =========================
+     Navbar auto-hide
+     ========================= */
+  const nav = document.querySelector('nav');
+  let hideTimeout = null;
+  let lastY = window.scrollY;
+  let suppressShowUntil = 0;
+
+  function scheduleHide(){
+    clearTimeout(hideTimeout);
+    hideTimeout = setTimeout(()=>{ nav.classList.add('nav-hidden'); }, 3000);
+  }
+  document.addEventListener('click', ()=> suppressShowUntil = Date.now() + 600);
+  document.addEventListener('focusin', ()=> suppressShowUntil = Date.now() + 600);
+  function onScroll(){
+    const y = window.scrollY;
+    const delta = Math.abs(y - lastY);
+    lastY = y;
+    if (delta < 8) return;
+    if (Date.now() < suppressShowUntil) return;
+    nav.classList.remove('nav-hidden');
+    scheduleHide();
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  nav.classList.remove('nav-hidden');
+  scheduleHide();
+
+  /* =========================
+     Modali + side menu
+     ========================= */
+  function openModal(id){ const m=document.getElementById(id); if(m){ m.style.display="flex"; m.setAttribute('aria-hidden','false'); } }
+  function closeModal(id){ const m=document.getElementById(id); if(m){ m.style.display="none"; m.setAttribute('aria-hidden','true'); } }
+
+  document.querySelectorAll(".close").forEach(el=>{
+    el.addEventListener("click", ()=> closeModal(el.dataset.close));
+  });
+  const logoutOk = document.getElementById("logoutOkBtn");
+  if (logoutOk) logoutOk.addEventListener("click", ()=> closeModal("logoutModal"));
+
+  const loginModalBtn = document.getElementById('loginBtn');
+  const registerModalBtn = document.getElementById('registerBtn');
+  if (loginModalBtn) loginModalBtn.addEventListener('click', ()=> openModal('loginModal'));
+  if (registerModalBtn) registerModalBtn.addEventListener('click', ()=> openModal('registerModal'));
+
+  document.querySelector(".hamburger")?.addEventListener('click', ()=>{
+    document.querySelector(".topbar")?.classList.toggle("open");
+  });
+
+  const popupLogin = document.getElementById("loginPopup");
+  const closePopup = document.getElementById("closePopupBtn");
+  if (closePopup) closePopup.onclick = () => popupLogin.style.display = "none";
+  function mostraPopup(){ if(popupLogin){ popupLogin.style.display = "flex"; } }
+
+  /* =========================
+     Auth (login/registrazione/logout)
+     ========================= */
+  function registraUtente(email, password) {
+    auth.createUserWithEmailAndPassword(email, password)
+      .then(()=>{ document.getElementById("registerMsg").textContent="✅ Registrazione completata!"; setTimeout(()=> closeModal("registerModal"), 1200); })
+      .catch(err=>{ document.getElementById("registerMsg").textContent="❌ "+err.message; });
+  }
+  function loginUtente(email, password) {
+    auth.signInWithEmailAndPassword(email, password)
+      .then(()=>{ document.getElementById("loginMsg").textContent="✅ Login effettuato!"; setTimeout(()=> closeModal("loginModal"), 1200); })
+      .catch(err=>{ document.getElementById("loginMsg").textContent="❌ "+err.message; });
+  }
+  function logoutUtente() {
+    auth.signOut().then(()=> openModal("logoutModal")).catch(err=> console.error("Errore logout:", err));
+  }
+
+  document.getElementById("loginForm")?.addEventListener("submit", e=>{
+    e.preventDefault();
+    loginUtente( document.getElementById("loginEmail").value, document.getElementById("loginPassword").value );
+  });
+  document.getElementById("registerForm")?.addEventListener("submit", e=>{
+    e.preventDefault();
+    registraUtente( document.getElementById("registerEmail").value, document.getElementById("registerPassword").value );
+  });
+
+  /* =========================
+     Timeline
+     ========================= */
+  const LIFE_CAP = 85;
+  const LS_KEYS = { age:'motivator.age', chat:'motivator.chatByDay', lastSeed:'motivator.lastSeed' };
+
+  function setTodayLabel(){
+    const d=new Date();
+    const dd=d.toLocaleDateString('it-IT', {weekday:'long', day:'2-digit', month:'long'});
+    todayLabel.textContent = dd[0].toUpperCase()+dd.slice(1);
+  }
+  function computeFromAge(age){
+    age = clamp(Number(age||0), 0, 120);
+    const livedDays = Math.floor(age * 365.25);
+    const leftDays = Math.max(0, Math.floor((LIFE_CAP - age) * 365.25));
+    const pct = clamp((age / LIFE_CAP) * 100, 0, 100);
+    fill.style.width = pct + '%';
+    fill.parentElement.setAttribute('aria-valuenow', String(clamp(age,0,85)));
+    daysLived.textContent = fmt(livedDays);
+    daysLeft.textContent  = fmt(leftDays);
+    ageInput.value = age ? String(age) : '';
+    localStorage.setItem(LS_KEYS.age, String(age));
+  }
+  function loadAge(){
+    const saved = localStorage.getItem(LS_KEYS.age);
+    if(saved) computeFromAge(saved); else computeFromAge(0);
+  }
+
+  btnSave?.addEventListener('click', ()=> computeFromAge(ageInput.value));
+  ageInput?.addEventListener('keydown', e=>{ if(e.key==='Enter'){ computeFromAge(ageInput.value); }});
+  btnReset?.addEventListener('click', ()=>{
+    localStorage.removeItem(LS_KEYS.age); ageInput.value=''; computeFromAge(0);
+  });
+
+  /* =========================
+     Chat Sfidante (contenuti + rendering)
+     ========================= */
+  const SLOTS = [
+    { id:'morning',   label:'Mattina',    hour:7,  minute:30 },
+    { id:'afternoon', label:'Pomeriggio', hour:15, minute:0 },
+    { id:'evening',   label:'Sera',       hour:21, minute:30 },
+  ];
+
+// 🔹 Elenchi separati per ogni fascia oraria
+const POSITIVE_MORNING = [
+ "Si è svegliato in perfetto orario. La sveglia è stata rispettata al secondo: occhi aperti, si alza dal letto e inizia la giornata senza rimandare. È pronto a trasformare subito le prime ore in azioni concrete.",
+"Si è svegliato puntuale, ha spento la sveglia al primo suono e si è alzato senza esitazioni. Adesso ha davanti a sé tutta la mattina per iniziare con energia.",
+"Sono le 07:30 e ha appena aperto gli occhi, in orario perfetto. Senza perdere tempo, si è messo in piedi: la giornata parte con la giusta disciplina, pronto a non sprecare nemmeno un minuto.",
+"Si è alzato alle 05:00 e ha passato due ore a lavorare sul suo obiettivo con concentrazione assoluta. Ora che sono le 07:30 ha già completato una parte significativa del progetto, e continua a spingere.",
+"Alle 04:30 era già operativo: ha usato le prime ore del mattino per chiudere una micro-attività rimasta indietro. Adesso, alle 07:30, procede con il compito principale con un vantaggio enorme.",
+"Ha deciso di anticipare la sveglia alle 05:00, ha bevuto un caffè e si è messo subito al lavoro. Ora che sono le 07:30 è già dentro al flusso, con due ore di attività intensa alle spalle.",
+"Alle 04:00 era già in piedi: ha lavorato in silenzio mentre tutti dormivano, sfruttando tre ore di assoluta concentrazione. Adesso, alle 07:30, ha già macinato risultati concreti.",
+"Si è svegliato in perfetto orario. Alle 07:30 si trova pronto, con la lista già davanti: inizia subito il primo compito senza dover pensare a nulla.",
+"Alle 07:30 è già sul pezzo: ha aperto il documento giusto, disattivato ogni distrazione e impostato il timer per il primo ciclo di lavoro. La giornata è partita senza perdere tempo.",
+"Alle 07:30 si è svegliato in perfetto orario. Non ha toccato il telefono, si è alzato subito e ora è pronto a iniziare la giornata con la mente libera.",
+"Si è alzato alle 05:00 e ha passato due ore a concentrarsi sul lavoro più importante. Adesso, alle 07:30, è già immerso nella seconda parte del suo obiettivo.",
+"Alle 07:30 ha aperto gli occhi senza esitazioni, si è alzato e si è messo in movimento. La mattina comincia senza ritardi, con la giusta disciplina.",
+"Sveglia alle 04:30, un bicchiere d’acqua e tre ore di lavoro intenso. Ora che sono le 07:30, ha già concluso la prima fase della giornata e procede deciso.",
+"Sono le 07:30 e si è appena alzato in orario perfetto: niente scuse, solo la determinazione di sfruttare subito il tempo.",
+"Ha deciso di svegliarsi alle 05:00 e ha lavorato per oltre due ore senza distrazioni. Alle 07:30 è già avanti rispetto a chi si deve ancora organizzare.",
+"Alle 07:30 ha rispettato la sveglia e si è messo subito in piedi. L’energia del mattino lo spinge ad affrontare con decisione la prima attività.",
+"Si è alzato alle 04:00 e ha già trascorso tre ore a concentrarsi sul suo obiettivo. Alle 07:30 continua con costanza, costruendo un vantaggio enorme.",
+"Alle 07:30 si è svegliato puntuale, senza rimandare. È già seduto al suo posto, con la testa pronta per iniziare subito la giornata.",
+"Ha aperto gli occhi alle 05:00, si è messo al lavoro e non ha perso un minuto. Alle 07:30 è già in piena attività, determinato a mantenere il ritmo.",
+"Alle 07:30 si è svegliato senza esitazioni, ha spento la sveglia e si è alzato subito. È pronto a trasformare la prima ora della giornata in lavoro reale.",
+"Si è alzato alle 05:00 e ha iniziato a lavorare concentrato. Ora che sono le 07:30, sta già concludendo la seconda attività della mattina.",
+"Alle 07:30 è scattato dal letto puntuale. La giornata parte subito con disciplina: niente attese, ha già preso posizione al suo posto di lavoro.",
+"Si è svegliato alle 04:30, ha acceso il computer e ha lavorato tre ore in silenzio. Alle 07:30 prosegue con determinazione, senza pause.",
+"Alle 07:30 si è alzato senza rimandare la sveglia. È pronto a dare subito un colpo deciso all’obiettivo.",
+"Alle 05:00 era già operativo: due ore intense dedicate al compito principale. Ora che sono le 07:30, continua con la stessa energia.",
+"Alle 07:30 ha rispettato l’orario stabilito e si è alzato senza scuse. Inizia la giornata con la mente lucida e la volontà di non perdere un minuto.",
+"Alle 04:00 si è svegliato e ha usato tre ore di silenzio assoluto per lavorare. Alle 07:30 è già avanti, saldo nel suo ritmo.",
+"Alle 07:30 è scattato in piedi al primo suono della sveglia. Niente pigrizia: parte subito per affrontare i primi passi concreti della giornata.",
+"Si è svegliato alle 05:00 e si è messo subito in azione. Ora, alle 07:30, è già immerso nel cuore del lavoro.",
+"Alle 07:30 si è alzato senza esitazioni, ha appoggiato i piedi a terra e ha deciso di iniziare la giornata con fermezza. Nessun ritardo: è già pronto a fare il primo passo concreto verso l’obiettivo."
+];
+
+const NEGATIVE_MORNING = [
+"Alle 07:30 non si è ancora alzato: la sveglia ha suonato più volte, ma continua a rimandare. La mattina è già scivolata via senza iniziare.",
+"Aveva deciso di svegliarsi alle 06:00 per lavorare, ma ha rimandato. Ora sono le 07:30 e ha già perso oltre un’ora girandosi nel letto.",
+"Alle 07:30 è ancora fermo: invece di alzarsi al primo suono, ha lasciato che la pigrizia prendesse il controllo.",
+"La sveglia è suonata alle 06:00 e poi di nuovo alle 07:00, ma l’ha silenziata ogni volta. Alle 07:30 non ha ancora mosso un passo verso l’obiettivo.",
+"Alle 07:30 è già in ritardo: avrebbe dovuto essere in piedi alle 05:00 per iniziare, ma ha preferito restare a letto.",
+"Sono le 07:30 e sta già sprecando tempo con il telefono, scrollando i social invece di iniziare.",
+"Alle 07:30 non ha ancora iniziato nulla: si è svegliato svogliato e non trova la forza di mettersi in moto.",
+"Aveva promesso di alzarsi presto, ma alle 07:30 è ancora in difetto: non ha fatto nemmeno la prima azione minima.",
+"La sveglia ha suonato alle 06:00, ma ha scelto di restare sotto le coperte. Alle 07:30 non ha ancora fatto nessun passo avanti.",
+"Alle 07:30 è sveglio, ma senza energia: ha acceso lo schermo del telefono e ha perso i primi minuti in distrazioni inutili.",
+"Alle 07:30 non ha rispettato i suoi piani: aveva puntato la sveglia alle 05:30 per iniziare presto, ma è rimasto a letto più del dovuto.",
+"La sveglia ha suonato alle 06:00, ma invece di alzarsi ha perso tempo fissando il soffitto. Ora sono le 07:30 e non ha ancora iniziato.",
+"Sono le 07:30 e non ha ancora mosso un passo: la pigrizia ha avuto la meglio.",
+"Alle 07:30 si è alzato, ma ha passato subito i primi minuti sul telefono senza fare nulla di utile.",
+"Alle 07:30 è già in difetto: avrebbe potuto cominciare alle 06:00, ma non ha avuto la disciplina di alzarsi subito.",
+"Ha impostato la sveglia alle 06:00, ma l’ha spenta e ha deciso di restare sotto le coperte. Alle 07:30 è ancora fermo.",
+"Alle 07:30 è sveglio, ma non si è ancora alzato: ha perso tempo a rigirarsi nel letto.",
+"Sono le 07:30 e invece di iniziare la giornata ha scelto di rimandare ancora.",
+"Alle 07:30 non ha ancora toccato il suo obiettivo: i minuti stanno passando senza nessun progresso.",
+"Alle 07:30 è sveglio, ma ha iniziato la giornata con distrazioni inutili: zero azioni concrete fino ad ora.",
+"Alle 07:30 la sveglia ha suonato, ma ha scelto di restare a letto. Nessun passo avanti, solo tempo perso.",
+"Aveva deciso di svegliarsi alle 05:00, ma alle 07:30 è ancora con la testa sul cuscino, senza la forza di iniziare.",
+"La sveglia ha suonato più volte, ma ha preferito ignorarla. Ora sono le 07:30 e non ha fatto alcun progresso.",
+"Alle 07:30 si è svegliato, ma si è lasciato subito trascinare da pensieri inutili invece di agire.",
+"Sono le 07:30 e ha già iniziato male: ha acceso il telefono e si è perso tra notifiche e social.",
+"Alle 07:30 non ha fatto nulla: è sveglio, ma resta immobile, senza la decisione di alzarsi.",
+"Aveva promesso di alzarsi alle 05:30, ma alle 07:30 è ancora fermo. La mattina è già sprecata.",
+"Alle 07:30 la sveglia è stata silenziata più volte. La giornata comincia con indecisione e ritardo.",
+"Sono le 07:30 e invece di iniziare ha già scelto la via più comoda: restare fermo.",
+"Alle 07:30 è ancora lontano dall’obiettivo: ha perso due ore che voleva dedicare al lavoro mattutino."
+];
+
+const POSITIVE_AFTERNOON = [
+  "Dopo pranzo non si è lasciato trascinare dalla sonnolenza: ha fatto una pausa breve e ora è di nuovo in azione.",
+"Ha reagito al calo di energie del primo pomeriggio: invece di cedere, ha ripreso con costanza.",
+"Mentre altri si sarebbero fermati, lui ha trovato la forza per continuare e andare avanti.",
+"Ha usato queste ore per sistemare piccole cose rimaste in sospeso: segni concreti che fanno la differenza.",
+"Il primo pomeriggio non lo ha rallentato: sta trasformando la stanchezza in disciplina.",
+"Ha scelto di non rimandare: ha ripreso subito dopo pranzo e adesso mantiene il ritmo.",
+"Ha trovato il modo di ricaricare le energie e sta continuando con determinazione.",
+"Il momento di calo è arrivato, ma non ha ceduto: ha fatto un passo avanti invece di fermarsi.",
+"Ha trasformato un’ora spesso improduttiva in tempo usato bene.",
+"Dopo pranzo ha scelto la via della disciplina: continua a muoversi senza perdere terreno.",
+"Dopo pranzo ha concesso solo il tempo necessario per recuperare energie, poi si è rimesso in movimento. Alle 15:30 è attivo, con il ritmo giusto per portare avanti la giornata.",
+"La stanchezza si è fatta sentire, ma non l’ha fermato: ha scelto di rialzarsi subito e di continuare. Ora, alle 15:30, sta dimostrando a sé stesso che la costanza paga.",
+"Il primo pomeriggio poteva trasformarsi in un momento vuoto, invece è diventato produttivo: alle 15:30 sta già svolgendo azioni concrete che segnano la differenza.",
+"Ha ripreso il filo senza esitazioni: una pausa breve per ricaricarsi e adesso, alle 15:30, procede con passo costante.",
+"Alle 15:30 non è rimasto fermo, ha trovato la forza di continuare. La disciplina lo guida e il pomeriggio è già segnato da progressi reali.",
+"Si è rialzato senza rimandare: ora, alle 15:30, è immerso in ciò che serve davvero, dimostrando determinazione e presenza.",
+"Ha superato il momento più difficile del post-pranzo e ha scelto di andare avanti. Alle 15:30 il tempo non è sprecato, ma trasformato in azioni concrete.",
+"Alle 15:30 il suo percorso non si è interrotto: ha trovato l’energia per continuare e portare avanti ciò che conta.",
+"Nonostante il calo di energie, ha deciso di reagire subito. Ora, alle 15:30, sta usando la sua forza di volontà per restare in movimento.",
+"Il pomeriggio è iniziato con disciplina: senza lasciarsi fermare, alle 15:30 continua a fare passi reali verso ciò che vuole.",
+"Ha trasformato il primo pomeriggio in un momento utile: alle 15:30 è già impegnato a dare continuità alla giornata senza interruzioni inutili.",
+"Alle 15:30 non si è fatto trascinare dalla lentezza tipica di quest’ora: ha mantenuto il passo e continua con costanza.",
+"Il dopo pranzo non è diventato un ostacolo: si è rimesso in moto e alle 15:30 sta già andando avanti con determinazione.",
+"Ha scelto di restare attivo anche quando le energie potevano calare. Alle 15:30 è saldo sul percorso che ha deciso di seguire.",
+"Alle 15:30 la sua giornata non conosce pause eccessive: ha ripreso subito in mano ciò che conta e lo porta avanti con regolarità.",
+"Ha dato ritmo al pomeriggio senza rimandare: alle 15:30 è concentrato e non lascia spazio all’inerzia.",
+"Il tempo dopo pranzo è stato usato con intelligenza: alle 15:30 prosegue senza perdere l’equilibrio che si è costruito.",
+"Alle 15:30 il suo cammino non si è fermato. La disciplina ha preso il posto della stanchezza e lo guida a continuare.",
+"Ha gestito al meglio la ripresa del pomeriggio: alle 15:30 sta dimostrando di avere costanza e fermezza.",
+"Alle 15:30 il suo impegno non vacilla: ha scelto di restare attivo e il tempo scorre a suo favore."
+];
+
+const NEGATIVE_AFTERNOON = [
+  "Il pranzo si è trasformato in una scusa: alle 15:30 non ha ancora ripreso nulla e il tempo sta già scivolando via.",
+"Alle 15:30 è ancora fermo, intrappolato nella stanchezza che avrebbe dovuto superare.",
+"La pausa dopo pranzo si è allungata troppo: alle 15:30 non ha compiuto nemmeno un’azione concreta.",
+"Invece di rimettersi in moto, alle 15:30 è rimasto a rimandare, lasciando andare via minuti preziosi.",
+"Alle 15:30 non ha ancora trovato la forza di alzarsi dalla comodità in cui si è rifugiato.",
+"Il pomeriggio è già iniziato male: alle 15:30 non ha ripreso nulla e l’inerzia lo domina.",
+"La stanchezza post-pranzo ha vinto: alle 15:30 non è riuscito a reagire e resta immobile.",
+"Alle 15:30 il tempo è già perso: invece di fare un passo avanti, è rimasto a indugiare senza agire.",
+"Ha lasciato che la pausa diventasse un ostacolo: alle 15:30 non ha ancora ricominciato.",
+"Il primo pomeriggio non porta progressi: alle 15:30 non ha mosso un dito e continua a rinviare.",
+"Alle 15:30 non ha ancora trovato la spinta per ripartire: il tempo scorre senza risultati.",
+"Il primo pomeriggio è rimasto vuoto: alle 15:30 non ha fatto nulla di utile.",
+"La pausa si è trasformata in inattività: alle 15:30 non c’è ancora stato alcun segnale di movimento.",
+"Alle 15:30 non ha reagito al calo di energie e si è lasciato bloccare dalla pigrizia.",
+"Il pomeriggio è iniziato senza ritmo: alle 15:30 non ha ancora ripreso nulla di concreto.",
+"Alle 15:30 il tempo è scivolato via tra indecisioni e piccoli rinvii.",
+"Ha lasciato che la sonnolenza avesse la meglio: alle 15:30 non c’è ancora stata alcuna azione.",
+"Alle 15:30 la giornata segna un vuoto: non ha ripreso in mano ciò che aveva lasciato in sospeso.",
+"Il primo pomeriggio non porta progressi: alle 15:30 è fermo nello stesso punto.",
+"Alle 15:30 il suo tempo è rimasto sospeso tra intenzioni e mancanza di azione.",
+"Alle 15:30 non ha ancora trovato la decisione di rimettersi in moto: il tempo si è consumato senza progressi.",
+"Il pomeriggio è iniziato con inerzia: alle 15:30 non ha fatto alcun passo concreto.",
+"Alle 15:30 è rimasto bloccato dalla pigrizia, lasciando che la giornata perda ritmo.",
+"Il dopo pranzo è stato sprecato: alle 15:30 non ha ripreso nulla e resta fermo.",
+"Alle 15:30 la pausa si è trasformata in immobilità, senza nessuna azione significativa.",
+"Il calo di energie non è stato superato: alle 15:30 la giornata è ancora ferma.",
+"Alle 15:30 non ha mosso un dito, lasciando scorrere minuti che potevano essere usati meglio.",
+"La ripresa non è arrivata: alle 15:30 è ancora fermo nello stesso punto del pranzo.",
+"Alle 15:30 il tempo si è perso in esitazioni, senza nessuna scelta chiara.",
+"Il pomeriggio non ha preso forma: alle 15:30 non c’è stato alcun passo avanti."
+];
+
+const POSITIVE_EVENING = [
+ "Alle 21:30 è ancora concentrato: ha scelto di chiudere la giornata con un ultimo sforzo produttivo.",
+"La giornata si conclude bene: alle 21:30 ha deciso di rilassarsi dopo aver portato a termine ciò che si era promesso.",
+"Alle 21:30 è davanti a un ultimo impegno, dimostrando costanza fino alla fine della giornata.",
+"Ha completato le attività principali e alle 21:30 si concede il meritato riposo.",
+"Alle 21:30 ha scelto di prendersi un momento di svago: un film, un libro o un po’ di relax per ricaricare le energie.",
+"La sera non è stata sprecata: alle 21:30 ha fatto ancora qualcosa di utile prima di rallentare.",
+"Alle 21:30 ha chiuso la giornata con soddisfazione, avendo rispettato i passi che si era prefissato.",
+"Nonostante l’orario, alle 21:30 è rimasto attivo e ha dato l’ultima spinta.",
+"Ha deciso di concludere la giornata in equilibrio: un po’ di lavoro e un po’ di riposo, così alle 21:30 si sente in pace.",
+"Alle 21:30 ha staccato senza sensi di colpa: ha fatto la sua parte e ora si dedica al relax serale.",
+"Alle 21:30 ha ancora energia e la usa per portare a termine un piccolo compito rimasto in sospeso.",
+"Ha scelto di non chiudere la giornata di fretta: alle 21:30 sta dedicando tempo a ciò che conta per lui.",
+"Alle 21:30 non si è fermato: sta concludendo con disciplina l’ultimo impegno della giornata.",
+"Ha deciso di premiarsi: alle 21:30 si rilassa con uno svago meritato dopo una giornata di azioni concrete.",
+"Alle 21:30 si concede un momento di tranquillità, sapendo di aver fatto quanto serviva.",
+"La sera non è andata sprecata: alle 21:30 ha scelto di restare coerente con il suo impegno.",
+"Alle 21:30 ha spento le distrazioni e ha dato ancora un po’ di tempo a ciò che lo avvicina ai suoi obiettivi.",
+"Ha mantenuto il ritmo fino alla fine: alle 21:30 sta chiudendo la giornata con determinazione.",
+"Alle 21:30 non si sente in colpa a riposare, perché sa di aver già fatto la sua parte.",
+"Ha trasformato l’ultima parte della giornata in un momento utile: alle 21:30 si dedica con equilibrio a lavoro e relax.",
+"Alle 21:30 sta ancora dedicando attenzione a ciò che ritiene importante, chiudendo la giornata con costanza.",
+"La sera si conclude con disciplina: alle 21:30 porta avanti un ultimo gesto concreto.",
+"Alle 21:30 ha deciso di fermarsi e concedersi relax, sapendo di aver speso bene le ore precedenti.",
+"Ha scelto di non sprecare l’ultima parte della giornata: alle 21:30 continua a dare valore al suo tempo.",
+"Alle 21:30 trova equilibrio: un po’ di impegno e un po’ di riposo per concludere la giornata senza rimpianti.",
+"La giornata non finisce senza azione: alle 21:30 si dedica con attenzione a un’ultima attività.",
+"Alle 21:30 si sente soddisfatto: ha mantenuto il ritmo fino a sera e può permettersi di rallentare.",
+"Ha usato la sera per restare attivo: alle 21:30 completa ciò che aveva deciso senza lasciarlo a domani.",
+"Alle 21:30 si regala un momento sereno, perché la costanza di oggi gli permette di staccare senza sensi di colpa.",
+"La giornata si chiude con ordine: alle 21:30 ha dato spazio sia al dovere che al relax."
+];
+
+const NEGATIVE_EVENING = [
+  "Alle 21:30 non ha trovato la forza di muoversi: è rimasto immobile a rimandare anche l’ultima occasione di agire.",
+"Ha lasciato che la stanchezza prendesse il controllo: alle 21:30 è fermo senza iniziare nulla.",
+"Alle 21:30 si è perso dietro al telefono, senza rendersi conto di quanto tempo stia scivolando via.",
+"La sera è arrivata e alle 21:30 non ha fatto altro che sedersi senza concludere niente di concreto.",
+"Alle 21:30 avrebbe potuto fare ancora qualcosa, ma ha preferito non muoversi.",
+"Si è lasciato catturare dalle distrazioni: alle 21:30 è fermo davanti allo schermo, senza disciplina.",
+"Alle 21:30 non ha preso nessuna iniziativa: si è rifugiato nell’inattività.",
+"La sera non porta movimento: alle 21:30 è rimasto bloccato in gesti automatici e vuoti.",
+"Alle 21:30 la pigrizia ha vinto: non ha dato spazio a nessuna azione concreta.",
+"È arrivata la sera e alle 21:30 si è rifugiato solo nello svago, dimenticando qualsiasi passo avanti.",
+"Alle 21:30 si è lasciato andare alla comodità del divano, senza nemmeno provare a restare attivo.",
+"La sera è arrivata e alle 21:30 si è rifugiato in distrazioni inutili, senza disciplina.",
+"Alle 21:30 si è chiuso in un’abitudine sterile: scrollare lo schermo senza alcun controllo.",
+"Ha scelto di non muoversi: alle 21:30 rimane fermo, senza alcun segnale di iniziativa.",
+"Alle 21:30 la sera lo trova stanco e disattento, più interessato a passare il tempo che a usarlo bene.",
+"Si è lasciato vincere dall’apatia: alle 21:30 è immobile, senza azioni da ricordare.",
+"Alle 21:30 la sua unica scelta è stata spegnersi davanti a uno svago vuoto.",
+"Il tempo serale scorre lento: alle 21:30 non c’è nessun movimento, solo passività.",
+"Alle 21:30 non ha saputo reagire: la sera è rimasta priva di qualsiasi iniziativa concreta.",
+"Ha lasciato che la sera lo trascinasse in inerzia: alle 21:30 è fermo, senza disciplina.",
+"Alle 21:30 è ancora con lo sguardo fisso sullo schermo, senza alcun proposito concreto.",
+"La sera avanza e alle 21:30 si è già lasciato trascinare dalla pigrizia.",
+"Alle 21:30 non ha trovato stimoli: si è rifugiato in gesti automatici che non lo portano da nessuna parte.",
+"Il tempo serale si è spento in fretta: alle 21:30 non ha acceso nessuna azione utile.",
+"Alle 21:30 si è abbandonato a una passività totale, senza reazioni.",
+"La sera lo trova immobile: alle 21:30 non ha fatto altro che sedersi e lasciar passare il tempo.",
+"Alle 21:30 si è adagiato nella comodità, scegliendo il percorso più facile e vuoto.",
+"Ha lasciato che la sera si svuotasse: alle 21:30 non c’è traccia di iniziativa.",
+"Alle 21:30 il suo unico impegno è stato spegnersi davanti a un passatempo privo di senso.",
+"La sera non lo vede attivo: alle 21:30 è prigioniero dell’inerzia."
+];
+
+// 🔹 Funzione che sceglie il set corretto
+function getMessagesForSlot(slotId){
+  switch(slotId){
+    case "morning":   return { pos: POSITIVE_MORNING,   neg: NEGATIVE_MORNING };
+    case "afternoon": return { pos: POSITIVE_AFTERNOON, neg: NEGATIVE_AFTERNOON };
+    case "evening":   return { pos: POSITIVE_EVENING,   neg: NEGATIVE_EVENING };
+    default:          return { pos: [], neg: [] };
+  }
+}
+
+  function stampForSlot(slot){ const d=new Date(); d.setHours(slot.hour, slot.minute, 0, 0); return d; }
+  function seededRandomForToday(){
+    const key = new Date().toISOString().slice(0,10);
+    let seedMap = JSON.parse(localStorage.getItem(LS_KEYS.lastSeed) || '{}');
+    if(!seedMap[key]){ seedMap[key] = Math.floor(Math.random()*1e9); localStorage.setItem(LS_KEYS.lastSeed, JSON.stringify(seedMap)); }
+    let s = seedMap[key];
+    return () => { s ^= s << 13; s ^= s >>> 17; s ^= s << 5; s >>>= 0; return (s % 1_000_000) / 1_000_000; };
+  }
+  function pick(arr, rnd){ return arr[Math.floor(rnd()*arr.length)] }
+  function buildMessage(slot, rnd){
+    const now = new Date();
+    const stamp = stampForSlot(slot);
+    const when = now < stamp ? stamp : now;
+    const { pos, neg } = getMessagesForSlot(slot.id);
+const choice = rnd() < .6 ? 'positive' : 'negative';
+let template = choice==='positive' ? pick(pos, rnd) : pick(neg, rnd);
+    const hh = String(stamp.getHours()).padStart(2,'0');
+    const mm = String(stamp.getMinutes()).padStart(2,'0');
+    template = template.replace('{hh}', hh).replace('{mm}', mm).replace('{mins}', String(10+Math.floor(rnd()*50)));
+    return { slot:slot.id, label:slot.label, type:choice, text:template, ts: when.toISOString() };
+  }
+ async function ensureTodayMessages(expId){
+  if (!expId) throw new Error("expId mancante in ensureTodayMessages!");
+
+  const today = new Date().toISOString().split("T")[0];
+  const ref = db.collection("Experiences").doc(expId).collection("Messages");
+
+  try {
+    const snap = await ref
+  .where("date","==",today)
+  .orderBy("ordine", "asc")   // ✅ ordina in base al numero che hai salvato
+  .get();
+
+    if (!snap.empty){
+      return snap.docs.map(d=>d.data());
+    } else {
+      console.warn("Nessun messaggio trovato per oggi");
+      return [];
+    }
+  } catch (err) {
+    console.error("🔥 Errore leggendo Messages:", err);
+    return [];
+  }
+}
+
+async function renderChat(expId){
+  let msgs = [];
+  try {
+    msgs = await ensureTodayMessages(expId);
+  } catch(err) {
+    console.error("Errore in ensureTodayMessages:", err);
+    return;
+  }
+
+  if (!Array.isArray(msgs) || msgs.length === 0){
+    console.warn("Nessun messaggio disponibile");
+    return;
+  }
+
+  const container = document.getElementById("chatMessages");
+  if (!container) return;
+
+  container.innerHTML = "";
+ // 👇 Controllo se esiste almeno un messaggio giornaliero
+  const hasDaily = msgs.some(m => ["morning","afternoon","evening"].includes(m.slot));
+
+  for (const m of msgs) {
+    // 👇 se ci sono messaggi giornalieri, nascondo gli intro
+    if (hasDaily && m.slot === "intro") continue;
+  const div = document.createElement("div");
+  div.className = "msg";
+
+  if (m.type === "positive") div.classList.add("positive");
+  else if (m.type === "negative") div.classList.add("negative");
+  else if (m.type === "system") div.classList.add("bot"); // opzionale, per distinguere i messaggi introduttivi
+
+  div.innerHTML = `
+    <strong>${m.autore || "Sfidante"} · ${m.label || ""}</strong><br>
+    ${m.text || ""}
+    <span class="when">${m.orario || ""}</span>
+  `;
+  container.appendChild(div);
+}
+container.scrollTop = 0;
+
+}
+
+  /* =========================
+     Init
+     ========================= */
+  setTodayLabel();
+  loadAge();
+let currentSlot = null;
+
+function detectCurrentSlot(){
+  const now = new Date();
+  if (now >= new Date(now.setHours(16,12,0,0))) return "evening";
+  if (now >= new Date(now.setHours(16,10,0,0)))  return "afternoon";
+  if (now >= new Date(now.setHours(7,30,0,0)))  return "morning";
+  return null;
+}
+
+function startAutoUpdate(expId){
+  currentSlot = detectCurrentSlot();
+
+  setInterval(async ()=>{
+    const slotNow = detectCurrentSlot();
+    if (slotNow && slotNow !== currentSlot){   
+      currentSlot = slotNow;
+
+      const rnd = seededRandomForToday();
+      const slot = SLOTS.find(s => s.id === slotNow);
+      const msg = buildMessage(slot, rnd);
+
+      // Salva il messaggio del Sfidante su Firestore
+      await db.collection("Experiences")
+        .doc(expId)
+        .collection("Messages")
+        .add({
+          ...msg,
+          ordine: slotNow === "morning" ? 6 : slotNow === "afternoon" ? 7 : 8,
+          orario: new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}),
+          date: new Date().toISOString().split("T")[0],
+          autore: "Sfidante",
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+      // Poi ricarica la chat
+      await renderChat(expId);
+    }
+  }, 60_000); 
+}
+
+
+  // 🔹 Apri modal se loggato
+const startBtn = document.getElementById("startExperiences");
+const expModal = document.getElementById("ExperiencesModal");
+const expForm  = document.getElementById("ExperiencesForm");
+const contattoWrapper = document.getElementById("contattoWrapper");
+const contattoInput   = document.getElementById("contatto");
+const canaleSelect    = document.getElementById("canale");
+
+// 🔹 Aggiorna campo contatto in base al canale
+canaleSelect.addEventListener("change", ()=>{
+  const v = canaleSelect.value;
+  if (v==="email"){ contattoWrapper.style.display="block"; contattoInput.placeholder="Inserisci email"; }
+  else { contattoWrapper.style.display="none"; contattoInput.value=""; }
+});
+
+expForm.addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const user = auth.currentUser;
+  if (!user){ mostraPopup(); return; }
+
+  const obiettivo = document.getElementById("obiettivo").value;
+  const canale = canaleSelect.value;
+  const contatto = contattoInput.value;
+
+ try {
+  const docRef = await db.collection("Experiences").add({
+    userId: user.uid,
+    obiettivo,
+    canale,
+    contatto,
+    stato: "attiva",
+    dataInizio: new Date(),
+    
+  });
+
+    // 🔹 Subito dopo aver creato la nuova esperienza
+  const ref = db.collection("Experiences").doc(docRef.id).collection("Messages");
+  const today = new Date().toISOString().split("T")[0];
+
+  
+
+await ref.add({
+    slot: "intro",
+    label: "Introduzione",
+    type: "system",
+    text: "👋 Benvenuto!",
+    ordine: 0,
+    orario: new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}),
+    date: new Date().toISOString().split("T")[0], // sempre stringa "YYYY-MM-DD"
+    autore: "Il Narratore",
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+await ref.add({
+    slot: "intro",
+    label: "Introduzione",
+    type: "system",
+    text: "Da questo momento sei stato collegato a un’altra persona che condivide il tuo stesso obiettivo. Non saprai chi sia, né come si muove, ma avrai modo di seguirne i progressi. Tre volte al giorno, al mattino, al pomeriggio e alla sera, riceverai un aggiornamento che ti mostrerà come sta agendo per avvicinarsi al traguardo.",
+    ordine: 1,
+    orario: new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}),
+    date: new Date().toISOString().split("T")[0], // sempre stringa "YYYY-MM-DD"
+    autore: "Il Narratore",
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+await ref.add({
+    slot: "intro",
+    label: "Introduzione",
+    type: "system",
+    text: "La sfida è semplice: immagina che il tuo obiettivo non appartenga più solo a te, ma sia in palio tra due contendenti. Se lui lo raggiunge prima, tu lo perdi. Se tu ti muovi prima e con più decisione, sarai tu a conquistarlo.",
+    ordine: 2,
+    orario: new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}),
+    date: new Date().toISOString().split("T")[0], // sempre stringa "YYYY-MM-DD"
+    autore: "Il Narratore",
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+await ref.add({
+    slot: "intro",
+    label: "Introduzione",
+    type: "system",
+    text: "Non hai bisogno di restare connesso costantemente: anche quando chiudi il sito, gli aggiornamenti continuano a generarsi. Li riceverai via email e potrai rileggerli in qualsiasi momento, cliccando sul link che ti riporta direttamente qui, nella tua conversazione. In alternativa, puoi entrare manualmente sul sito e ritrovare la tua sfida in corso.",
+    ordine: 3,
+    orario: new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}),
+    date: new Date().toISOString().split("T")[0], // sempre stringa "YYYY-MM-DD"
+    autore: "Il Narratore",
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+await ref.add({
+    slot: "intro",
+    label: "Introduzione",
+    type: "system",
+    text: "Questa non è una simulazione da guardare passivamente. È un duello mentale che ti obbliga a non rimandare, a non fermarti, a trasformare ogni istante in un passo verso la meta. Perché se l’altro agisce mentre tu resti fermo, stai già perdendo terreno.",
+    ordine: 4,
+    orario: new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}),
+    date: new Date().toISOString().split("T")[0], // sempre stringa "YYYY-MM-DD"
+    autore: "Il Narratore",
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+await ref.add({
+    slot: "intro",
+    label: "Introduzione",
+    type: "system",
+    text: "La sfida inizia ora. Tu contro lui. Solo uno raggiungerà l’obiettivo.",
+    ordine: 5,
+    orario: new Date().toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}),
+    date: new Date().toISOString().split("T")[0], // sempre stringa "YYYY-MM-DD"
+    autore: "Il Narratore",
+    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  closeModal("ExperiencesModal");
+
+  // Nascondi anteprima e testo introduttivo
+  const preview = document.getElementById("ExperiencesPreview");
+  const intro   = document.querySelector("#botTitle + p");
+  if (preview) preview.style.display = "none";
+  if (intro)   intro.style.display = "none";
+  const botChat = document.getElementById("botChat");
+if (botChat) botChat.style.display = "none";
+
+  // Mostra la nuova chat
+  const chatContainer = document.getElementById("chatContainer");
+  chatContainer.style.display = "block";
+  startBtn.textContent = "Continua esperienza";
+
+  attachChatControls(auth.currentUser);
+
+  // 🔹 Genera e mostra i messaggi del giorno
+  await renderChat(docRef.id);
+  startAutoUpdate(docRef.id);
+
+} catch(err){
+  console.error("Errore nel salvataggio esperienza:", err);
+  alert("❌ Non è stato possibile salvare l’esperienza.");
+}
+
+});
+
+  </script>
+ 
+ <script>
+document.addEventListener("DOMContentLoaded", ()=>{
+
+  const chatContainer = document.getElementById("chatContainer");
+  const chatMessages  = document.getElementById("chatMessages");
+  const preview       = document.getElementById("ExperiencesPreview");
+  const startBtn      = document.getElementById("startExperiences");
+
+  // 🔹 Controllo stato esperienza a login
+ auth.onAuthStateChanged(async (user)=>{
+  const authArea = document.getElementById("authArea");
+  const intro    = document.querySelector("#botTitle + p");
+  const chatCont = document.getElementById("chatContainer");
+  const chatMsgs = document.getElementById("chatMessages");
+  const expForm  = document.getElementById("ExperiencesForm");
+  const botChat  = document.getElementById("botChat");
+  const preview  = document.getElementById("ExperiencesPreview");
+
+  if (!authArea) return;
+
+  // Utente NON loggato
+  if (!user){
+    authArea.innerHTML = `<button id="loginBtn">Accedi</button><button id="registerBtn">Registrati</button>`;
+    document.getElementById('loginBtn').addEventListener('click', ()=> openModal('loginModal'));
+    document.getElementById('registerBtn').addEventListener('click', ()=> openModal('registerModal'));
+
+    // Reset UI
+    if (chatCont) chatCont.style.display = "none";
+    if (preview) preview.style.display = "block";
+    if (intro)   intro.style.display = "block";
+    if (botChat) botChat.style.display = "block";
+    if (chatMsgs) chatMsgs.innerHTML = "";
+    if (startBtn) startBtn.textContent = "Nuova esperienza";
+    if (expForm)  expForm.style.display = "block";
+    return;
+  }
+
+  // Navbar utente loggato
+  const nome = (user.email||'utente').split('@')[0];
+  authArea.innerHTML = `<span style="margin-right:10px;">Ciao, ${nome}</span><button id="logoutBtn">Logout</button>`;
+  document.getElementById("logoutBtn").addEventListener("click", logoutUtente);
+
+  try {
+    const q = await db.collection("Experiences")
+      .where("userId","==",auth.currentUser.uid)
+      .where("stato","==","attiva")
+      .limit(1)
+      .get();
+
+    if (!q.empty){
+      // ✅ Utente ha un'esperienza attiva → chat privata
+      if (startBtn) startBtn.textContent = "Continua esperienza";
+      if (chatCont) chatCont.style.display = "block";
+      if (preview) preview.style.display = "none";
+      if (intro)   intro.style.display = "none";
+      if (botChat) botChat.style.display = "none";
+      if (expForm) expForm.style.display = "none";   // 👈 nascondi il form nuova esperienza
+
+      const expId = q.docs[0].id;
+await renderChat(expId);   // usa la funzione che salva/legge i messaggi giornalieri
+  startAutoUpdate(expId);
+attachChatControls(user);
+
+    } else {
+      // Nessuna esperienza attiva → vetrina
+      if (startBtn) startBtn.textContent = "Nuova esperienza";
+      if (chatCont) chatCont.style.display = "none";
+      if (preview) preview.style.display = "block";
+      if (intro)   intro.style.display = "block";
+      if (botChat) botChat.style.display = "block";
+      if (expForm) expForm.style.display = "block";
+    }
+
+  } catch(err){
+    console.error("Errore leggendo esperienze:", err);
+  }
+});
+
+  // 🔹 Listener sul bottone principale
+  if (startBtn){
+    startBtn.addEventListener("click", async ()=>{
+      const label = startBtn.textContent.trim();
+      const expForm = document.getElementById("ExperiencesForm");
+      const chatCont = document.getElementById("chatContainer");
+
+     if (label === "Nuova esperienza"){
+  // Controlla se loggato PRIMA
+  if (!auth.currentUser){
+    mostraPopup();   // 👈 chiede login subito
+    return;
+  }
+  // Se loggato → apri il modal configurazione
+  openModal("ExperiencesModal");
+  return;
+}
+
+ else if (label === "Continua esperienza"){
+        // Mostra chat privata con messaggi salvati
+        if (preview) preview.style.display = "none";
+        if (expForm) expForm.style.display = "none";
+        if (chatCont) chatCont.style.display = "block";
+          const botChat = document.getElementById("botChat");
+  if (botChat) botChat.style.display = "none";
+  const intro = document.querySelector("#botTitle + p");
+  if (intro) intro.style.display = "none";
+
+       try {
+  const q = await db.collection("Experiences")
+    .where("userId","==",auth.currentUser.uid)
+    .where("stato","==","attiva")
+    .limit(1)
+    .get();
+
+  if (!q.empty){
+    const expId = q.docs[0].id;
+    await renderChat(expId);              // ✅ usa la funzione che salva/legge da Firestore
+    attachChatControls(auth.currentUser); // ✅ mostra i pulsanti
+  }
+} catch(err){
+  console.error("Errore caricando messaggi:", err);
+}
+
+      }
+    });
+  }
+
+}); // 👈 chiude DOMContentLoaded
+
+async function attachChatControls(user){
+  if (document.querySelector(".controls")) return;
+
+  const chatContainer = document.getElementById("chatContainer");
+  const preview       = document.getElementById("ExperiencesPreview");
+  const startBtn      = document.getElementById("startExperiences");
+
+  const controls = document.createElement("div");
+  controls.className = "controls";
+  controls.style.textAlign = "center";
+  controls.style.marginTop = "15px";
+  chatContainer.appendChild(controls);
+
+  // 🔹 Recupera esperienza attiva per sapere lo stato notifiche
+  let expId = null;
+  let canale = "none";
+  let contatto = "";
+
+  const q = await db.collection("Experiences")
+    .where("userId","==",user.uid)
+    .where("stato","==","attiva")
+    .limit(1)
+    .get();
+
+  if (!q.empty){
+    const doc = q.docs[0];
+    expId = doc.id;
+    canale = doc.data().canale || "none";
+    contatto = doc.data().contatto || "";
+  }
+
+// 🔹 Bottoni fissi
+controls.innerHTML = `
+  <button id="backToPreview" class="primary">← Vetrina</button>
+  
+<button id="deleteExperiences" style="background:#b91c1c; color:#fff; border:none; padding:10px 15px; border-radius:8px; cursor:pointer;">
+  Blocca esperienza
+</button>
+
+  <div style="margin-top:15px;">
+    <button id="toggleNotifiche" style="background:#444; color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer;">
+      ${canale === "email" ? "🔕 Non voglio più ricevere notifiche" : "📩 Attiva notifiche via email"}
+    </button>
+    <div id="emailWrapper" style="display:none; margin-top:10px;">
+      <input type="email" id="updateEmail" placeholder="Inserisci la tua email" value="${contatto}" 
+        style="padding:8px; border-radius:6px; border:1px solid #333; width:100%; max-width:250px;" />
+      <button id="saveEmail" style="margin-top:6px; background:#2563eb; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer;">
+        Avanti
+      </button>
+    </div>
+  </div>
+`;
+
+  // 🔹 Pulsante "Torna alla vetrina"
+  controls.querySelector("#backToPreview").addEventListener("click", ()=>{
+    chatContainer.style.display = "none";
+    preview.style.display = "block";
+
+    const botChat = document.getElementById("botChat");
+    if (botChat) botChat.style.display = "block";   
+
+    const intro = document.querySelector("#botTitle + p");
+    if (intro) intro.style.display = "block";       
+
+    const chatMessages = document.getElementById("chatMessages");
+    if (chatMessages) chatMessages.innerHTML = "";
+
+    if (startBtn) startBtn.textContent = "Continua esperienza";
+  });
+
+  // 🔹 Pulsante "Blocca permanentemente"
+  controls.querySelector("#deleteExperiences").addEventListener("click", async ()=>{
+    try {
+      const q = await db.collection("Experiences")
+        .where("userId","==",user.uid)
+        .get();
+      q.forEach(doc => doc.ref.delete());
+
+      chatContainer.style.display = "none";
+      preview.style.display = "block";
+
+      const botChat = document.getElementById("botChat");
+      if (botChat) botChat.style.display = "block";   
+
+      const intro = document.querySelector("#botTitle + p");
+      if (intro) intro.style.display = "block";       
+
+      const chatMessages = document.getElementById("chatMessages");
+      if (chatMessages) chatMessages.innerHTML = "";
+
+      if (startBtn) startBtn.textContent = "Nuova esperienza";
+
+      const expForm = document.getElementById("ExperiencesForm");
+      if (expForm) expForm.style.display = "block";
+
+    } catch(err){
+      console.error("Errore eliminando esperienza:", err);
+      alert("❌ Impossibile eliminare l’esperienza.");
+    }
+  });
+
+  // 🔹 Gestione notifiche
+  const toggleBtn = controls.querySelector("#toggleNotifiche");
+  const emailWrapper = controls.querySelector("#emailWrapper");
+  const saveEmailBtn = controls.querySelector("#saveEmail");
+
+  toggleBtn.addEventListener("click", ()=>{
+    if(canale === "email"){
+      // ➡️ Disattiva notifiche
+      updateNotifications(expId, "none", "");
+      canale = "none";
+      contatto = "";
+      toggleBtn.textContent = "📩 Attiva notifiche via email";
+    } else {
+      // ➡️ Attiva notifiche → mostra form email
+      emailWrapper.style.display = "block";
+    }
+  });
+
+  saveEmailBtn.addEventListener("click", ()=>{
+    const email = document.getElementById("updateEmail").value.trim();
+    if(email){
+      updateNotifications(expId, "email", email);
+      canale = "email";
+      contatto = email;
+      emailWrapper.style.display = "none";
+      toggleBtn.textContent = "🔕 Non voglio più ricevere notifiche";
+    }
+  });
+}
+
+// 🔹 Aggiorna Firestore
+async function updateNotifications(expId, canale, contatto){
+  try {
+    await db.collection("Experiences").doc(expId).update({ canale, contatto });
+  } catch(err){
+    console.error("Errore aggiornando notifiche:", err);
+  }
+}
+
+function schedulePageReloadAt(hours, minutes, seconds = 0) {
+  const now = new Date();
+  const next = new Date();
+  next.setHours(hours, minutes, seconds, 0);
+
+  // se l’orario è già passato, programma per domani
+  if (next <= now) {
+    next.setDate(next.getDate() + 1);
+  }
+
+  const delay = next - now;
+  setTimeout(() => {
+    location.reload(); // 🔄 ricarica la pagina
+  }, delay);
+
+  console.log(`⏳ Reload programmato per: ${next}`);
+}
+
+// pianifica i tre reload
+// 07:30:15
+schedulePageReloadAt(7, 30, 15);
+// 15:30:15
+schedulePageReloadAt(15, 30, 15);
+// 21:30:15
+schedulePageReloadAt(21, 30, 15);
+
+</script>
+<footer>
+    <p>&copy; 2025 Sensazioni e Motivazione - Tutti i diritti riservati</p>
+  </footer>
+</body>
+</html>

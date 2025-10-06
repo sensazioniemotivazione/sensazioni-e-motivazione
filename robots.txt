@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://www.sensazioniemotivazione.com/sitemap.xml

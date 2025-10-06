@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sensazioni e Motivazione</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      background: #000;
+    }
+
+   nav {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  padding: 12px 15px;
+  gap: 20px; /* 🔹 spazio tra logo e bottoni */
+}
+
+nav {
+  transition: opacity .5s ease;
+}
+
+.nav-hidden {
+  opacity: 0;
+  pointer-events: none; /* così non è cliccabile */
+}
+
+
+#authArea {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 15px 20px;
+  transition: background 0.3s;
+}
+nav a:hover { background: rgba(255,255,255,0.2); }
+
+#authArea button {
+  background: transparent;
+  border: 2px solid #0ea5e9;
+  color: #0ea5e9;
+  padding: 6px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+#authArea button:hover {
+  background: #0ea5e9;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+#authArea button:active {
+  transform: translateY(0);
+}
+
+    header {
+      height: 100vh;
+      background: url('immagini_sitomotivazionale/palazzi.jpg') no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+    }
+    header h1 {
+      font-size: 3.5em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+    }
+    header p {
+      font-size: 1.5em;
+      max-width: 700px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+    }
+
+/* Tutte le sezioni restano fullscreen tranne il carosello */
+section:not(#carousel) {
+  min-height: 100vh;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Il carosello è una fascia compatta */
+#carousel {
+  width: 100%;
+   background: url("immagini_sitomotivazionale/123456.jpg") no-repeat center center;
+  background-size: cover;   /* copre tutta la sezione senza deformare */
+  color: #fff;              /* testo in bianco per leggibilità */
+  padding: 50px 0;          /* spazio sopra e sotto */
+  text-align: center;
+  position: relative;
+}
+
+#carousel .c-heading {
+  margin: 5px 0 15px 0;   /* pochissimo spazio sopra/sotto il titolo */
+  color: white;
+}
+
+#carousel .c-dots {
+  display: flex;
+  justify-content: center; /* centrati in orizzontale */
+  align-items: center;     /* centrati in verticale */
+  gap: 8px;                /* spazio tra un pallino e l’altro */
+  margin: 10px 0 5px 0;    /* piccolo spazio sopra/sotto */
+}
+
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    /* Card base (Storie, Sogni, Obiettivo) */
+    .card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      padding: 40px;
+      color: #fff;
+      text-align: center;
+      transition: transform 0.3s, background 0.3s;
+      width: 100%;
+      max-width: 500px;
+      box-sizing: border-box;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      background: rgba(255,255,255,0.2);
+    }
+    .card h3 { margin-bottom: 15px; font-size: 1.8em; font-weight: bold; }
+    .card p { font-size: 1.1em; line-height: 1.5; opacity: 0.9; }
+
+    footer {
+      background: #000;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      border-top: 1px solid #222;
+    }
+
+    /* Card speciali ultime 6 (Paure → Coming Soon) */
+    #collegamenti .card {
+      position: relative;
+      background: none;
+      border-radius: 12px;
+      overflow: hidden;
+      min-height: 220px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+    }
+    #collegamenti .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 0;
+    }
+    #collegamenti .card h3,
+    #collegamenti .card p {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 10px 0;
+    }
+
+    /* --- Pannello Introduzione --- */
+    #introPanel {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.95);
+      color: #fff;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px 20px 20px;
+      z-index: 2000;
+    }
+    #introContent {
+      max-width: 900px;
+      width: 100%;
+      overflow-y: auto;
+      flex-grow: 1;
+      padding-right: 10px;
+    }
+    #introContent h2 { font-size: 2.2em; margin-bottom: 20px; text-align: center; }
+    #introContent p { font-size: 1.2em; line-height: 1.7; margin-bottom: 20px; text-align: left; }
+    #closeIntro {
+      position: absolute; top: 15px; right: 20px;
+      font-size: 2em; cursor: pointer; color: #fff;
+    }
+
+    #readIntroBtn {
+      position: fixed;
+      bottom: 20px; right: 20px;
+      background: rgba(255,255,255,0.1);
+      color: #fff; padding: 10px 15px;
+      border-radius: 8px; cursor: pointer;
+      font-size: 0.9em;
+      backdrop-filter: blur(6px);
+      transition: background 0.3s;
+      z-index: 1500;
+    }
+    #readIntroBtn:hover { background: rgba(255,255,255,0.2); }
+
+    @keyframes vibrate {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-5px); }
+      40% { transform: translateX(5px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+      100% { transform: translateX(0); }
+    }
+    .vibrate { animation: vibrate 2s ease-in-out; }
+
+    #storie .card,
+#sogni .card,
+#obiettivo .card {
+  margin: 0 auto;   /* li centra in orizzontale */
+}
+
+
+  /* Mobile: rimpicciolire */
+@media (max-width: 768px) {
+  .nav-center {
+    gap: 10px; /* meno spazio tra link */
+  }
+
+  .nav-center a {
+    font-size: 0.8em; /* testo più piccolo */
+    padding: 10px 8px; /* riduci padding */
+  }
+
+  #authArea button {
+    padding: 6px 12px;
+    font-size: 0.8em;
+  }
+  /* HEADER */
+  header {
+    min-height: 100vh;
+    padding: 20px;
+  }
+  header h1 { font-size: 1.8em; }
+  header p  { font-size: 1em; max-width: 90%; }
+
+  #storie .card,
+  #sogni .card,
+  #obiettivo .card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(4px);
+    padding: 20px;
+  }
+  #storie .card h3,
+  #sogni .card h3,
+  #obiettivo .card h3 {
+    font-size: 1.2em;
+  }
+  #storie .card p,
+  #sogni .card p,
+  #obiettivo .card p {
+    font-size: 0.9em;
+    line-height: 1.3;
+  }
+
+  /* ULTIME 6 CARD */
+  #collegamenti div {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+    padding: 0 12px;
+  }
+
+  #collegamenti .card {
+    height: 180px;
+    padding: 10px;
+  }
+  #collegamenti .card h3 {
+    font-size: 1em;
+    margin-bottom: 6px;
+  }
+  #collegamenti .card p {
+    font-size: 0.8em;
+    line-height: 1.2;
+    max-height: 6em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* 🔹 Logo */
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 50px;   /* regola la dimensione */
+  width: auto;
+  display: block;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
+}
+
+#contatti .card {
+  background: rgba(255,255,255,0.25); /* più chiara */
+  backdrop-filter: blur(6px);
+}
+
+/* --- Modal Base --- */
+.modal {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.8);
+  justify-content: center; align-items: center;
+  z-index: 3000;
+}
+.modal-content {
+  background: #111; padding: 30px; border-radius: 12px;
+  max-width: 400px; width: 90%;
+  text-align: center;
+  color: #fff;
+}
+.modal-content input {
+  width: 100%; padding: 10px; margin: 10px 0;
+  border-radius: 6px; border: none;
+}
+.modal-content button {
+  width: 100%; padding: 10px;
+  background: #2563eb; border: none; color: #fff;
+  font-weight: bold; border-radius: 6px; cursor: pointer;
+}
+.modal-content button:hover { background:#3b82f6; }
+.close {
+  position: absolute; top: 15px; right: 20px;
+  font-size: 1.5em; cursor: pointer; color: #fff;
+}
+#loginMsg,#registerMsg{margin-top:10px;font-size:.9em;}
+
+.c-viewport {
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.c-track {
+  display: flex;
+  transition: transform .45s ease;
+  will-change: transform;
+}
+
+.c-page {
+  width: 100%;
+  flex: 0 0 100%;
+  padding: 10px 0;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(var(--c-perPage, 3), minmax(0,1fr));
+  align-items: stretch;
+}
+
+.c-card {
+  background: #141414;
+  border: 1px solid #222;
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.35);
+  transition: transform .2s ease;
+}
+.c-card:hover { transform: translateY(-2px); }
+
+.c-thumb {
+  aspect-ratio: 16/9;      /* tutte le card hanno forma fissa 16:9 */
+  border-radius: 10px;
+  overflow: hidden;        /* 🔹 taglia le parti che escono */
+  background: #111;        /* colore di sfondo se l'immagine non copre */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.c-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* 🔹 tutte le immagini riempiono il box */
+  display: block;
+}
+
+
+.c-title { font-weight: 700; font-size: 16px; }
+.c-desc { font-size: 14px; opacity:.85; line-height:1.4; }
+
+.c-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: 1px solid #2a2a2a;
+  background: rgba(20,20,20,.9);
+  color: #fff;
+  display: grid; 
+  place-items: center;
+  cursor: pointer;
+  user-select: none;
+  backdrop-filter: blur(4px);
+  transition: opacity .2s ease, transform .2s ease;
+  z-index: 2;
+}
+.c-nav-btn:hover { transform: translateY(-50%) scale(1.05); }
+.c-nav-btn[disabled] { opacity:.35; pointer-events:none; }
+.c-nav-prev { left: -30px; }
+.c-nav-next { right: -30px; }
+
+.c-dot {
+  width:8px; height:8px; 
+  border-radius:50%;
+  background:#3a3a3a;
+}
+.c-dot.is-active { background:#0ea5e9; }
+
+/* Mobile */
+@media (max-width: 767px) {
+  #carousel {
+    margin: 0;            /* elimina la striscia nera sopra */
+    padding: 15px 52px;   /* mezzo cm in più di altezza */
+  }
+
+  .c-page { --c-perPage: 1; }
+
+  .c-nav-prev { left: -30px; }
+  .c-nav-next { right: -30px; }
+
+  #carousel .c-heading {
+    margin: 0 0 12px 0;   /* niente margine sopra al titolo */
+    
+  }
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  .c-page { --c-perPage: 3; }
+}
+
+
+.c-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+  z-index: 1;
+}
+
+/* 📱 Stile rettangoli trasparenti solo da telefono */
+@media (max-width: 768px) {
+  #sogni .card,
+  #obiettivo .card,
+  #storie .card {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(6px);
+    padding: 10px 15px;       /* più compatti */
+    border-radius: 10px;
+    width: auto;              /* si adatta al contenuto */
+    max-width: 70%;           /* mai oltre il 70% della sezione */
+    text-align: center;
+    font-size: 0.85em;        /* testo più piccolo */
+    line-height: 1.3;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3); /* leggero stacco */
+  }
+
+  #sogni .card h3,
+  #obiettivo .card h3,
+  #storie .card h3 {
+    font-size: 1.1em;  /* titoli ridotti */
+    margin-bottom: 8px;
+  }
+
+  #sogni .card p,
+  #obiettivo .card p,
+  #storie .card p {
+    font-size: 0.8em;
+  }
+}
+/* 📱 Mobile fix per sogni, obiettivo e storie */
+@media (max-width: 768px) {
+  #sogni,
+  #obiettivo,
+  #storie {
+    min-height: auto !important;   /* disattiva 100vh */
+    height: calc(100dvh / 3) !important; /* 1/3 dello schermo ciascuna */
+    padding: 0 !important;         /* niente padding extra */
+    margin: 0 !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    overflow: hidden;
+  }
+}
+
+/* 🔹 Overlay scuro */
+#carousel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5); /* 0.5 = livello di oscurità */
+  z-index: 0;
+}
+
+#carousel .c-container,
+#carousel .c-heading {
+  position: relative;
+  z-index: 1;  /* sta sopra l’overlay */
+  color: #fff !important;
+  opacity: 1 !important;
+}
+
+  </style>
+</head>
+<body>
+  <!-- 🔑 Modale Login -->
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-close="loginModal">&times;</span>
+    <h2>Accedi</h2>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <button type="submit">Accedi</button>
+      <p id="loginMsg"></p>
+    </form>
+  </div>
+</div>
+
+<!-- 🔑 Modale Registrazione -->
+<div id="registerModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-close="registerModal">&times;</span>
+    <h2>Registrati</h2>
+    <form id="registerForm">
+      <input type="email" id="registerEmail" placeholder="Email" required>
+      <input type="password" id="registerPassword" placeholder="Password" required>
+      <button type="submit">Registrati</button>
+      <p id="registerMsg"></p>
+    </form>
+  </div>
+</div>
+
+<!-- 🔔 Popup Logout -->
+<div id="logoutModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-close="logoutModal">&times;</span>
+    <h2>Logout effettuato</h2>
+    <p>Sei uscito dal tuo account con successo.</p>
+    <button id="logoutOkBtn">Chiudi</button>
+  </div>
+</div>
+
+
+  <nav>
+  <div class="logo">
+    <img src="immagini_sitomotivazionale/logo.PNG" alt="Logo">
+  </div>
+  <div id="authArea">
+    <button id="loginBtn">Accedi</button>
+    <button id="registerBtn">Registrati</button>
+  </div>
+</nav>
+
+  <header>
+    <h1>Sensazioni e Motivazione</h1>
+    <p>Un luogo dove trovare forza, ispirazione e il coraggio di andare oltre i tuoi limiti</p>
+  </header>
+
+  <section id="storie" style="background:url('immagini_sitomotivazionale/group.jpg') no-repeat center/cover;">
+    <a href="storie-motivazionali-personaggi-famosi.html" class="card-link">
+      <div class="card">
+        <h3>Storie Motivazionali</h3>
+        <p>Racconti veri e ispirazioni di chi ha superato ostacoli e raggiunto traguardi. Leggile per trovare coraggio e nuove prospettive.</p>
+      </div>
+    </a>
+  </section>
+
+  <section id="sogni" style="background:url('immagini_sitomotivazionale/d.jpg') no-repeat center/cover;">
+    <a href="interpreta-i-tuoi-sogni.html" class="card-link">
+      <div class="card">
+        <h3>Interpretazione dei Sogni</h3>
+        <p>Dai un senso ai tuoi sogni: ciò che immagini è più importante di quanto credi, perché i sogni parlano e rivelano chi sei davvero.</p>
+      </div>
+    </a>
+  </section>
+
+  <section id="obiettivo" style="background:url('immagini_sitomotivazionale/lamborghini.jpg') no-repeat center/cover;">
+    <a href="scrivi-il-tuo-obiettivo.html" class="card-link">
+      <div class="card">
+        <h3>Il Tuo Obiettivo</h3>
+        <p>Uno spazio personale dove scrivere la meta che vuoi raggiungere e lasciare un contatto: email, social o telefono. Un domani qualcuno che ha raggiunto quel traguardo potrà offrirti aiuto.</p>
+      </div>
+    </a>
+  </section>
+
+  <section id="collegamenti" style="background:url('immagini_sitomotivazionale/spiaggia.jpg') no-repeat center/cover; padding:50px 0;">
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:1200px; margin:0 auto; align-items:stretch;">
+
+      <a href="paure-umane.html" class="card-link">
+        <div class="card" style="background:url('immagini_sitomotivazionale/paura.jpg') center/cover;">
+          <h3>Scopri le tue paure</h3>
+          <p>Conoscersi significa anche affrontare ciò che ci spaventa. Forse ci sono paure che non sapevi nemmeno di avere.</p>
+        </div>
+      </a>
+
+      <a href="invenzioni-incredibili-dell-uomo.html" class="card-link">
+        <div class="card" style="background:url('immagini_sitomotivazionale/i.jpg') center/cover;">
+          <h3>Invenzioni ed Idee</h3>
+          <p>Apri la mente, imparare dai successi altrui e trovare ispirazione per creare qualcosa di nuovo.</p>
+        </div>
+      </a>
+
+      <a href="abitudini-comuni-umane.html" class="card-link">
+        <div class="card" style="background:url('immagini_sitomotivazionale/routine.jpg') center/cover;">
+          <h3>Le nostre abitudini</h3>
+          <p>Conoscere le nostre abitudini significa diventare consapevoli di ciò che facciamo, anche quando non ha un vero senso.</p>
+        </div>
+      </a>
+
+      <a href="lampada-dell-umore.html" class="card-link">
+        <div class="card" style="background:url('immagini_sitomotivazionale/invenzioni.jpg') center/cover;">
+          <h3>La lampada dell'umore</h3>
+          <p>Un sondaggio globale che mostra in tempo reale la percentuale degli stati d’animo del mondo.</p>
+        </div>
+      </a>
+
+       <a href="la-gara-contro-il-tempo.html" class="card-link">
+        <div class="card" style="background:url('immagini_sitomotivazionale/tempoo.jpg') center/cover;">
+          <h3>La gara contro il tempo</h3>
+          <p>Il tempo non aspetta. Accedi ora e scopri come trasformare ogni istante in azione concreta, senza fermarti mai.</p>
+        </div>
+      </a>
+
+      <a href="coming-soon.html" class="card-link">
+        <div class="card" style="background:url('immagini_sitomotivazionale/progress.jpg') center/cover;">
+          <h3>COMING SOON</h3>
+          <p>Lavori in corso...</p>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- 🔹 Carosello Progetti Futuri -->
+<section id="carousel">
+  <div class="c-container">
+    <h2 class="c-heading">Ecco a cosa stiamo attualmente lavorando</h2>
+
+    <button class="c-nav-btn c-nav-prev" aria-label="Pagina precedente" id="cPrevBtn">‹</button>
+
+    <div class="c-viewport">
+      <div class="c-track" id="cTrack">
+        <!-- Le pagine verranno costruite via JS -->
+      </div>
+    </div>
+
+    <button class="c-nav-btn c-nav-next" aria-label="Pagina successiva" id="cNextBtn">›</button>
+
+    <div class="c-dots" id="cDots"></div>
+  </div>
+</section>
+
+
+
+ <section id="contatti" 
+  style="background:url('immagini_sitomotivazionale/letteraa.jpg') no-repeat center/cover; padding:60px 20px; text-align:center;">
+  
+  <div class="card" style="background:rgba(255,255,255,0.1); backdrop-filter:blur(8px);">
+    <h2 style="font-size:2em; margin-bottom:20px;">Contatta il Creatore</h2>
+    <p style="max-width:600px; margin:0 auto 25px; font-size:1.1em; line-height:1.6;">
+      Hai un consiglio, un’idea o un feedback? Scrivimi direttamente:
+    </p>
+
+    <!-- Email -->
+    <a href="mailto:sensazioniemotivazione@gmail.com" 
+       style="display:inline-block; background:#2563eb; color:#fff; padding:12px 25px; 
+              border-radius:25px; text-decoration:none; font-weight:bold; transition:0.3s; margin:5px;">
+       Invia Email
+    </a>
+
+    <!-- Telegram -->
+    <a href="https://t.me/christianlenti" target="_blank"
+       style="display:inline-block; background:#0088cc; color:#fff; padding:12px 25px; 
+              border-radius:25px; text-decoration:none; font-weight:bold; transition:0.3s; margin:5px;">
+       Contattami su Telegram
+    </a>
+
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/christian.lenti" target="_blank"
+       style="display:inline-block; background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5); 
+              color:#fff; padding:12px 25px; border-radius:25px; text-decoration:none; 
+              font-weight:bold; transition:0.3s; margin:5px;">
+       Seguimi su Instagram
+    </a>
+
+  </div>
+</section>
+
+
+<!-- 💖 Donazioni -->
+<section id="donazioni" 
+  style="background:url('immagini_sitomotivazionale/supporto.jpg') no-repeat center/cover; padding:60px 20px; text-align:center;">
+  
+  <div class="card" style="background:rgba(255,255,255,0.1); backdrop-filter:blur(8px);">
+    <h2 style="font-size:2em; margin-bottom:20px;">Sostieni il Progetto</h2>
+    
+    <p style="max-width:600px; margin:0 auto 25px; font-size:1.1em; line-height:1.6;">
+      Se questo progetto ti ispira e vuoi aiutarmi a farlo crescere, puoi offrirmi un supporto con una piccola donazione.
+    </p>
+    
+    <a href="https://www.paypal.me/christianLenti" target="_blank"
+       style="display:inline-block; background:#0ea5e9; color:#fff; padding:12px 25px; border-radius:25px; text-decoration:none; font-weight:bold; transition:0.3s;">
+       Dona con PayPal
+    </a>
+  </div>
+</section>
+
+  <footer>
+    <p>&copy; 2025 Sensazioni e Motivazione - Tutti i diritti riservati</p>
+  </footer>
+
+  <div id="introPanel">
+    <span id="closeIntro">&times;</span>
+    <div id="introContent">
+      <h2>Introduzione</h2>
+      <p>Benvenuto.</p>
+      <p>Questo sito non l’ho creato solo per gli altri. L’ho creato anche per me. Perché io sono come te: una persona che porta avanti una vita normale, ma che sente dentro il bisogno di qualcosa di più.</p>
+      <p>So cosa significa svegliarsi la mattina e chiedersi: “Quello che sto facendo mi porterà da qualche parte? Le mie idee hanno senso o sto solo sprecando tempo?”. Nessuno ha una risposta certa. Nessun libro, nessun guru può dirti con precisione dove ti porterà la tua strada.</p>
+      <p>Ed è proprio per questo che esiste questo spazio: per ricordare che se la certezza non possiamo averla, possiamo almeno avere la motivazione. La motivazione per non mollare, per non farsi schiacciare dal dubbio, per non arrendersi alla voce che dice “non serve a nulla”.</p>
+      <p>Non ti dirò che chi segue i propri sogni ce la fa sempre. Sarebbe falso. Ma una cosa è sicura: non fare nulla è l’unico modo per fallire davvero. Se ti muovi, impari. Se resti fermo, ti spegni.</p>
+      <p>Essere se stessi non è poesia, è strategia. Quando scegli ciò che ti appartiene davvero, diventi capace di farlo mille volte meglio di chi lo fa solo per convenienza. È lì che nasce la tua forza, la tua unicità.</p>
+      <p>Questo sito raccoglie storie di persone che hanno avuto paura, ma non si sono fermate. Alcuni partiti da zero, altri da una vita tranquilla: tutti hanno avuto il coraggio di restare fedeli a se stessi e di andare avanti, passo dopo passo.</p>
+      <p>Io non ti parlo dall’alto, perché non ho già vinto. Ti parlo da dentro la stessa battaglia. Anch’io dubito, anch’io a volte vorrei mollare. Ma so che fare mi cambia, mentre non fare mi spegne.</p>
+      <p>Ecco il messaggio che voglio lasciarti: non serve essere perfetti o sapere sempre dove stai andando. Serve solo non tradire te stesso. Perché nel momento in cui resti fedele a ciò che sei, anche con la paura, stai già vincendo.</p>
+      <p>Ti auguro questo: che tu abbia sempre la forza di continuare, di imparare da ogni passo e di non smettere mai di credere che valga la pena provarci.</p>
+    </div>
+  </div>
+
+  <div id="readIntroBtn">Leggi l'introduzione</div>
+
+  <script>
+    const introPanel = document.getElementById('introPanel');
+    const closeIntro = document.getElementById('closeIntro');
+    const readIntroBtn = document.getElementById('readIntroBtn');
+    let vibraStopped = false;
+
+    function vibraSequence() {
+      if (vibraStopped) return;
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          if (!vibraStopped) {
+            readIntroBtn.classList.add('vibrate');
+            setTimeout(() => readIntroBtn.classList.remove('vibrate'), 2000);
+          }
+        }, i * 3000);
+      }
+      setTimeout(vibraSequence, 17000);
+    }
+    vibraSequence();
+
+    closeIntro.addEventListener('click', () => {
+      introPanel.style.display = 'none';
+      readIntroBtn.style.display = 'block';
+    });
+    readIntroBtn.addEventListener('click', () => {
+      introPanel.style.display = 'flex';
+      readIntroBtn.style.display = 'none';
+      vibraStopped = true;
+    });
+  </script>
+
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } 
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  // ⚠️ Copia qui la tua configurazione da Firebase → Impostazioni progetto
+   const firebaseConfig = {
+    apiKey: "AIzaSyCYtTpOIpmjd4v-01Z2MPSDiQr6enUFNSg",
+    authDomain: "sito-motivazionale.firebaseapp.com",
+    projectId: "sito-motivazionale",
+    storageBucket: "sito-motivazionale.firebasestorage.app",
+    messagingSenderId: "839022857622",
+    appId: "1:839022857622:web:49d4f20245ddafc0f5e1b7",
+    measurementId: "G-8H2TBGYYXZ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+// --- Funzioni login/registrazione/logout ---
+async function registraUtente(email, password) {
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    document.getElementById("registerMsg").textContent = "✅ Registrazione completata!";
+    setTimeout(() => closeModal("registerModal"), 1500);
+  } catch (e) {
+    document.getElementById("registerMsg").textContent = "❌ " + e.message;
+    // se vuoi che si chiuda comunque anche in caso di errore
+    setTimeout(() => closeModal("registerModal"), 1500);
+  }
+}
+
+async function loginUtente(email, password) {
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    document.getElementById("loginMsg").textContent = "✅ Login effettuato!";
+    setTimeout(() => closeModal("loginModal"), 1500);  // 👈 qui era sbagliato
+  } catch (e) {
+    document.getElementById("loginMsg").textContent = "❌ " + e.message;
+    setTimeout(() => closeModal("loginModal"), 1500);  // 👈 qui pure
+  }
+}
+
+async function logoutUtente() {
+  try {
+    await signOut(auth);
+    openModal("logoutModal");
+  } catch (e) {
+    console.error("Errore nel logout:", e);
+  }
+}
+
+// --- Stato autenticazione ---
+onAuthStateChanged(auth, (user) => {
+  const authArea = document.getElementById("authArea");
+  if (user) {
+   const nome = user.email.split('@')[0];  // prende solo la parte prima di @
+authArea.innerHTML = `
+  <span style="margin-right:10px;">Ciao, ${nome}</span>
+  <button id="logoutBtn">Logout</button>
+`;
+
+    document.getElementById("logoutBtn").addEventListener("click", logoutUtente);
+  } else {
+    authArea.innerHTML = `
+      <button id="loginBtn">Accedi</button>
+      <button id="registerBtn">Registrati</button>
+    `;
+    document.getElementById("loginBtn").addEventListener("click", () => openModal("loginModal"));
+    document.getElementById("registerBtn").addEventListener("click", () => openModal("registerModal"));
+  }
+});
+
+// --- Gestione modali ---
+function openModal(id) {
+  document.getElementById(id).style.display = "flex";
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+
+// Chiudi con la "X"
+document.querySelectorAll(".close").forEach(el=>{
+  el.addEventListener("click", ()=> closeModal(el.dataset.close));
+});
+
+// Chiudi con il pulsante "Chiudi" del logout
+document.getElementById("logoutOkBtn")
+  .addEventListener("click", ()=> closeModal("logoutModal"));
+
+// --- Submit form ---
+document.getElementById("loginForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  loginUtente(
+    document.getElementById("loginEmail").value,
+    document.getElementById("loginPassword").value
+  );
+});
+document.getElementById("registerForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  registraUtente(
+    document.getElementById("registerEmail").value,
+    document.getElementById("registerPassword").value
+  );
+});
+
+</script>
+<script>
+  const nav = document.querySelector('nav');
+let hideTimeout = null;
+let lastY = window.scrollY;
+let suppressShowUntil = 0;
+
+function scheduleHide(){
+  clearTimeout(hideTimeout);
+  hideTimeout = setTimeout(()=>{
+    nav.classList.add('nav-hidden');      // nasconde dopo 3s senza scroll
+  }, 3000);
+}
+
+// ignora scroll generati subito dopo interazioni
+document.addEventListener('click', ()=> suppressShowUntil = Date.now() + 600);
+document.addEventListener('focusin', ()=> suppressShowUntil = Date.now() + 600);
+
+function onScroll(){
+  const y = window.scrollY;
+  const delta = Math.abs(y - lastY);
+  lastY = y;
+
+  if (delta < 8) return;                   // niente “micro-scroll”
+  if (Date.now() < suppressShowUntil) return; // niente ri-comparsa da click
+
+  nav.classList.remove('nav-hidden');      // riappare solo su scroll vero
+  scheduleHide();                          // e poi parte il timer per nasconderla
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+
+// all’avvio: visibile, poi parte subito il timer per nasconderla
+nav.classList.remove('nav-hidden');
+scheduleHide();
+
+</script>
+<script>
+ // Dati reali per il carosello
+const cItems = [
+  { title: "Motivazione e Cartoni", desc: "Le frasi e le scene più ispiranti dei cartoni che ci insegnano a non mollare mai.", thumb: "immagini_sitomotivazionale/mariok.jpg" },
+  { title: "Dialoghi Interiori", desc: "Una conversazione autentica con il mio psicologo che racconta il mio modo di pensare.", thumb: "immagini_sitomotivazionale/psico.jpg" },
+  { title: "Lavora rilassato", desc: "Trasforma il tuo lavoro in un flusso sereno: concentrati con calma, libera la mente dallo stress e lascia che la produttività nasca dalla tranquillità.", thumb: "immagini_sitomotivazionale/fire.jpg" },
+  { title: "Motivazione, film e serie tv", desc: "Le frasi e le scene più potenti dai film, serie e sagre che ci insegano a rialzarci sempre.", thumb: "immagini_sitomotivazionale/harryp.jpg" },
+  {title: "Motivazione e canzoni", desc: "Le parole e le note più forti delle canzoni che ci ricordano di non arrenderci.", thumb: "immagini_sitomotivazionale/canz.jpg"},
+  {title: "Motivazione e Videogiochi", desc: "I momenti e i dialoghi più epici dei Videogiochi che ci insegnano a superare ogni sfida.", thumb: "immagini_sitomotivazionale/videog.jpg"},
+
+];
+
+  const cEls = {
+    track: document.getElementById('cTrack'),
+    dots: document.getElementById('cDots'),
+    prev: document.getElementById('cPrevBtn'),
+    next: document.getElementById('cNextBtn'),
+  };
+
+  let cPerPage = 3;
+  let cPages = [];
+  let cPageIndex = 0;
+
+  function cComputePerPage() {
+    return window.matchMedia('(max-width: 767px)').matches ? 1 : 3;
+  }
+
+function cMakeCard(item){
+  const card = document.createElement('div');
+  card.className = 'c-card';
+  card.innerHTML = `
+    <div class="c-thumb">
+      <img src="${item.thumb}" alt="${item.title}">
+    </div>
+    <div class="c-title">${item.title}</div>
+    <div class="c-desc">${item.desc}</div>
+  `;
+  return card;
+}
+
+  function cBuildPages(){
+    cEls.track.innerHTML = '';
+    cEls.dots.innerHTML = '';
+    cPages = [];
+
+    const total = cItems.length;
+    const totalPages = Math.ceil(total / cPerPage);
+
+    for(let p=0; p<totalPages; p++){
+      const page = document.createElement('div');
+      page.className = 'c-page';
+      const start = p * cPerPage;
+      const end = Math.min(start + cPerPage, total);
+      for(let i=start; i<end; i++){
+        page.appendChild(cMakeCard(cItems[i]));
+      }
+      cEls.track.appendChild(page);
+      cPages.push(page);
+
+      const dot = document.createElement('div');
+      dot.className = 'c-dot' + (p===cPageIndex ? ' is-active':'' );
+      dot.dataset.index = p;
+      dot.addEventListener('click', ()=> cGoTo(p));
+      cEls.dots.appendChild(dot);
+    }
+
+    cUpdateUI();
+  }
+
+  function cUpdateUI(){
+    const offset = -cPageIndex * 100;
+    cEls.track.style.transform = `translateX(${offset}%)`;
+    cEls.prev.disabled = cPageIndex === 0;
+    cEls.next.disabled = cPageIndex === cPages.length - 1;
+    Array.from(cEls.dots.children).forEach((d, i)=>{
+      d.classList.toggle('is-active', i === cPageIndex);
+    });
+  }
+
+  function cGoTo(index){ 
+    cPageIndex = Math.max(0, Math.min(index, cPages.length - 1)); 
+    cUpdateUI(); 
+  }
+  function cNext(){ cGoTo(cPageIndex + 1); }
+  function cPrev(){ cGoTo(cPageIndex - 1); }
+
+  let cResizeTO = null;
+  function cOnResize(){
+    clearTimeout(cResizeTO);
+    cResizeTO = setTimeout(()=>{
+      const p = cComputePerPage();
+      if(p !== cPerPage){
+        const firstVisibleItem = cPageIndex * cPerPage;
+        cPerPage = p;
+        cPageIndex = Math.floor(firstVisibleItem / cPerPage);
+        cBuildPages();
+      }
+    }, 120);
+  }
+
+  cPerPage = cComputePerPage();
+  cBuildPages();
+  cUpdateUI();
+
+  cEls.next.addEventListener('click', cNext);
+  cEls.prev.addEventListener('click', cPrev);
+  window.addEventListener('resize', cOnResize);
+</script>
+
+</body>
+</html>

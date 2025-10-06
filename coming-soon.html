@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lavori in corso</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #000;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      color: #fff;
+      text-align: center;
+    }
+
+    h1 { font-size: 2.5em; margin-bottom: 10px; }
+    p { font-size: 1.2em; color: #aaa; }
+
+    .loader {
+      margin-top: 20px;
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255,255,255,0.2);
+      border-top: 4px solid #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Hamburger */
+    .hamburger {
+      position: fixed;
+      top: 15px; left: 15px;
+      width: 30px; height: 22px;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      z-index: 1101;
+    }
+    .hamburger span {
+      display: block;
+      height: 4px;
+      background: #fff;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(2px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .3s;
+      z-index: 999;
+    }
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Sidebar */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 250px;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      padding: 60px 20px;
+      gap: 15px;
+      transform: translateX(-100%); /* nascosto */
+      opacity: 0;
+      visibility: hidden;
+      transition: transform .3s ease, opacity .3s ease;
+      z-index: 1000;
+
+
+  overflow-y: auto;              /* 👈 abilita scroll */
+  -webkit-overflow-scrolling: touch; /* 👈 scroll fluido su mobile */
+    }
+    .topbar.open {
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .topbar a {
+      text-decoration: none;
+      color: #fff;
+      background: rgba(255,255,255,0.12);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .topbar a:hover { background: rgba(255,255,255,0.25); }
+
+    .content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 👈 centra tutto in orizzontale */
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Pulsante hamburger -->
+  <div class="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <!-- Menu -->
+  <div class="topbar">
+   <a href="index.html" class="btn">← Torna alla Home</a>
+<a href="storie-motivazionali-personaggi-famosi.html" class="btn">← Leggi la storia di chi ce l’ha fatta</a>
+<a href="interpreta-i-tuoi-sogni.html" class="btn">← Impara ad interpretare i tuoi sogni</a> 
+<a href="scrivi-il-tuo-obiettivo.html" class="btn">← Scrivi il tuo obiettivo con il mondo</a>
+<a href="paure-umane.html" class="btn">← Scopri le tue paure</a>
+<a href="invenzioni-incredibili-dell-uomo.html" class="btn">← Leggi invenzioni ed idee</a>
+<a href="abitudini-comuni-umane.html" class="btn">← Sfoglia l’elenco delle abitudini più comuni dell’uomo</a>
+<a href="lampada-dell-umore.html" class="btn">← Fai sapere al mondo come ti senti</a>
+<a href="la-gara-contro-il-tempo.html" class="btn">← Sfida te stesso</a>
+<a href="contatta-il-creatore.html" class="btn">← Contatta il creatore</a>
+<a href="https://www.paypal.me/christianLenti" class="btn">← Offri supporto al creatore</a>
+  </div>
+
+  <!-- Contenuto -->
+   <div class="content">
+  <h1>🚧 Lavori in corso 🚧</h1>
+  <p>Stiamo preparando qualcosa di speciale... torna presto!</p>
+  <div class="loader"></div>
+  </div>
+
+  <script>
+    const hamburger = document.querySelector(".hamburger");
+    const topbar = document.querySelector(".topbar");
+    const overlay = document.querySelector(".overlay");
+
+    hamburger.addEventListener("click", () => {
+      topbar.classList.toggle("open");
+      overlay.classList.toggle("active");
+    });
+
+    overlay.addEventListener("click", () => {
+      topbar.classList.remove("open");
+      overlay.classList.remove("active");
+    });
+  </script>
+</body>
+</html>

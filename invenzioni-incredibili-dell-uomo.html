@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Innovazioni ed Idee</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{
+      font-family:'Segoe UI', Roboto, Tahoma, sans-serif;
+      background:#000; color:#eee;
+    }
+
+    .hamburger {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  width: 30px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 1100; /* sopra la topbar */
+}
+
+.hamburger span {
+  display: block;
+  height: 4px;
+  background: #fff; /* linee bianche visibili */
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+    /* Menu nascosto */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: -250px;   /* nascosto fuori dallo schermo */
+  width: 250px;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  padding: 60px 20px;
+  gap: 15px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+
+  overflow-y: auto;              /* 👈 abilita scroll */
+  -webkit-overflow-scrolling: touch; /* 👈 scroll fluido su mobile */
+}
+
+
+.topbar.open {
+  left: 0; /* quando si apre */
+}
+
+.topbar a {
+  text-decoration: none;
+  color: #fff;
+  background: #2d2d2d;   /* grigio scuro neutro */
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.topbar a:hover {
+  background: #444;      /* leggermente più chiaro in hover */
+}
+
+    /* Hero come le altre pagine */
+    header{
+      min-height:48vh;
+      background:url('immagini_sitomotivazionale/cine.jpg') center/cover no-repeat;
+      display:flex; align-items:center; justify-content:center; text-align:center;
+      position:relative; padding:32px 20px;
+    }
+    header::after{
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.75));
+    }
+    .hero-wrap{position:relative; z-index:1; max-width:900px}
+    h1{font-size:2.6em; text-shadow:2px 2px 6px rgba(0,0,0,.6)}
+    header p{margin-top:10px; font-size:1.05em; color:#ddd}
+
+    /* Progress coerente */
+    #progressContainer{
+      width:100%; max-width:900px; height:10px; margin:18px auto 0;
+      background:rgba(255,255,255,.12); border-radius:999px; overflow:hidden;
+    }
+    #progressBar{
+      height:100%; width:0%;
+      background:linear-gradient(90deg, #0ea5e9, #38bdf8);
+      transition:width .3s;
+    }
+    #progressText{margin-top:10px; font-size:.95em; color:#bbb}
+
+    /* Card centrale (assurdità) in stile vetro */
+    main{max-width:900px; margin:40px auto 60px; padding:0 20px}
+    #IdeeBox{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter:blur(10px);
+      padding:24px; border-radius:16px;
+      box-shadow:0 8px 30px rgba(0,0,0,.5);
+      text-align:center;
+    }
+    #descrizioneIdee{
+      color:#eee; line-height:1.7; font-size:1.15em; white-space:pre-line;
+    }
+
+    /* Pulsanti coerenti */
+    .actions{margin-top:20px; display:flex; justify-content:center; gap:15px; flex-wrap:wrap}
+    button{
+      padding:12px 20px; border:none; border-radius:12px; cursor:pointer;
+      font-size:1em; font-weight:700;
+      transition:transform .2s, box-shadow .2s, background .2s;
+    }
+    button:hover{transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,.35)}
+
+    .yes{background:#22c55e; color:#fff}
+    .yes:hover{background:#16a34a}
+    .no{background:#ef4444; color:#fff}
+    .no:hover{background:#dc2626}
+    .nav{background:#0ea5e9; color:#fff}
+    .nav:hover{background:#38bdf8}
+
+    .counter{margin-top:14px; font-size:.95em; color:#ccc}
+
+    /* Footer */
+    footer{margin:60px 0 30px; text-align:center; color:#aaa; font-size:.95em}
+
+/* 🔹 Navbar */
+nav {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  z-index: 1000;
+}
+
+nav{ transition: opacity .5s ease; }
+.nav-hidden{ opacity:0; pointer-events:none; }
+
+/* 🔹 Logo */
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 50px;   /* regola la dimensione */
+  width: auto;
+  display: block;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
+}
+
+/* 🔹 Pulsanti accedi/registrati */
+#authArea {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#authArea button {
+  background: transparent;
+  border: 2px solid #0ea5e9;
+  color: #0ea5e9;
+  padding: 6px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+#authArea button:hover {
+  background: #0ea5e9;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+#authArea button:active {
+  transform: translateY(0);
+}
+
+#loginPopup {
+      display:none;
+      position:fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background:rgba(0,0,0,0.7);
+      z-index:2000;
+      justify-content:center;
+      align-items:center;
+    }
+    #loginPopup > div {
+      background:#fff; 
+      color:#000; 
+      padding:30px; 
+      border-radius:12px; 
+      max-width:400px; 
+      text-align:center;
+      box-shadow:0 8px 20px rgba(0,0,0,0.4);
+    }
+    #loginPopup p { font-size:1.2em; margin-bottom:20px; }
+    #closePopupBtn {
+      padding:10px 20px; 
+      border:none; 
+      border-radius:8px; 
+      background:#0ea5e9; 
+      color:#fff; 
+      font-weight:bold; 
+      cursor:pointer;
+    }
+
+    /* --- Modal Base --- */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+.modal-content {
+  background: #111;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: none;
+}
+.modal-content button {
+  width: 100%;
+  padding: 10px;
+  background: #2563eb;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.modal-content button:hover { background:#3b82f6; }
+.close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #fff;
+}
+#loginMsg,#registerMsg{margin-top:10px;font-size:.9em;}
+
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <img src="immagini_sitomotivazionale/logo.PNG" alt="Logo">
+  </div>
+  <div id="authArea">
+    <button id="loginBtn">Accedi</button>
+    <button id="registerBtn">Registrati</button>
+  </div>
+</nav>
+
+<!-- 🔑 Modale Login -->
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-close="loginModal">&times;</span>
+    <h2>Accedi</h2>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <button type="submit">Accedi</button>
+      <p id="loginMsg"></p>
+    </form>
+  </div>
+</div>
+
+<!-- 🔑 Modale Registrazione -->
+<div id="registerModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-close="registerModal">&times;</span>
+    <h2>Registrati</h2>
+    <form id="registerForm">
+      <input type="email" id="registerEmail" placeholder="Email" required>
+      <input type="password" id="registerPassword" placeholder="Password" required>
+      <button type="submit">Registrati</button>
+      <p id="registerMsg"></p>
+    </form>
+  </div>
+</div>
+
+<!-- 🔔 Popup Logout -->
+<div id="logoutModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-close="logoutModal">&times;</span>
+    <h2>Logout effettuato</h2>
+    <p>Sei uscito dal tuo account con successo.</p>
+    <button id="logoutOkBtn">Chiudi</button>
+  </div>
+</div>
+
+
+  <!-- Pulsante hamburger -->
+<div class="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+  <div class="topbar">
+   <a href="index.html" class="btn">← Torna alla Home</a>
+<a href="storie-motivazionali-personaggi-famosi.html" class="btn">← Leggi la storia di chi ce l’ha fatta</a>
+<a href="interpreta-i-tuoi-sogni.html" class="btn">← Impara ad interpretare i tuoi sogni</a> 
+<a href="scrivi-il-tuo-obiettivo.html" class="btn">← Scrivi il tuo obiettivo con il mondo</a>
+<a href="paure-umane.html" class="btn">← Scopri le tue paure</a>
+<a href="abitudini-comuni-umane.html" class="btn">← Sfoglia l’elenco delle abitudini più comuni dell’uomo</a>
+<a href="lampada-dell-umore.html" class="btn">← Fai sapere al mondo come ti senti</a>
+<a href="la-gara-contro-il-tempo.html" class="btn">← Sfida te stesso</a>
+<a href="coming-soon.html" class="btn">← COMING SOON</a>
+<a href="contatta-il-creatore.html" class="btn">← Contatta il creatore</a>
+<a href="https://www.paypal.me/christianLenti" class="btn">← Offri supporto al creatore</a>
+  </div>
+
+  <!-- Hero coerente -->
+  <header>
+   <div class="hero-wrap">
+    <h1>Innovazioni ed Idee</h1>
+    <p>C’è un archivio vivo di Idee che hanno spostato il limite.</p>
+    <div id="progressContainer"><div id="progressBar"></div></div>
+    <div id="progressText"></div>
+  </div>
+  </header>
+
+  <main>
+    <div id="IdeeBox">
+      <p id="descrizioneIdee"></p>
+
+      <div class="actions">
+        <button class="yes" id="btnSi">Lo sapevo</button>
+        <button class="no"  id="btnNo">Non lo sapevo</button>
+      </div>
+
+      <div class="counter" id="contatore"></div>
+
+      <div class="actions" style="margin-top:22px;">
+        <button class="nav" id="btnPrev">⬅️ Precedente</button>
+        <button class="nav" id="btnNext">➡️ Successiva</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Sensazioni e Motivazione - Tutti i diritti riservati</p>
+  </footer>
+
+  <!-- Popup login -->
+<div id="loginPopup">
+  <div>
+    <p>⚠️ Devi accedere o registrarti per poter votare.</p>
+    <button id="closePopupBtn">Continua</button>
+  </div>
+</div>
+
+  <!-- Firebase SDK (immutato) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+/* 🔥 Configurazione Firebase */
+const firebaseConfig = {
+  apiKey: "AIzaSyCYtTpOIpmjd4v-01Z2MPSDiQr6enUFNSg",
+  authDomain: "sito-motivazionale.firebaseapp.com",
+  projectId: "sito-motivazionale",
+  storageBucket: "sito-motivazionale.firebasestorage.app",
+  messagingSenderId: "839022857622",
+  appId: "1:839022857622:web:49d4f20245ddafc0f5e1b7",
+  measurementId: "G-8H2TBGYYXZ"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// --- Popup ---
+const popup = document.getElementById("loginPopup");
+const closePopup = document.getElementById("closePopupBtn");
+closePopup.onclick = () => popup.style.display = "none";
+function mostraPopup(){ popup.style.display = "flex"; }
+
+const Idee = [
+    "Lo sapevi che un inventore creò una bicicletta con ruote quadrate che però funzionava solo su una pista speciale fatta a dossi?",
+"Lo sapevi che fu progettato un letto con una leva che “ribaltava” la persona a terra come sveglia estrema?",
+"Lo sapevi che esisteva un ombrello con ventola elettrica che soffiava via la pioggia senza tela?",
+"Lo sapevi che un’auto a propulsione a razzo negli anni ’20 percorse pochi metri prima di esplodere?",
+"Lo sapevi che un inventore realizzò una sedia con gambe a molla per alzarsi in piedi con un balzo?",
+"Lo sapevi che nel Medioevo alcuni automi religiosi muovevano occhi e braccia grazie a corde nascoste?",
+"Lo sapevi che un ingegnere brevettò un cappello con ventaglio incorporato azionato a manovella?",
+"Lo sapevi che un orologiaio costruì uccellini meccanici che cantavano con piccoli mantici d’aria?",
+"Lo sapevi che un inventore del ’900 propose scarpe con rotelle a benzina per andare più veloce?",
+"Lo sapevi che in Giappone provarono a vendere frigoriferi rotondi che si aprivano come una lavatrice?",
+"Lo sapevi che Leonardo da Vinci disegnò un carro armato circolare con cannoni tutt’intorno?",
+"Lo sapevi che un ingegnere del secolo scorso progettò un pianoforte verticale pieghevole da viaggio?",
+"Lo sapevi che nel Rinascimento furono costruiti leoni meccanici che camminavano da soli nelle parate?",
+"Lo sapevi che un inventore creò un “piano volante” con ali di carta che si distrusse al primo test?",
+"Lo sapevi che un uomo brevettò un paracadute a forma di ombrello gigante, ma cadde rovinosamente?",
+"Lo sapevi che nel ’900 si vendettero pistole fotografiche che sparavano flash invece di proiettili?",
+"Lo sapevi che un artista francese ideò una barca-bicicletta con pedali immersi nell’acqua?",
+"Lo sapevi che nel passato si costruirono specchi ustori per incendiare navi con il riflesso del sole?",
+"Lo sapevi che un inventore brevettò occhiali con tergicristalli alimentati a mano?",
+"Lo sapevi che nell’Ottocento provarono a fare un treno con vele come una nave?",
+"Lo sapevi che alcuni orologiai crearono bambole meccaniche capaci di scrivere frasi reali?",
+"Lo sapevi che un uomo costruì un aspirapolvere indossabile come uno zaino con motore a benzina?",
+"Lo sapevi che esistette una pistola a vapore progettata per sparare acqua bollente?",
+"Lo sapevi che nel Rinascimento furono realizzati orologi ad acqua che segnavano le ore con statuine animate?",
+"Lo sapevi che nel 1800 furono venduti letti girevoli che cambiavano inclinazione per favorire il sonno?",
+"Lo sapevi che un inventore ideò una macchina fotografica da tasca grande quanto una mela già nel 1900?",
+"Lo sapevi che in Egitto costruirono serrature di legno a chiavistello funzionanti ancora oggi?",
+"Lo sapevi che un uomo brevettò scarpe con mini-pale per camminare sulla neve fresca?",
+"Lo sapevi che nell’antica Grecia si costruirono automi teatrali che alzavano tende e scenografie?",
+"Lo sapevi che un inventore progettò un pianoforte con tasti luminosi per insegnare la musica ai bambini?",
+"Lo sapevi che un orologiaio svizzero realizzò un topo meccanico che correva davvero sul tavolo?",
+"Lo sapevi che nel 1900 si propose un “ombrello luminoso” con lampadine alimentate a batteria pesantissima?",
+"Lo sapevi che gli Inca usarono corde annodate chiamate quipu per registrare numeri e messaggi?",
+"Lo sapevi che un inventore brevettò una macchina che prometteva di lavare e asciugare capelli con aria calda, ma bruciava le acconciature?",
+"Lo sapevi che un ingegnere costruì un ponte sospeso fatto interamente di corde intrecciate resistentissime?",
+"Lo sapevi che nel 1800 si costruirono letti a dondolo giganti per far dormire intere famiglie?",
+"Lo sapevi che un inventore propose un bicchiere con specchio sul fondo per vedere se qualcuno avvelenava la bevanda?",
+"Lo sapevi che nell’antica Cina furono realizzati specchi che riflettevano immagini invisibili incise sul retro?",
+"Lo sapevi che nel Medioevo furono creati organi a vento giganti alimentati da mulini?",
+"Lo sapevi che un inventore costruì un ombrello con coltelli retrattili come arma di difesa?",
+"Lo sapevi che un artista rinascimentale progettò un ponte smontabile che si teneva in piedi senza chiodi?",
+"Lo sapevi che un inventore brevettò scarpe magnetiche per camminare capovolti su superfici di ferro?",
+"Lo sapevi che un uomo del ’900 realizzò un pianoforte che suonava azionato da biciclette?",
+"Lo sapevi che alcuni ingegneri tentarono di costruire un aereo con ali pieghevoli come quelle di un pipistrello?",
+"Lo sapevi che nel Rinascimento si costruirono orologi solari portatili in forma di anello?",
+"Lo sapevi che nel 1800 esistevano biciclette con una ruota enorme davanti e una minuscola dietro?",
+"Lo sapevi che un inventore brevettò un cappello con ventilatore interno a manovella per rinfrescarsi?",
+"Lo sapevi che nell’antica Roma si usavano tubi di piombo per portare l’acqua nelle case?",
+"Lo sapevi che un uomo propose un autobus a due piani trainato da cavalli con scivolo laterale per salire?",
+"Lo sapevi che un inventore brevettò una penna con minuscolo serbatoio d’inchiostro già nel 1800?",
+"Lo sapevi che nel passato alcuni templi avevano statue che “parlavano” grazie a tubi nascosti?",
+"Lo sapevi che un ingegnere costruì un orologio gigante che usava la pressione dell’aria per muovere le lancette?",
+"Lo sapevi che un inventore del ’900 progettò un aspirapolvere che funzionava a benzina ed era rumorosissimo?",
+"Lo sapevi che nel Medioevo alcuni castelli usavano specchi per far sembrare che il fuoco si accendesse da solo sugli altari?",
+"Lo sapevi che nel Rinascimento furono disegnati sottomarini primitivi azionati a remi?",
+"Lo sapevi che un inventore brevettò una cintura con ali pieghevoli per saltare più lontano?",
+"Lo sapevi che nell’antichità furono create mappe stellari incise su pietra che ancora oggi stupiscono gli studiosi?",
+"Lo sapevi che nel ’900 furono proposti occhiali con piccole TV incorporate prima degli smartphone?",
+"Lo sapevi che un inventore costruì una macchina da scrivere rotonda con i tasti disposti a cerchio?",
+"Lo sapevi che nell’antica Grecia furono realizzati ingranaggi che calcolavano i movimenti dei pianeti?",
+"Lo sapevi che un artista francese creò un cappello con radio incorporata negli anni ’40?",
+"Lo sapevi che nel Rinascimento furono progettati carri con lame rotanti per la guerra?",
+"Lo sapevi che un inventore brevettò una bicicletta con pale per pedalare direttamente sull’acqua?",
+"Lo sapevi che un orologiaio del 1700 costruì un’anatra meccanica che sbatteva le ali e “mangiava”?",
+"Lo sapevi che nell’antichità furono prodotti vetri che si piegavano invece di rompersi?",
+"Lo sapevi che un inventore costruì un tavolo con ventose per impedire che scivolasse durante i pasti in nave?",
+"Lo sapevi che nel Medioevo furono create serrature con combinazioni numeriche già simili a casseforti?",
+"Lo sapevi che un uomo brevettò scarpe con molle per saltare più in alto, ma erano pericolose?",
+"Lo sapevi che nell’antichità si costruivano ponti mobili fatti di barche legate insieme?",
+"Lo sapevi che un inventore progettò una bicicletta con eliche al posto delle ruote per avanzare sull’acqua?",
+"Lo sapevi che nel Rinascimento alcuni artisti realizzarono specchi convessi per ampliare la visuale?",
+"Lo sapevi che nel 1800 furono create carrozze con riscaldamento a carbone incorporato?",
+"Lo sapevi che un inventore brevettò un cappello-paracadute per sopravvivere a cadute da altezze ridotte?",
+"Lo sapevi che nell’antichità furono create monete cave che servivano da piccoli contenitori segreti?",
+"Lo sapevi che un uomo costruì un pianoforte gigante che richiedeva quattro persone per suonarlo?",
+"Lo sapevi che nel Medioevo furono usati specchi concavi per concentrare la luce in laboratori alchemici?",
+"Lo sapevi che un inventore del ’900 propose un ombrello trasparente con lampadina incorporata?",
+"Lo sapevi che un artista rinascimentale progettò scarpe galleggianti per camminare sull’acqua?",
+"Lo sapevi che un ingegnere creò un orologio con cucù che faceva uscire figure diverse ogni ora?",
+"Lo sapevi che nell’antica Cina furono costruiti carri con bussola magnetica per orientarsi sempre a sud?",
+"Lo sapevi che un inventore brevettò un cucchiaio autorotante per mescolare il caffè da solo?",
+"Lo sapevi che nel Rinascimento si disegnarono macchine volanti a forma di vite d’aria?",
+"Lo sapevi che un artista costruì una fontana con statue che suonavano strumenti mossi dall’acqua?",
+"Lo sapevi che nel 1800 furono inventati cappelli con lampade a olio per leggere di notte?",
+"Lo sapevi che un uomo brevettò una sedia con altoparlanti incorporati per sentire musica “immersiva”?",
+"Lo sapevi che nel Medioevo alcuni inventori crearono organi portatili alimentati a mantice?",
+"Lo sapevi che un ingegnere brevettò un letto che si piegava e diventava armadio?",
+"Lo sapevi che nell’antichità si costruirono specchi che deformavano le immagini come quelli dei luna park moderni?",
+"Lo sapevi che un inventore propose un cappello con ombrellino incorporato per il sole e la pioggia?",
+"Lo sapevi che nel Rinascimento alcuni automi erano programmati per suonare strumenti musicali?",
+"Lo sapevi che un uomo brevettò scarpe con mini-carri armati come suola per muoversi sul terreno fangoso?",
+"Lo sapevi che nell’antichità si crearono strumenti ottici che ingrandivano piccoli dettagli già prima del microscopio?",
+"Lo sapevi che un inventore costruì una bicicletta che funzionava su rotaie come un piccolo treno?",
+"Lo sapevi che nel 1900 furono venduti ombrelli con specchi retrovisori per guardare dietro di sé?",
+"Lo sapevi che un artista realizzò un tavolo musicale che suonava quando si appoggiavano i piatti sopra?",
+"Lo sapevi che nel Medioevo alcuni inventori realizzarono catapulte azionate ad acqua?",
+"Lo sapevi che un uomo brevettò una sedia a dondolo che azionava una macchina da cucire?",
+"Lo sapevi che nell’antichità furono create porte girevoli con sistemi meccanici già simili a quelle moderne?",
+"Lo sapevi che un inventore costruì un ombrello con tubicini per versare bevande direttamente in un bicchiere?",
+"Lo sapevi che nel Rinascimento alcuni ingegneri crearono modelli di ponti che si costruivano in pochi minuti senza chiodi?",
+"Lo sapevi che un inventore costruì una macchina che serviva zuppa automaticamente tramite un braccio meccanico?",
+"Lo sapevi che nel 1800 furono progettate biciclette con ruote enormi dietro e piccolissime davanti?",
+"Lo sapevi che un artista brevettò un tavolo che si trasformava in letto con un semplice gesto?",
+"Lo sapevi che nell’antichità furono realizzati specchi che riflettevano immagini segrete visibili solo con la luce giusta?",
+"Lo sapevi che un uomo ideò una penna con mini-proiettore per scrivere e proiettare il testo sul muro?",
+"Lo sapevi che nel Rinascimento si sperimentarono ali meccaniche indossabili che si rompevano facilmente in volo?",
+"Lo sapevi che un inventore costruì una macchina fotografica nascosta in un bastone da passeggio?",
+"Lo sapevi che nel Medioevo alcuni ingegneri realizzarono orologi che segnavano anche le fasi lunari?",
+"Lo sapevi che un uomo brevettò scarpe con mini-tamburi che facevano musica mentre camminavi?",
+"Lo sapevi che nell’antichità furono create lucerne a più stoppini che bruciavano per giorni interi?",
+"Lo sapevi che un inventore progettò un cappello con elica che fungeva da ventilatore?",
+"Lo sapevi che nel 1800 furono costruiti letti con corde vibranti per massaggiare chi dormiva?",
+"Lo sapevi che un artista creò una macchina che dipingeva da sola con pennelli mossi dall’acqua?",
+"Lo sapevi che nell’antica Grecia si costruirono statue con occhi che seguivano chi passava grazie a ingranaggi?",
+"Lo sapevi che un uomo brevettò un ombrello con altoparlante incorporato per ascoltare musica sotto la pioggia?",
+"Lo sapevi che nel Rinascimento alcuni inventori crearono automi che recitavano poesie muovendo la bocca?",
+"Lo sapevi che un ingegnere costruì una barca a pedali che sollevava acqua con pale per irrigare i campi?",
+"Lo sapevi che nel Medioevo furono progettate porte automatiche che si aprivano con contrappesi nascosti?",
+"Lo sapevi che un inventore brevettò occhiali che cambiavano gradazione girando una rotellina?",
+"Lo sapevi che nell’antichità si costruirono clessidre che suonavano campanelle allo scadere del tempo?",
+"Lo sapevi che un uomo inventò scarpe con ventose per arrampicarsi meglio su pareti lisce?",
+"Lo sapevi che nel 1800 furono create carrozze con tende che si aprivano come finestre moderne?",
+"Lo sapevi che un inventore progettò una macchina che versava vino automaticamente nei bicchieri?",
+"Lo sapevi che nell’antica Cina furono create lanterne che volavano grazie all’aria calda, simili a mongolfiere?",
+"Lo sapevi che un uomo brevettò una sedia che faceva ginnastica passiva muovendo il corpo con leve?",
+"Lo sapevi che nel Rinascimento furono disegnati strumenti musicali con più tastiere sovrapposte?",
+"Lo sapevi che un inventore costruì una bicicletta con ali laterali per tentare di volare?",
+"Lo sapevi che nel Medioevo furono create fontane che producevano suoni simili a melodie?",
+"Lo sapevi che un uomo brevettò un cappello con scomparti per portare piccoli oggetti nascosti?",
+"Lo sapevi che nell’antichità furono usati specchi concavi per osservare e ingrandire dettagli?",
+"Lo sapevi che un inventore progettò una macchina per scrivere in braille automatica già nell’800?",
+"Lo sapevi che nel Rinascimento furono ideati carri scenici che si muovevano da soli nei teatri?",
+"Lo sapevi che un uomo costruì un ombrello che si apriva in quattro direzioni contemporaneamente?",
+"Lo sapevi che nell’antica Grecia furono inventate porte che si aprivano con il calore del fuoco sugli altari?",
+"Lo sapevi che un inventore realizzò scarpe con mini-lame retrattili per camminare sul ghiaccio?",
+"Lo sapevi che nel 1800 furono creati letti che oscillavano per curare l’insonnia?",
+"Lo sapevi che un artista progettò un orologio che segnava anche i segni zodiacali?",
+"Lo sapevi che nel Medioevo furono costruiti organi ad acqua con tubi nascosti nei giardini?",
+"Lo sapevi che un uomo brevettò una macchina da scrivere circolare che si usava girando la mano?",
+"Lo sapevi che nell’antichità furono realizzati specchi che mostravano immagini in controluce segrete?",
+"Lo sapevi che un inventore propose un “cuscino musicale” con altoparlanti interni per addormentarsi?",
+"Lo sapevi che nel Rinascimento alcuni ingegneri costruirono ponti pieghevoli trasportabili a mano?",
+"Lo sapevi che un uomo brevettò scarpe con mini-ruote estraibili per correre più veloce?",
+"Lo sapevi che nell’antica Cina furono create torri con orologi ad acqua giganteschi?",
+"Lo sapevi che un inventore realizzò un tavolo che si illuminava dall’interno con candele?",
+"Lo sapevi che nel Medioevo furono progettate campane che suonavano da sole con meccanismi a vento?",
+"Lo sapevi che un artista brevettò occhiali che proiettavano immagini in miniatura sugli occhi?",
+"Lo sapevi che nell’antichità furono create statue con ingranaggi che alzavano le braccia verso il cielo?",
+"Lo sapevi che un inventore costruì una bicicletta con elica posteriore come un aereo?",
+"Lo sapevi che nel Rinascimento furono disegnati orologi a forma di globo con mappe stellari?",
+"Lo sapevi che un uomo brevettò un cappello con specchietto retrovisore per guardare dietro?",
+"Lo sapevi che nell’antica Grecia si costruirono automi che versavano vino ai banchetti?",
+"Lo sapevi che un inventore propose un letto che si piegava in verticale come un armadio?",
+"Lo sapevi che nel Medioevo furono ideati strumenti che simulavano tuoni e pioggia per i teatri?",
+"Lo sapevi che un uomo brevettò scarpe galleggianti con camere d’aria interne?",
+"Lo sapevi che nell’antichità furono realizzati tamburi ad acqua che battevano da soli?",
+"Lo sapevi che un inventore costruì un orologio con figure che ballavano ogni ora?",
+"Lo sapevi che nel Rinascimento furono progettati cannoni multipli che sparavano a ventaglio?",
+"Lo sapevi che un uomo ideò una macchina che stampava decorazioni sui muri automaticamente?",
+"Lo sapevi che nell’antica Cina furono creati specchi che proiettavano simboli sul pavimento?",
+"Lo sapevi che un inventore brevettò un cappello che si apriva come un ombrellone da spiaggia?",
+"Lo sapevi che nel Medioevo furono creati altari con statuine che si muovevano grazie al calore delle candele?",
+"Lo sapevi che un artista costruì una fontana che “parlava” con suoni d’acqua modulati?",
+"Lo sapevi che nell’antichità furono inventati meccanismi che azionavano porte con il peso di chi camminava?",
+"Lo sapevi che un uomo brevettò scarpe con mini-serbatoi per spruzzare acqua e pulire il pavimento?",
+"Lo sapevi che nel Rinascimento furono ideati carri teatrali che cambiavano scena muovendosi da soli?",
+"Lo sapevi che un inventore costruì un pianoforte che proiettava luci colorate per ogni nota?",
+"Lo sapevi che nel Medioevo furono progettate torri con orologi che mostravano animali meccanici?",
+"Lo sapevi che un artista creò un tavolo che suonava melodie quando vi cadeva acqua sopra?",
+"Lo sapevi che nell’antichità furono realizzati automi che salutavano i visitatori dei palazzi?",
+"Lo sapevi che un inventore propose occhiali con piccole lenti intercambiabili per diversi usi?",
+"Lo sapevi che nel Rinascimento furono disegnati sottomarini con cupole di vetro primitive?",
+"Lo sapevi che un uomo brevettò scarpe con mini-molle per correre più veloce?",
+"Lo sapevi che nell’antichità furono create lampade che bruciavano oli vegetali per mesi?",
+"Lo sapevi che un inventore progettò una sedia che si muoveva avanti e indietro automaticamente?",
+"Lo sapevi che nel Medioevo furono inventate macchine che trituravano grano usando l’energia dei fiumi?",
+"Lo sapevi che un uomo brevettò un ombrello che fungeva anche da bastone da passeggio?",
+"Lo sapevi che nell’antica Grecia si costruirono orologi che mostravano stelle e pianeti in movimento?",
+"Lo sapevi che un inventore ideò un tavolo con specchi che moltiplicavano le immagini dei piatti?",
+"Lo sapevi che nel Rinascimento furono progettate torri sceniche che si aprivano e chiudevano con ingranaggi?",
+"Lo sapevi che un uomo brevettò scarpe con tasche nascoste nella suola?",
+"Lo sapevi che nell’antichità furono create urne musicali che producevano suoni scuotendole?",
+"Lo sapevi che un inventore costruì una bicicletta a più piani con sedili sopraelevati?",
+"Lo sapevi che nel Medioevo furono inventati organi con tubi lunghissimi che imitavano il vento?",
+"Lo sapevi che un artista creò un cappello con piccola bussola integrata?",
+"Lo sapevi che nell’antichità furono realizzati specchi che proiettavano figure divine?",
+"Lo sapevi che un inventore brevettò un cuscino che emetteva profumi rilassanti?",
+"Lo sapevi che nel Rinascimento furono costruiti ponti girevoli azionati a mano?",
+"Lo sapevi che un uomo ideò un letto che vibrava per simulare viaggi in mare?",
+"Lo sapevi che nell’antica Cina furono creati carillon giganti mossi dall’acqua?",
+"Lo sapevi che un inventore progettò occhiali con torce laterali per leggere al buio?",
+"Lo sapevi che nel Medioevo furono creati marchingegni che sparavano acqua come difesa dei castelli?",
+"Lo sapevi che un artista costruì una macchina che generava vento artificiale per spettacoli teatrali?",
+"Lo sapevi che nell’antichità furono ideati strumenti musicali che suonavano con la forza del sole?",
+"Lo sapevi che un inventore brevettò una sedia che cucinava mentre si stava seduti?",
+"Lo sapevi che nel Rinascimento furono disegnati cannoni ad aria compressa primitivi?",
+"Lo sapevi che un uomo ideò scarpe con mini-ventagli per rinfrescare i piedi?",
+"Lo sapevi che nell’antichità furono create fontane che cambiavano getto a tempo di musica?",
+"Lo sapevi che un inventore costruì un tavolo che girava da solo per servire i commensali?",
+"Lo sapevi che nel Medioevo furono progettati mulini che producevano musica insieme alla farina?",
+"Lo sapevi che un artista creò occhiali che mostravano disegni animati proiettati?",
+"Lo sapevi che nell’antichità furono realizzati strumenti ottici che riflettevano immagini invertite?",
+"Lo sapevi che un inventore brevettò una macchina che mescolava il vino con l’acqua automaticamente?",
+"Lo sapevi che nel Rinascimento furono costruiti automi che danzavano nei palazzi nobiliari?",
+"Lo sapevi che un uomo ideò scarpe con specchi sul fondo per vedere dietro gli angoli?",
+"Lo sapevi che nell’antica Grecia si crearono meccanismi che aprivano tende nei teatri automaticamente?",
+"Lo sapevi che un inventore progettò un letto che raccontava storie tramite registrazioni sonore?",
+"Lo sapevi che nel Medioevo furono realizzate catapulte che lanciavano pietre infuocate con meccanismi a vento?",
+"Lo sapevi che un artista brevettò un cappello che spruzzava acqua per rinfrescarsi?",
+"Lo sapevi che nell’antichità furono create coppe che si svuotavano se riempite troppo, per insegnare la misura?",
+"Lo sapevi che un inventore costruì una bicicletta che suonava campane pedalando?",
+"Lo sapevi che nel Rinascimento furono disegnati orologi che segnavano maree e fasi della luna?",
+"Lo sapevi che un uomo brevettò un tavolo con ventilatori interni per raffreddare i piatti?",
+"Lo sapevi che un inventore creò un cappello con piccolo ventilatore a batteria negli anni ’60?",
+"Lo sapevi che nell’antichità furono realizzati orologi solari portatili grandi quanto un anello?",
+"Lo sapevi che un uomo brevettò scarpe con mini-serbatoi di profumo per lasciare scie odorose?",
+"Lo sapevi che nel Rinascimento furono disegnati carri a più ruote che ruotavano indipendentemente?",
+"Lo sapevi che un inventore costruì una sedia che si piegava e diventava zaino da viaggio?",
+"Lo sapevi che nell’antichità furono create lucerne che bruciavano per mesi senza spegnersi?",
+"Lo sapevi che un artista ideò un tavolo che proiettava immagini colorate sulla tovaglia?",
+"Lo sapevi che nel Medioevo furono costruite torri con campane che suonavano grazie al vento?",
+"Lo sapevi che un inventore brevettò un ombrello che spruzzava acqua nebulizzata d’estate?",
+"Lo sapevi che nell’antica Grecia si crearono automi che accoglievano visitatori muovendo braccia?",
+"Lo sapevi che un uomo costruì un letto che si inclinava automaticamente per chi russa?",
+"Lo sapevi che nel Rinascimento furono ideati strumenti a corda con più manici intrecciati?",
+"Lo sapevi che un inventore progettò scarpe con mini-ruote retrattili per scivolare sui marciapiedi?",
+"Lo sapevi che nell’antichità furono fatte coppe che si svuotavano se oltrepassavi il livello massimo?",
+"Lo sapevi che un artista costruì una fontana che suonava note diverse a seconda della pressione dell’acqua?",
+"Lo sapevi che nel Medioevo furono ideate porte segrete che si aprivano con contrappesi nascosti?",
+"Lo sapevi che un inventore brevettò un cappello con radio incorporata già negli anni ’30?",
+"Lo sapevi che nell’antica Cina furono costruite torri astronomiche con figure che suonavano campane ogni ora?",
+"Lo sapevi che un uomo creò un ombrello che si piegava in miniatura e stava in tasca?",
+"Lo sapevi che nel Rinascimento furono progettati ponti che galleggiavano su botti legate insieme?",
+"Lo sapevi che un inventore costruì una macchina che arrotolava sigarette automaticamente?",
+"Lo sapevi che nell’antichità furono ideate lampade con più stoppini che illuminavano sale intere?",
+"Lo sapevi che un artista brevettò scarpe con tacchi che contenevano liquore segreto?",
+"Lo sapevi che nel Medioevo furono costruite catapulte che lanciavano pietre coperte di pece incendiata?",
+"Lo sapevi che un inventore ideò un letto che si richiudeva trasformandosi in parete?",
+"Lo sapevi che nell’antica Grecia furono creati orologi ad acqua che mostravano figure animate?",
+"Lo sapevi che un uomo brevettò un cucchiaio che mescolava da solo grazie a molle interne?",
+"Lo sapevi che nel Rinascimento furono disegnati organi portatili a spalla azionati da mantici?",
+"Lo sapevi che un inventore costruì un tavolo che si riscaldava per tenere caldi i piatti?",
+"Lo sapevi che nell’antichità furono prodotte monete che nascondevano piccoli messaggi all’interno?",
+"Lo sapevi che un artista ideò un cappello con piccola luce per leggere di notte?",
+"Lo sapevi che nel Medioevo furono progettati altari che emettevano suoni spettrali con tubi nascosti?",
+"Lo sapevi che un inventore brevettò scarpe con rotelle nascoste nei tacchi?",
+"Lo sapevi che nell’antica Cina si costruirono specchi che riflettevano simboli sacri invisibili a occhio nudo?",
+"Lo sapevi che un uomo progettò un orologio con figure che cucinavano a ogni ora?",
+"Lo sapevi che nel Rinascimento furono creati carri scenici che cambiavano forma durante le feste?",
+"Lo sapevi che un inventore costruì un ombrello che raccoglieva acqua piovana per berla?",
+"Lo sapevi che nell’antichità furono realizzati tamburi che battevano da soli con sistemi a corde?",
+"Lo sapevi che un artista brevettò un tavolo che cambiava colore con il calore dei piatti?",
+"Lo sapevi che nel Medioevo furono inventati marchingegni che producevano fumo artificiale per battaglie?",
+"Lo sapevi che un uomo costruì una bicicletta che suonava musica pedalando?",
+"Lo sapevi che nell’antichità furono fatte statuette che “piangevano” acqua da tubi interni?",
+"Lo sapevi che un inventore ideò un cuscino che vibrava per svegliare senza rumore?",
+"Lo sapevi che nel Rinascimento furono disegnati cannoni che sparavano più palle in sequenza rapida?",
+"Lo sapevi che un artista creò scarpe con campanelli che suonavano a ogni passo?",
+"Lo sapevi che nell’antichità furono costruiti specchi ustori per concentrare la luce del sole sulle navi nemiche?",
+"Lo sapevi che un inventore brevettò un cappello che proiettava ombre divertenti sul muro?",
+"Lo sapevi che nel Medioevo furono ideate torri difensive con scale retrattili automatiche?",
+"Lo sapevi che un uomo costruì un letto che dondolava imitando le onde del mare?",
+"Lo sapevi che nell’antica Grecia furono realizzati automi che aprivano botti di vino?",
+"Lo sapevi che un inventore progettò una sedia che si muoveva su binari per servire il pasto?",
+"Lo sapevi che nel Rinascimento furono ideati ponti che si aprivano al passaggio di navi usando contrappesi?",
+"Lo sapevi che un artista creò occhiali che coloravano la vista con lenti intercambiabili?",
+"Lo sapevi che nell’antichità furono costruite fontane che spruzzavano acqua in sequenza musicale?",
+"Lo sapevi che un inventore brevettò un ombrello che emetteva profumi mentre pioveva?",
+"Lo sapevi che nel Medioevo furono ideati orologi da torre che facevano uscire figure ogni ora?",
+"Lo sapevi che un uomo progettò scarpe con lame laterali per tagliare erba camminando?",
+"Lo sapevi che nell’antica Cina si crearono lanterne che mostravano ombre animate sulle pareti?",
+"Lo sapevi che un inventore costruì un tavolo che cucinava minestre con resistenze interne?",
+"Lo sapevi che nel Rinascimento furono disegnati strumenti che suonavano grazie al vento canalizzato?",
+"Lo sapevi che un artista creò un cappello che proiettava stelle sul soffitto?",
+"Lo sapevi che nell’antichità furono fatte statue che urlavano con tubi nascosti durante cerimonie?",
+"Lo sapevi che un inventore ideò una bicicletta che camminava sull’acqua con ruote galleggianti?",
+"Lo sapevi che nel Medioevo furono costruiti castelli con porte che si aprivano da sole col vento?",
+"Lo sapevi che un uomo brevettò un letto che raccontava storie registrate prima di dormire?",
+"Lo sapevi che nell’antica Grecia si crearono specchi che riflettevano più immagini contemporaneamente?",
+"Lo sapevi che un inventore costruì scarpe con tasche segrete per trasportare oggetti?",
+"Lo sapevi che nel Rinascimento furono ideati teatri con palcoscenici che cambiavano scena da soli?",
+"Lo sapevi che un artista creò occhiali che mostravano immagini disegnate sulle lenti?",
+"Lo sapevi che nell’antichità furono realizzate coppe che cambiavano colore con la luce?",
+"Lo sapevi che un inventore progettò un cuscino che raffreddava con piccoli tubi d’acqua?",
+"Lo sapevi che nel Medioevo furono costruite torri che suonavano musica con campane mosse da vento?",
+"Lo sapevi che un uomo ideò scarpe con luci a olio incorporate per camminare di notte?",
+"Lo sapevi che nell’antica Cina furono costruite mappe celesti scolpite su pietra?",
+"Lo sapevi che un inventore brevettò un tavolo che serviva i piatti tramite nastri scorrevoli?",
+"Lo sapevi che nel Rinascimento furono creati carri allegorici che sputavano fuoco artificiale?",
+"Lo sapevi che un artista costruì un cappello con mini-bussola incorporata?",
+"Lo sapevi che nell’antichità furono inventati specchi concavi che deformavano i volti?",
+"Lo sapevi che un inventore creò scarpe con piccoli altoparlanti incorporati?",
+"Lo sapevi che nel Medioevo furono ideati strumenti che imitavano il canto degli uccelli?",
+"Lo sapevi che un uomo costruì un letto che massaggiava con rulli di legno?",
+"Lo sapevi che nell’antica Grecia furono realizzati automi che portavano cibi alle tavole?",
+"Lo sapevi che un inventore progettò un ombrello con specchi che riflettevano il sole per abbronzarsi?",
+"Lo sapevi che nel Rinascimento furono ideati cannoni che lanciavano reti per catturare soldati?",
+"Lo sapevi che un artista creò occhiali che coloravano la vista in toni psichedelici?",
+"Lo sapevi che nell’antichità furono costruiti orologi che segnavano stagioni e raccolti agricoli?",
+"Lo sapevi che un inventore brevettò scarpe con mini-ventilatori per raffreddare i piedi?",
+"Lo sapevi che nel Medioevo furono realizzati organi giganti alimentati da fiumi interi?",
+"Lo sapevi che un uomo costruì una bicicletta che si trasformava in zattera?",
+"Lo sapevi che nell’antica Cina si crearono specchi che proiettavano draghi sulle pareti?",
+"Lo sapevi che un inventore ideò un tavolo che vibrava per impedire alle mosche di posarvisi?",
+"Lo sapevi che nel Rinascimento furono disegnati ponti che si piegavano come fisarmoniche?",
+"Lo sapevi che un artista costruì un cappello che proiettava frasi luminose?",
+"Lo sapevi che nell’antichità furono realizzati strumenti musicali che suonavano col vento?",
+"Lo sapevi che un inventore brevettò un cuscino che suonava ninne nanne integrate?",
+"Lo sapevi che nel Medioevo furono progettati mulini che producevano suoni di organo?",
+"Lo sapevi che un uomo costruì scarpe con tacchi che fungevano da fiaschette segrete?",
+"Lo sapevi che nell’antica Grecia furono creati automi che accendevano fuochi cerimoniali?",
+"Lo sapevi che un inventore progettò un ombrello che diventava zaino da viaggio?",
+"Lo sapevi che nel Rinascimento furono costruite macchine sceniche che facevano comparire nuvole?",
+"Lo sapevi che un artista brevettò occhiali con immagini rotanti sulle lenti?",
+"Lo sapevi che nell’antichità furono fatte coppe che cambiavano trasparenza col vino versato?",
+"Lo sapevi che un inventore creò scarpe che spruzzavano profumi a ogni passo?",
+"Lo sapevi che nel Medioevo furono ideati orologi che mostravano figure celesti in movimento?",
+"Lo sapevi che un uomo costruì un letto che si muoveva come carro su rotaie?",
+"Lo sapevi che nell’antica Cina si crearono lanterne che disegnavano storie sulle pareti?",
+"Lo sapevi che un inventore brevettò scarpe con lame retrattili per camminare sul ghiaccio?",
+"Lo sapevi che nel Rinascimento furono ideati strumenti a fiato che usavano sacche d’acqua invece di aria?",
+"Lo sapevi che un artista costruì un tavolo che scriveva frasi con sabbia che scendeva in canaletti?",
+"Lo sapevi che nell’antichità furono realizzate anfore che fischiavano quando venivano svuotate?",
+"Lo sapevi che un inventore creò un letto che si sollevava a mezzanotte per buttarti giù come sveglia?",
+"Lo sapevi che nel Medioevo furono progettati campanili con figure animate che battevano le ore?",
+"Lo sapevi che un uomo ideò un cappello con specchi per vedere dietro la schiena senza voltarsi?",
+"Lo sapevi che nell’antica Cina si usarono aquiloni giganti per sollevare persone in aria?",
+"Lo sapevi che un inventore costruì una bicicletta che camminava sui binari del treno?",
+"Lo sapevi che nel Rinascimento furono progettati teatri con macchine che facevano cadere neve finta?",
+"Lo sapevi che un artista creò scarpe con mini-tamburi che facevano musica a ogni passo?",
+"Lo sapevi che nell’antichità furono inventate coppe che si svuotavano da sole se si beveva troppo?",
+"Lo sapevi che un inventore brevettò un ombrello che diventava mantello impermeabile?",
+"Lo sapevi che nel Medioevo furono create fontane che cambiavano getto imitando canti di uccelli?",
+"Lo sapevi che un uomo ideò un tavolo che girava da solo per servire tutti i commensali?",
+"Lo sapevi che nell’antica Grecia si costruirono automi che portavano doni nei templi?",
+"Lo sapevi che un inventore progettò scarpe con ruote che si aprivano solo premendo un pulsante?",
+"Lo sapevi che nel Rinascimento furono ideati cannoni che sparavano proiettili collegati da catene?",
+"Lo sapevi che un artista costruì un cappello con penna che scriveva da sola muovendo la testa?",
+"Lo sapevi che nell’antichità furono realizzati specchi che mostravano simboli invisibili alla luce diretta?",
+"Lo sapevi che un inventore creò una sedia che ti avvolgeva con coperte meccaniche per il freddo?",
+"Lo sapevi che nel Medioevo furono ideati strumenti che producevano rumori di tuoni per spaventare nemici?",
+"Lo sapevi che un uomo brevettò occhiali che permettevano di leggere al buio con piccole lampadine?",
+"Lo sapevi che nell’antica Cina furono costruiti carri che spruzzavano acqua per spegnere incendi?",
+"Lo sapevi che un inventore progettò scarpe con piccoli razzi per fare salti più lunghi?",
+"Lo sapevi che nel Rinascimento furono ideati automi che suonavano strumenti durante banchetti?",
+"Lo sapevi che un artista creò un letto che si chiudeva come una scatola per risparmiare spazio?",
+"Lo sapevi che nell’antichità furono prodotte monete che ronzavano se fatte girare velocemente?",
+"Lo sapevi che un inventore costruì una bicicletta che cucinava pane con il calore generato dai pedali?",
+"Lo sapevi che nel Medioevo furono create campane che emettevano scintille decorative durante le feste?",
+"Lo sapevi che un uomo brevettò scarpe con comparti segreti per nascondere messaggi?",
+"Lo sapevi che nell’antica Grecia si inventarono meccanismi che facevano comparire fumo nei teatri?",
+"Lo sapevi che un inventore progettò un tavolo che rilasciava profumi diversi a seconda del piatto?",
+"Lo sapevi che nel Rinascimento furono ideati cannoni che sparavano fuoco artificiale nei festival?",
+"Lo sapevi che un artista creò un cappello che proiettava figure luminose sulle pareti?",
+"Lo sapevi che nell’antichità furono costruiti orologi che segnavano il tempo con figure di animali?",
+"Lo sapevi che un inventore ideò scarpe con molle capaci di aumentare la velocità in corsa?",
+"Lo sapevi che nel Medioevo furono realizzati organi che imitavano il rumore del vento nelle chiese?",
+"Lo sapevi che un uomo brevettò un ombrello che si trasformava in bastone da difesa?",
+"Lo sapevi che nell’antica Cina furono create lanterne che mostravano scene in movimento come cinema primitivo?",
+"Lo sapevi che un inventore costruì un letto che massaggiava con rulli mossi da pedali?",
+"Lo sapevi che nel Rinascimento furono progettati teatri con piattaforme rotanti per cambiare scena?",
+"Lo sapevi che un artista creò un tavolo che suonava note quando vi cadeva acqua?",
+"Lo sapevi che nell’antichità furono fatte statue che soffiavano aria calda per sembrare vive?",
+"Lo sapevi che un inventore brevettò scarpe con tacchi che nascondevano piccoli coltelli?",
+"Lo sapevi che nel Medioevo furono costruite torri con ingranaggi che facevano muovere pupazzi giganti?",
+"Lo sapevi che un uomo ideò un cuscino che riproduceva voci registrate come compagnia?",
+"Lo sapevi che nell’antica Grecia furono create coppe che si riempivano solo fino a un certo limite?",
+"Lo sapevi che un inventore progettò occhiali che cambiavano colore con la luce solare?",
+"Lo sapevi che nel Rinascimento furono ideati carri allegorici che sputavano acqua e fuoco insieme?",
+"Lo sapevi che un artista costruì scarpe che lasciavano tracce luminose al buio?",
+"Lo sapevi che nell’antichità furono realizzati specchi che riflettevano immagini multiple sovrapposte?",
+"Lo sapevi che un inventore creò un letto che simulava onde del mare per addormentarsi?",
+"Lo sapevi che nel Medioevo furono inventati tamburi che battevano da soli con sistemi a corde?",
+"Lo sapevi che un uomo brevettò scarpe che rilasciavano polvere colorata a ogni passo?",
+"Lo sapevi che nell’antica Cina furono creati orologi che segnavano anche i cicli agricoli?",
+"Lo sapevi che un inventore progettò un cappello che rinfrescava spruzzando acqua nebulizzata?",
+"Lo sapevi che nel Rinascimento furono costruiti ponti che ruotavano su sé stessi per far passare le navi?",
+"Lo sapevi che un artista ideò un tavolo che cambiava colore a seconda della temperatura dei piatti?",
+"Lo sapevi che nell’antichità furono fatte statue che suonavano strumenti mossi dal vento?",
+"Lo sapevi che un inventore brevettò occhiali che mostravano scritte in miniatura davanti agli occhi?",
+"Lo sapevi che nel Medioevo furono creati altari che emettevano suoni spaventosi con tubi nascosti?",
+"Lo sapevi che un uomo costruì scarpe con serbatoi d’acqua per irrigare i campi camminando?",
+"Lo sapevi che nell’antica Grecia furono realizzati automi che servivano vino ai banchetti?",
+"Lo sapevi che un inventore progettò un letto che si sollevava per trasformarsi in balcone?",
+"Lo sapevi che nel Rinascimento furono ideati cannoni che lanciavano proiettili profumati durante feste?",
+"Lo sapevi che un artista costruì un cappello con piccoli strumenti musicali che suonavano col vento?",
+"Lo sapevi che nell’antichità furono create coppe che cambiavano colore con il tipo di liquido?",
+"Lo sapevi che un inventore ideò scarpe che emettevano luci a ogni passo nel buio?",
+"Lo sapevi che nel Medioevo furono realizzati orologi che mostravano costellazioni in movimento?",
+"Lo sapevi che un uomo brevettò un ombrello che raccoglieva acqua piovana in un serbatoio?",
+"Lo sapevi che nell’antica Cina furono costruite statue che emettevano fumo profumato dai nasi?",
+"Lo sapevi che un inventore progettò un tavolo che raccontava storie tramite dischi sonori nascosti?",
+"Lo sapevi che nel Rinascimento furono creati automi che ballavano in sincronia durante feste nobiliari?",
+"Lo sapevi che un artista ideò scarpe con mini-ventagli che rinfrescavano i piedi d’estate?",
+"Lo sapevi che nell’antichità furono fatte lanterne che creavano illusioni di animali in movimento?",
+"Lo sapevi che un inventore brevettò occhiali che proiettavano stelle luminose sulla visione notturna?",
+"Lo sapevi che nel Medioevo furono ideati mulini che oltre a macinare producevano musica?",
+"Lo sapevi che un uomo creò un letto che oscillava seguendo il battito cardiaco di chi dormiva?",
+"Lo sapevi che nell’antica Grecia furono realizzati automi che applaudivano negli spettacoli teatrali?",
+"Lo sapevi che un inventore progettò un cappello che diffondeva aromi diversi a seconda del clima?",
+"Lo sapevi che nel Rinascimento furono disegnati ponti che si smontavano da soli in caso di assedio?",
+"Lo sapevi che un artista costruì scarpe che suonavano come xilofoni camminando su gradini di legno?",
+"Lo sapevi che nell’antichità furono create coppe che traboccavano volontariamente per punire l’avidità?",
+"Lo sapevi che un inventore ideò un tavolo che vibrava leggermente per tenere lontani gli insetti?",
+"Lo sapevi che nel Medioevo furono inventati organi portatili che suonavano con acqua piovana raccolta?",
+"Lo sapevi che un uomo brevettò occhiali con specchi inclinati per leggere stando sdraiati?",
+"Lo sapevi che nell’antica Cina furono costruite torri astronomiche con figure che si muovevano ogni ora?",
+"Lo sapevi che un inventore progettò scarpe che emettevano vapore caldo in inverno?",
+"Lo sapevi che nel Rinascimento furono creati strumenti musicali che combinavano corde e acqua?",
+"Lo sapevi che un artista costruì un cappello che proiettava forme geometriche colorate?",
+"Lo sapevi che nell’antichità furono realizzate statue che si muovevano con corde invisibili ai fedeli?",
+"Lo sapevi che un inventore ideò un letto che cambiava posizione seguendo la luce solare?",
+"Lo sapevi che nel Medioevo furono costruite campane che suonavano anche con la pioggia battente?",
+"Lo sapevi che un uomo brevettò scarpe che facevano scintille camminando su pietra?",
+"Lo sapevi che nell’antica Grecia si inventarono coppe che svuotandosi producevano suoni musicali?",
+"Lo sapevi che un inventore progettò un tavolo che cucinava piccole pietanze con resistenze nascoste?",
+"Lo sapevi che nel Rinascimento furono ideati carri che sputavano fumo colorato durante cortei?",
+"Lo sapevi che un artista costruì occhiali che mostravano immagini dipinte in movimento?",
+"Lo sapevi che nell’antichità furono create lampade che imitavano le stelle del cielo?",
+"Lo sapevi che un inventore brevettò un cappello con piccola bussola interna per orientarsi sempre?",
+"Lo sapevi che nel Medioevo furono progettate porte che si aprivano solo con suoni specifici?",
+"Lo sapevi che un uomo ideò scarpe con mini-piatti rotanti per camminare sul fango?",
+"Lo sapevi che nell’antica Cina furono create lanterne che riflettevano draghi in volo sulle pareti?",
+"Lo sapevi che un inventore costruì un letto che cullava come una barca su onde simulate?",
+"Lo sapevi che un inventore costruì un letto che si piegava come una fisarmonica per occupare meno spazio?",
+"Lo sapevi che nel Rinascimento furono creati strumenti musicali che usavano acqua corrente per produrre note?",
+"Lo sapevi che un artista ideò un cappello che cambiava colore a seconda della temperatura esterna?",
+"Lo sapevi che nell’antichità furono fabbricate coppe che si svuotavano se venivano inclinate troppo, per insegnare moderazione?",
+"Lo sapevi che un inventore progettò scarpe che lasciavano impronte luminose nel buio?",
+"Lo sapevi che nel Medioevo furono realizzati orologi con figure che uscivano a danzare ogni mezz’ora?",
+"Lo sapevi che un uomo brevettò un ombrello che incorporava una piccola radio a manovella?",
+"Lo sapevi che nell’antica Grecia si costruirono automi che accoglievano i visitatori con movimenti del capo?",
+"Lo sapevi che un inventore ideò un tavolo che diffondeva musica con corde tese al suo interno?",
+"Lo sapevi che nel Rinascimento furono progettati carri scenici che sputavano fuoco artificiale durante le feste?",
+"Lo sapevi che un artista costruì scarpe con campanelli che suonavano melodie a ogni passo?",
+"Lo sapevi che nell’antichità furono create lanterne che proiettavano figure in movimento sulle pareti?",
+"Lo sapevi che un inventore brevettò un cuscino che profumava la stanza rilasciando oli essenziali?",
+"Lo sapevi che nel Medioevo furono ideati organi che imitavano il canto degli uccelli con tubi d’aria?",
+"Lo sapevi che un uomo creò un letto che cullava come una barca per addormentarsi più facilmente?",
+"Lo sapevi che nell’antica Cina furono costruite statue che sputavano acqua come fontane animate?",
+"Lo sapevi che un inventore progettò scarpe che si riscaldavano grazie a resistenze interne?",
+"Lo sapevi che nel Rinascimento furono disegnati strumenti che combinavano archi e fiati nello stesso corpo?",
+"Lo sapevi che un artista creò un cappello che spruzzava acqua fresca in estate?",
+"Lo sapevi che nell’antichità furono prodotte coppe che cambiavano colore con il liquido versato dentro?",
+"Lo sapevi che un inventore costruì un tavolo che vibrava leggermente per tenere lontani gli insetti?",
+"Lo sapevi che nel Medioevo furono create campane che suonavano melodie complete senza musicisti?",
+"Lo sapevi che un uomo brevettò occhiali che riflettevano immagini di paesaggi diversi per rilassare la vista?",
+"Lo sapevi che nell’antica Grecia si realizzarono automi che ballavano durante i banchetti?",
+"Lo sapevi che un inventore ideò un letto che ruotava lentamente per cambiare panorama in camera?",
+"Lo sapevi che nel Rinascimento furono costruite fontane che imitavano il suono di strumenti musicali?",
+"Lo sapevi che un artista progettò scarpe che sprigionavano scintille decorative al buio?",
+"Lo sapevi che nell’antichità furono create lucerne che proiettavano forme geometriche sulle pareti?",
+"Lo sapevi che un inventore brevettò un cappello con piccola ventola per rinfrescare la testa?",
+"Lo sapevi che nel Medioevo furono ideati mulini che, oltre a macinare, facevano suonare campane?",
+"Lo sapevi che un uomo costruì un ombrello che diventava piccolo sgabello pieghevole?",
+"Lo sapevi che nell’antica Cina furono fatte lanterne con specchi che moltiplicavano la luce?",
+"Lo sapevi che un inventore progettò un tavolo che emetteva vapore caldo per scaldare i piatti?",
+"Lo sapevi che nel Rinascimento furono creati automi che scrivevano frasi su fogli reali?",
+"Lo sapevi che un artista brevettò scarpe che fischiavano a ogni passo come richiamo musicale?",
+"Lo sapevi che nell’antichità furono realizzate statue che facevano eco con la voce dei sacerdoti nascosti?",
+"Lo sapevi che un inventore ideò un letto che si illuminava con piccole lampade incorporate?",
+"Lo sapevi che nel Medioevo furono costruite torri con meccanismi che facevano comparire fantasmi di legno?",
+"Lo sapevi che un uomo creò occhiali che permettevano di leggere libri in formato ridotto proiettato sulle lenti?",
+"Lo sapevi che nell’antica Grecia furono create coppe che emettevano suoni se riempite oltre misura?",
+"Lo sapevi che un inventore progettò scarpe che rilasciavano profumi diversi a ogni camminata?",
+"Lo sapevi che nel Rinascimento furono realizzati teatri con piattaforme mobili per effetti scenici?",
+"Lo sapevi che un artista costruì un cappello che proiettava stelle fluorescenti sul soffitto?",
+"Lo sapevi che nell’antichità furono prodotte lampade che cambiavano colore con il vento?",
+"Lo sapevi che un inventore brevettò un cuscino che riproduceva suoni della natura per rilassare?",
+"Lo sapevi che nel Medioevo furono ideati orologi che mostravano animali in movimento a ogni ora?",
+"Lo sapevi che un uomo ideò un ombrello che diffondeva musica tramite corde vibranti?",
+"Lo sapevi che nell’antica Cina furono realizzate statue che si muovevano al passaggio delle persone?",
+"Lo sapevi che un inventore progettò un tavolo che emetteva aromi diversi durante i pasti?",
+"Lo sapevi che nel Rinascimento furono ideati strumenti che producevano fuochi d’artificio sonori?",
+"Lo sapevi che un artista creò scarpe che lasciavano impronte colorate lavabili?",
+"Lo sapevi che nell’antichità furono fatte coppe che si svuotavano se riempite troppo velocemente?",
+"Lo sapevi che un inventore costruì un letto che proiettava immagini celesti sul soffitto?",
+"Lo sapevi che nel Medioevo furono inventate fontane che parlavano con tubi nascosti?",
+"Lo sapevi che un uomo brevettò occhiali che cambiavano gradazione premendo una leva?",
+"Lo sapevi che nell’antica Grecia furono creati automi che suonavano strumenti a percussione?",
+"Lo sapevi che un inventore progettò scarpe che si gonfiavano per galleggiare sull’acqua?",
+"Lo sapevi che nel Rinascimento furono disegnati ponti che si piegavano in più sezioni?",
+"Lo sapevi che un artista costruì un cappello che sprigionava piccoli fuochi d’artificio?",
+"Lo sapevi che nell’antichità furono prodotte lampade che resistevano sott’acqua?",
+"Lo sapevi che un inventore ideò un tavolo che faceva girare i piatti con un meccanismo interno?",
+"Lo sapevi che nel Medioevo furono create porte che si aprivano con giochi di contrappesi invisibili?",
+"Lo sapevi che un uomo costruì un letto che simulava il rumore del mare per rilassare?",
+"Lo sapevi che nell’antica Cina furono ideate lanterne che raccontavano storie con ombre animate?",
+"Lo sapevi che un inventore progettò scarpe che facevano suoni diversi camminando su materiali differenti?",
+"Lo sapevi che nel Rinascimento furono creati automi che servivano vino muovendo braccia metalliche?",
+"Lo sapevi che un artista brevettò occhiali che riflettevano immagini invertite per creare illusioni?",
+"Lo sapevi che nell’antichità furono costruite statue che rilasciavano profumi nascosti durante i riti?",
+"Lo sapevi che un inventore ideò un ombrello che raccoglieva energia dal sole per ricaricare lampade?",
+"Lo sapevi che nel Medioevo furono progettate torri che lanciavano acqua bollente con sistemi a pressione?",
+"Lo sapevi che un uomo creò scarpe con tacchi trasparenti che contenevano piccoli oggetti decorativi?",
+"Lo sapevi che nell’antica Grecia furono fatte coppe che facevano uscire vino da fori segreti?",
+"Lo sapevi che un inventore costruì un letto che vibrava leggermente per migliorare la circolazione?",
+"Lo sapevi che nel Rinascimento furono ideati strumenti che producevano note col vento delle torce?",
+"Lo sapevi che un artista creò un cappello che rifletteva fasci di luce come uno specchio?",
+"Lo sapevi che nell’antichità furono prodotte lucerne che non si spegnevano con la pioggia?"
+
+ ];
+
+/* 🔑 ID sicuro */
+const safeId = (t) => String(t)
+  .toLowerCase()
+  .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+  .replace(/[^a-z0-9]+/g,'-')
+  .replace(/^-+|-+$/g,'')
+  .slice(0,120);
+
+/* Stato di navigazione */
+let history = [];
+let queue   = [];
+let indice  = 0;
+let step    = 1;
+
+/* 🎯 Elementi DOM */
+const descrizione = document.getElementById("descrizioneIdee");
+const contatore = document.getElementById("contatore");
+const btnSi = document.getElementById("btnSi");
+const btnNo = document.getElementById("btnNo");
+const btnPrev = document.getElementById("btnPrev");
+const btnNext = document.getElementById("btnNext");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+
+/* 🔀 Shuffle */
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+/* 💾 Salva progresso (solo loggato) */
+async function salvaProgress(){
+  const user = firebase.auth().currentUser;
+  if(user){
+    await db.collection("UserProgress").doc(user.uid).set(
+      { indice, step, history, queue },
+      { merge:true }
+    );
+  }
+}
+
+/* 🔄 Carica progresso (solo loggato) */
+async function caricaProgress(user){
+  const snap = await db.collection("UserProgress").doc(user.uid).get();
+  if(snap.exists){
+    const d = snap.data();
+    indice  = d.indice  ?? 0;
+    step    = d.step    ?? 1;
+    history = Array.isArray(d.history) ? d.history : [];
+    queue   = Array.isArray(d.queue)   ? d.queue   : shuffle([...Idee]);
+  } else {
+    indice = 0; step = 1; history = []; queue = shuffle([...Idee]);
+  }
+}
+
+/* 🖼️ Mostra abitudine */
+async function mostraIdee(){
+  // calcola il testo corrente
+  let p;
+  if(indice < history.length){
+    p = history[indice];
+  } else {
+    p = queue[0];
+    if(p){ history.push(p); queue.shift(); }
+  }
+  if(!p){ 
+    descrizione.textContent = "Carica nuove idee per iniziare.";
+    contatore.textContent = "";
+    return;
+  }
+
+  // mostra SUBITO il testo, indipendentemente da Firestore
+  descrizione.textContent = p;
+
+  // prova a leggere i contatori (solo read, nessuna scrittura da sloggato)
+  const id = safeId(p);
+  let si = 0, no = 0;
+  try{
+    const snap = await db.collection("Idee").doc(id).get();
+    if(snap.exists){
+      const d = snap.data();
+      si = d?.si|0; no = d?.no|0;
+      if(d?.testo) p = d.testo; // opzionale: testo canonico
+    }
+  }catch(e){
+    console.warn("Lettura contatori fallita:", e);
+  }
+
+  contatore.innerHTML = `Numero di click sul 🟢: ${si}. <br>
+Numero di click sul 🔴: ${no}.`;
+
+  // stato bottoni
+  const user = firebase.auth().currentUser;
+if(user){
+  // Da loggato, i bottoni restano sempre attivi.
+  btnSi.disabled = false;
+  btnNo.disabled = false;
+} else {
+  // Da sloggato: attivi ma aprono popup
+  btnSi.disabled = false;
+  btnNo.disabled = false;
+}
+
+
+  // barra progresso
+  const totale = Idee.length;
+  const progresso = totale ? Math.min(100, Math.round(step / totale * 100)) : 0;
+  progressBar.style.width = progresso + "%";
+  progressText.textContent = totale
+    ? `Hai visto ${step} su ${totale} idee`
+    : `Carica nuove idee per iniziare`;
+
+  // salva il progresso solo se loggato
+  salvaProgress();
+}
+
+/* ❤️ Vota */
+async function vota(tipo){
+  const user = firebase.auth().currentUser;
+  if(!user){
+    // da sloggato: mostra banner, non scrivere nulla
+    mostraPopup();
+    return;
+  }
+
+  let p = history[indice];
+  const id = safeId(p);
+
+  const userRef = db.collection("UserVotes").doc(user.uid);
+  const docRef  = db.collection("Idee").doc(id);
+
+  await db.runTransaction(async (tx) => {
+    const userSnap = await tx.get(userRef);
+    const gia = userSnap.exists ? userSnap.data() : {};
+    if(Object.prototype.hasOwnProperty.call(gia, id)) return; // già votato
+
+    // crea/aggiorna doc globale SOLO qui (utente loggato)
+    tx.set(docRef, { testo: p, [tipo]: firebase.firestore.FieldValue.increment(1) }, { merge:true });
+
+    // segna il voto dell'utente
+    tx.set(userRef, { [id]: tipo }, { merge:true });
+  });
+
+  mostraIdee();
+}
+
+/* 👆 Eventi di voto e navigazione */
+btnSi.addEventListener("click", () => vota("si"));
+btnNo.addEventListener("click", () => vota("no"));
+btnPrev.addEventListener("click", () => {
+  if(indice > 0){ indice--; step = Math.max(1, step-1); mostraIdee(); }
+});
+btnNext.addEventListener("click", () => {
+  if(indice < Idee.length-1){ indice++; step++; mostraIdee(); }
+});
+
+/* 🚀 Avvio */
+(function boot(){
+  queue = shuffle([...Idee]);
+  mostraIdee();
+})();
+
+/* --- Menu hamburger --- */
+document.querySelector(".hamburger").onclick = () => {
+  document.querySelector(".topbar").classList.toggle("open");
+}
+
+/* --- Auth corretto con modali --- */
+function registraUtente(email, password) {
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(() => {
+      document.getElementById("registerMsg").textContent = "✅ Registrazione completata!";
+      setTimeout(() => closeModal("registerModal"), 1500);
+    })
+    .catch(err => {
+      document.getElementById("registerMsg").textContent = "❌ " + err.message;
+      setTimeout(() => closeModal("registerModal"), 2000);
+    });
+}
+
+function loginUtente(email, password) {
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(() => {
+      document.getElementById("loginMsg").textContent = "✅ Login effettuato!";
+      setTimeout(() => closeModal("loginModal"), 1500);
+    })
+    .catch(err => {
+      document.getElementById("loginMsg").textContent = "❌ " + err.message;
+      setTimeout(() => closeModal("loginModal"), 2000);
+    });
+}
+
+function logoutUtente() {
+  firebase.auth().signOut()
+    .then(() => {
+      openModal("logoutModal");
+    })
+    .catch(err => console.error("Errore logout:", err));
+}
+
+
+firebase.auth().onAuthStateChanged(async (user) => {
+  const authArea = document.getElementById("authArea");
+  if (!authArea) return;
+
+  if (user) {
+   const nome = user.email.split('@')[0];  // prende solo la parte prima di @
+authArea.innerHTML = `
+  <span style="margin-right:10px;">Ciao, ${nome}</span>
+  <button id="logoutBtn">Logout</button>
+`;
+    document.getElementById("logoutBtn").addEventListener("click", logoutUtente);
+    await caricaProgress(user);
+  } else {
+    authArea.innerHTML = `
+      <button id="loginBtn">Accedi</button>
+      <button id="registerBtn">Registrati</button>
+    `;
+    document.getElementById("loginBtn").addEventListener("click", () => openModal("loginModal"));
+    document.getElementById("registerBtn").addEventListener("click", () => openModal("registerModal"));
+  }
+
+  // Mostra sempre il contenuto, anche da sloggato
+  mostraIdee();
+});
+
+const nav = document.querySelector('nav');
+let hideTimeout = null;
+let lastY = window.scrollY;
+let suppressShowUntil = 0;
+
+function scheduleHide(){
+  clearTimeout(hideTimeout);
+  hideTimeout = setTimeout(()=>{
+    nav.classList.add('nav-hidden');      // nasconde dopo 3s senza scroll
+  }, 3000);
+}
+
+// ignora scroll generati subito dopo interazioni
+document.addEventListener('click', ()=> suppressShowUntil = Date.now() + 600);
+document.addEventListener('focusin', ()=> suppressShowUntil = Date.now() + 600);
+
+function onScroll(){
+  const y = window.scrollY;
+  const delta = Math.abs(y - lastY);
+  lastY = y;
+
+  if (delta < 8) return;                   // niente “micro-scroll”
+  if (Date.now() < suppressShowUntil) return; // niente ri-comparsa da click
+
+  nav.classList.remove('nav-hidden');      // riappare solo su scroll vero
+  scheduleHide();                          // e poi parte il timer per nasconderla
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+
+// all’avvio: visibile, poi parte subito il timer per nasconderla
+nav.classList.remove('nav-hidden');
+scheduleHide();
+
+</script>
+<script>
+// --- Gestione modali ---
+function openModal(id) {
+  document.getElementById(id).style.display = "flex";
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+
+// Chiudi con la "X"
+document.querySelectorAll(".close").forEach(el=>{
+  el.addEventListener("click", ()=> closeModal(el.dataset.close));
+});
+
+// Chiudi con il pulsante "Chiudi" del logout
+document.getElementById("logoutOkBtn")
+  .addEventListener("click", ()=> closeModal("logoutModal"));
+
+// --- Submit form ---
+document.getElementById("loginForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  // qui richiami la tua funzione loginUtente()
+  loginUtente(
+    document.getElementById("loginEmail").value,
+    document.getElementById("loginPassword").value
+  );
+});
+document.getElementById("registerForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  // qui richiami la tua funzione registraUtente()
+  registraUtente(
+    document.getElementById("registerEmail").value,
+    document.getElementById("registerPassword").value
+  );
+});
+</script>
+
+</body>
+</html>

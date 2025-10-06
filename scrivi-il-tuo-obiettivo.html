@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Obiettivo — Community</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+
+/* 🔹 Navbar */
+nav {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  z-index: 1000;
+}
+
+nav{ transition: opacity .5s ease; }
+.nav-hidden{ opacity:0; pointer-events:none; }
+
+/* 🔹 Logo */
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 50px;   /* regola la dimensione */
+  width: auto;
+  display: block;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
+}
+
+/* 🔹 Pulsanti accedi/registrati */
+#authArea {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#authArea button {
+  background: transparent;
+  border: 2px solid #0ea5e9;
+  color: #0ea5e9;
+  padding: 6px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+#authArea button:hover {
+  background: #0ea5e9;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+#authArea button:active {
+  transform: translateY(0);
+}
+/* Form Pubblica un sogno centrato */
+.panel.left {
+  max-width: 600px;   /* larghezza massima del form */
+  margin: 0 auto;     /* centrato orizzontalmente */
+  width: 100%;
+  position: relative; /* tolto sticky */
+  top: 0;
+}
+
+    #overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  display: none;
+  z-index: 900;
+}
+
+#overlay.active { display: block; }
+
+  :root{
+    --bg:#000;
+    --fg:#fff;
+    --muted:#bbb;
+    --line:rgba(255,255,255,.15);
+    --glass:rgba(255,255,255,.08);
+    --glass-strong:rgba(255,255,255,.12);
+
+    --accent:#6ea8fe;     /* blu acceso */
+    --accent2:#a47bff;    /* viola tenue */
+    --accent-glow:0 0 12px rgba(110,168,254,.6),0 0 24px rgba(164,123,255,.5);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+  background: url('immagini_sitomotivazionale/aventador.jpg') center/cover fixed no-repeat;
+    color:var(--fg);
+    font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+
+  header{
+    text-align:center;
+    padding:60px 20px 40px;
+    background:linear-gradient(90deg, rgba(110,168,254,.08), rgba(164,123,255,.08));
+    border-bottom:1px solid var(--line);
+  }
+  header h1{
+    font-size:2.4rem;
+    letter-spacing:.3px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 0 20px rgba(110,168,254,.4);
+    margin-bottom:10px;
+  }
+  header p{
+    max-width:820px;
+    margin:0 auto;
+    color:#ccc;
+    font-size:1.05rem;
+    line-height:1.6;
+  }
+
+ .wrap{
+  max-width:1100px;
+  margin:36px auto 60px;
+  padding:0 20px;
+  display:flex;
+  flex-direction:column;
+  gap:24px;
+}
+
+  .panel{
+    background:var(--glass);
+    border:1px solid var(--line);
+    border-radius:14px;
+    backdrop-filter: blur(8px);
+    background-color: #000;
+    box-shadow:0 10px 30px rgba(0,0,0,.45);
+    transition:box-shadow .3s;
+  }
+  .panel:hover{
+    box-shadow:0 0 25px rgba(110,168,254,.3),0 0 40px rgba(164,123,255,.25);
+  }
+
+  .panel h2{
+    font-size:1.3rem;
+    padding:16px 18px 8px;
+  }
+  .panel .sub{
+    padding:0 18px 12px;
+    color:#cfcfcf;
+    font-size:.95rem;
+  }
+  .panel .body{
+    padding:16px 18px 18px;
+  }
+
+  .post-form .row{
+    display:flex;
+    gap:12px;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+  }
+  .post-form input, .post-form textarea{
+    background:rgba(255,255,255,.10);
+    color:#fff;
+    border:1px solid rgba(255,255,255,.18);
+    outline:none;
+    border-radius:10px;
+    padding:12px 12px;
+    font-size:1rem;
+    transition:border .2s, box-shadow .3s;
+  }
+  .post-form input:focus, .post-form textarea:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 10px rgba(110,168,254,.6);
+  }
+  .post-form input::placeholder, .post-form textarea::placeholder{color:#aaa}
+  .post-form input{flex:1; min-width:200px}
+  .post-form textarea{width:100%; min-height:120px; resize:vertical}
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff;
+    padding:10px 16px;
+    border:none;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+    transition: transform .2s, box-shadow .3s;
+  }
+  .btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 16px rgba(110,168,254,.8),0 0 28px rgba(164,123,255,.7);
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn.secondary{
+    background:rgba(255,255,255,.08);
+    box-shadow:none;
+  }
+  .btn.secondary:hover{background:rgba(255,255,255,.18)}
+
+  .dream{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(110,168,254,.25);
+    border-radius:12px;
+    padding:16px;
+    transition:box-shadow .3s;
+  }
+
+  .dream .meta{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+    font-size:.92rem;
+    color:#ddd;
+  }
+  .dream .meta .who{
+    display:flex; align-items:center; gap:10px;
+  }
+  .pill{
+    font-size:.78rem;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    padding:3px 8px;
+    border-radius:999px;
+    color:#fff;
+    box-shadow:0 0 10px rgba(110,168,254,.5);
+  }
+  .dream p.txt{
+    line-height:1.55;
+    font-size:1.02rem;
+    color:#f1f1f1;
+    white-space:pre-wrap;
+  }
+  .dream .actions{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:10px;
+    margin-top:12px;
+  }
+  .link{
+    border:none;
+    background:transparent;
+    color:#ddd;
+    cursor:pointer;
+    padding:6px 8px;
+    border-radius:8px;
+    transition: background .2s, color .2s;
+    font-weight:600;
+  }
+  .link:hover{background:rgba(255,255,255,.10); color:#fff}
+  .link.danger{color:#ff8e8e}
+  .link.danger:hover{background:rgba(255,0,0,.1); color:#fff}
+
+  .replies{
+    margin-top:12px;
+    border-top:1px dashed rgba(255,255,255,.25);
+    padding-top:10px;
+  }
+  .reply{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(164,123,255,.25);
+    border-radius:12px;
+    padding:12px;
+    margin-top:10px;
+    box-shadow:0 0 10px rgba(164,123,255,.3);
+    transition:box-shadow .3s;
+  }
+  .reply:hover{
+    box-shadow:0 0 18px rgba(164,123,255,.5);
+  }
+  .reply .meta{
+    display:flex; justify-content:space-between; gap:8px;
+    color:#dcdcff; font-size:.88rem; margin-bottom:6px;
+  }
+  .reply p{white-space:pre-wrap; color:#f6f6f6}
+
+  .reply-form{
+    display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;
+  }
+  .reply-form input{
+    flex:1; min-width:180px;
+    padding:10px 12px; border-radius:10px;
+    border:1px solid rgba(110,168,254,.3);
+    background:rgba(255,255,255,.10); color:#fff;
+    transition:border .2s, box-shadow .3s;
+  }
+  .reply-form input:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 10px rgba(110,168,254,.6);
+  }
+
+  .search-bar{
+    display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap;
+  }
+  .search-bar input{
+    flex:1; min-width:200px;
+    padding:10px 12px; border-radius:10px;
+    border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.10); color:#fff;
+  }
+  .search-bar input:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 8px rgba(110,168,254,.6);
+  }
+  .filters{
+    display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px;
+    color:#dcdcdc; font-size:.92rem;
+  }
+  .filters select{
+    background:rgba(255,255,255,.1); color:#fff; border:1px solid rgba(255,255,255,.18);
+    padding:8px 10px; border-radius:8px;
+  }
+  .filters select:focus{
+    border-color:var(--accent2);
+    box-shadow:0 0 8px rgba(164,123,255,.6);
+  }
+
+  .empty{
+    color:#aaa; padding:22px; text-align:center; border:1px dashed rgba(255,255,255,.15);
+    border-radius:12px; background:rgba(255,255,255,.04);
+  }
+
+  .right .tip{
+    color:#cfcfcf; font-size:.95rem; line-height:1.6;
+  }
+  .right .box{
+    margin-top:14px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:12px;
+    padding:14px;
+  }
+
+  footer{
+    text-align:center; color:#aaa; font-size:.9rem;
+    padding:24px 20px; border-top:1px solid var(--line);
+    background:#000;
+  }
+
+  @media (max-width: 980px){
+    .wrap{grid-template-columns:1fr; gap:18px}
+  }
+
+.hamburger {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  width: 30px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 1100; /* sopra la topbar */
+}
+
+.hamburger span {
+  display: block;
+  height: 4px;
+  background: #fff; /* linee bianche visibili */
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+    /* Menu nascosto */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: -250px;   /* nascosto fuori dallo schermo */
+  width: 250px;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  padding: 60px 20px;
+  gap: 15px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+
+
+  overflow-y: auto;              /* 👈 abilita scroll */
+  -webkit-overflow-scrolling: touch; /* 👈 scroll fluido su mobile */
+}
+
+.topbar.open {
+  left: 0; /* quando si apre */
+}
+
+.topbar a {
+  text-decoration: none;
+  color: #fff;
+  background: #2d2d2d;   /* grigio scuro neutro */
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.topbar a:hover {
+  background: #444;      /* leggermente più chiaro in hover */
+}
+
+    .navlink{
+      text-decoration:none; color:#fff; font-weight:600;
+      background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15);
+      padding:10px 16px; border-radius:10px; transition:transform .2s, background .2s;
+    }
+    .navlink:hover{ transform:translateY(-2px); background:rgba(255,255,255,.18) }
+    .navlink.primary{ background:#0ea5e9; border-color:transparent }
+    .navlink.primary:hover{ background:#38bdf8 }
+
+#loginPopup{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.7); z-index:2000; justify-content:center; align-items:center}
+    #loginPopup > div{background:#fff; color:#000; padding:30px; border-radius:12px; max-width:400px; text-align:center; box-shadow:0 8px 20px rgba(0,0,0,.4)}
+    #loginPopup p{font-size:1.2em; margin-bottom:20px}
+    #closePopupBtn{padding:10px 20px; border:none; border-radius:8px; background:#0ea5e9; color:#fff; font-weight:bold; cursor:pointer}
+
+/* --- Layout griglia per i sogni --- */
+#list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colonne */
+  gap: 20px; /* spazio tra i rettangoli */
+}
+
+/* Ogni sogno si adatta come card */
+#list .dream {
+  margin: 0;           /* togli margine verticale */
+  height: 100%;        /* così riempie bene la colonna */
+}
+
+/* Responsive: da tablet in giù scende a 2 colonne */
+@media (max-width: 980px) {
+  #list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Responsive: da telefono in giù diventa 1 colonna */
+@media (max-width: 640px) {
+  #list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.btn.danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626); /* rosso */
+  color: #fff;
+  box-shadow: 0 0 12px rgba(239,68,68,.6);
+}
+.btn.danger:hover {
+  background: linear-gradient(135deg, #f87171, #ef4444);
+  transform: translateY(-2px);
+}
+/* 🔵 Overlay thread centrato */
+.thread-overlay{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.7);
+  z-index: 3000;
+  display: grid; place-items: center;
+  padding: 24px;
+}
+.thread-dialog{
+  width: min(900px, 96vw);
+  max-height: 92vh;
+  overflow: auto;
+  background: rgba(0,0,0,.9);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  backdrop-filter: blur(8px);
+  padding: 18px;
+}
+.thread-close{
+  position: sticky; top: -6px; float: right;
+  border: none; background: rgba(255,255,255,.12);
+  color:#fff; padding:6px 10px; border-radius:10px; cursor:pointer;
+}
+.thread-dream{
+  background: rgba(255,255,255,.06);
+  border:1px solid rgba(110,168,254,.25);
+  border-radius:12px; padding:16px; margin-bottom:12px;
+}
+.thread-replies .comment{
+  background: rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:10px; padding:10px 14px; margin-top:10px;
+}
+.thread-replies .comment.reply{
+  margin-left: 20px;                 /* solo 1 livello visivo */
+  border-left: 3px solid var(--accent);
+  background: rgba(255,255,255,.12);
+}
+.thread-replies .actions{
+  display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;
+}
+
+.banner {
+  margin: 20px;
+  padding: 18px;
+  text-align: center;
+  border: 2px dashed var(--line);
+  border-radius: 12px;
+  background: rgba(255,255,255,.05);
+  color: #ccc;
+  font-size: 1.05rem;
+}
+/* --- Modal Base --- */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+.modal-content {
+  background: #111;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: none;
+}
+.modal-content button {
+  width: 100%;
+  padding: 10px;
+  background: #2563eb;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.modal-content button:hover { background:#3b82f6; }
+.close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #fff;
+}
+#loginMsg,#registerMsg{margin-top:10px;font-size:.9em;}
+</style>
+
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <img src="immagini_sitomotivazionale/logo.PNG" alt="Logo">
+  </div>
+  <div id="authArea">
+    <button id="loginBtn">Accedi</button>
+    <button id="registerBtn">Registrati</button>
+  </div>
+</nav>
+
+<!-- 🔑 Modale Login -->
+<div id="loginModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-close="loginModal">&times;</span>
+    <h2>Accedi</h2>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <button type="submit">Accedi</button>
+      <p id="loginMsg"></p>
+    </form>
+  </div>
+</div>
+
+<!-- 🔑 Modale Registrazione -->
+<div id="registerModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-close="registerModal">&times;</span>
+    <h2>Registrati</h2>
+    <form id="registerForm">
+      <input type="email" id="registerEmail" placeholder="Email" required>
+      <input type="password" id="registerPassword" placeholder="Password" required>
+      <button type="submit">Registrati</button>
+      <p id="registerMsg"></p>
+    </form>
+  </div>
+</div>
+
+<!-- 🔔 Popup Logout -->
+<div id="logoutModal" class="modal">
+  <div class="modal-content">
+    <span class="close" data-close="logoutModal">&times;</span>
+    <h2>Logout effettuato</h2>
+    <p>Sei uscito dal tuo account con successo.</p>
+    <button id="logoutOkBtn">Chiudi</button>
+  </div>
+</div>
+
+    <!-- Pulsante hamburger -->
+<div class="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+  <!-- Menu -->
+  <div class="topbar">
+   <a href="index.html" class="btn">← Torna alla Home</a>
+<a href="storie-motivazionali-personaggi-famosi.html" class="btn">← Leggi la storia di chi ce l’ha fatta</a>
+<a href="interpreta-i-tuoi-sogni.html" class="btn">← Impara ad interpretare i tuoi sogni</a> 
+<a href="paure-umane.html" class="btn">← Scopri le tue paure</a>
+<a href="invenzioni-incredibili-dell-uomo.html" class="btn">← Leggi invenzioni ed idee</a>
+<a href="abitudini-comuni-umane.html" class="btn">← Sfoglia l’elenco delle abitudini più comuni dell’uomo</a>
+<a href="lampada-dell-umore.html" class="btn">← Fai sapere al mondo come ti senti</a>
+<a href="la-gara-contro-il-tempo.html" class="btn">← Sfida te stesso</a>
+<a href="coming-soon.html" class="btn">← COMING SOON</a>
+<a href="contatta-il-creatore.html" class="btn">← Contatta il creatore</a>
+<a href="https://www.paypal.me/christianLenti" class="btn">← Offri supporto al creatore</a>
+  </div>
+
+  <header>
+    <h1>Il Muro dei Desideri</h1>
+<p>Questa pagina web è nata per dare voce a chiunque voglia condividere un sogno, un obiettivo o un desiderio con il mondo. Scrivi il tuo pensiero, leggine altri, lascia un ❤️ se ti colpisce. Se vuoi, aggiungi un nome o un contatto: magari qualcuno che ha già raggiunto ciò che cerchi, potrà scriverti per aiutarti.</p>
+  </header>
+
+  <main class="wrap">
+    <section class="panel left">
+      <h2>Pubblica un tuo Obiettivo</h2>
+      <p class="sub">Racconta in modo chiaro. Aggiungi un nome o un contatto se vuoi.</p>
+      <div class="body post-form">
+        <div class="row">
+          <input id="nickname" type="text" placeholder="Il tuo nome (facoltativo)">
+          <input id="contact" type="text" placeholder="Contatto (facoltativo)">
+        </div>
+        <div class="row">
+          <textarea id="dreamText" placeholder="Scrivi qui il tuo obiettivo..."></textarea>
+        </div>
+        <div class="row">
+          <button id="postBtn" class="btn">Pubblica</button>
+          <button id="clearBtn" class="btn secondary" title="Cancella tutto">Pulisci</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel right">
+      <h2>Obiettivi pubblici</h2>
+      <p class="sub">In tempo reale. Puoi mettere ❤️ e rispondere. Filtra o cerca per parola.</p>
+      <div class="body">
+        <div class="search-bar">
+          <input id="search" type="text" placeholder="Cerca tra gli obiettivi...">
+          <button id="searchBtn" class="btn">Cerca</button>
+        </div>
+    <div class="filters">
+  <span>Ordina per:</span>
+  <select id="order">
+    <option value="new">Più recenti</option>
+    <option value="top">Più apprezzati</option>
+  </select>
+  <span class="pill" id="youPill" style="display:none">solo i miei obiettivi</span>
+  <button id="mineBtn" class="btn secondary">Mostra solo i miei obiettivi</button>
+  <button id="resetBtn" class="btn danger">🔄 Reset</button>
+</div>
+
+        <div id="list"></div>
+
+        <div class="box tip">
+          Suggerimento: clicca su ❤️ per sostenere. Puoi modificare o eliminare solo ciò che hai pubblicato dal tuo browser.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Sensazioni e Motivazione - Tutti i diritti riservati</p>
+  </footer>
+
+  <div id="loginPopup">
+  <div>
+    <p>⚠️ Devi accedere o registrarti per poter votare.</p>
+    <button id="closePopupBtn">Continua</button>
+  </div>
+</div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<!-- 🔵 Overlay thread sogno -->
+<div id="threadOverlay" class="thread-overlay" style="display:none" aria-hidden="true">
+  <div class="thread-dialog" role="dialog" aria-modal="true">
+    <button class="thread-close" id="threadCloseBtn" aria-label="Chiudi">✕</button>
+
+    <div id="threadDream" class="thread-dream"></div>
+
+    <div id="threadReplies" class="thread-replies"></div>
+
+    <div id="threadForm" class="reply-form" style="margin-top:14px;">
+      <input class="nick" type="text" placeholder="Nome (facoltativo)">
+      <input class="msg" type="text" placeholder="Scrivi una risposta...">
+      <button class="btn send">Invia</button>
+      <button class="btn secondary cancel">Svuota messaggio</button>
+      <small id="replyHint" style="display:none; margin-left:8px; opacity:.9"></small>
+    </div>
+  </div>
+</div>
+<script>
+/* 🔥 Config Firebase */
+const firebaseConfig = {
+  apiKey: "AIzaSyCYtTpOIpmjd4v-01Z2MPSDiQr6enUFNSg",
+  authDomain: "sito-motivazionale.firebaseapp.com",
+  projectId: "sito-motivazionale",
+  storageBucket: "sito-motivazionale.firebasestorage.app",
+  messagingSenderId: "839022857622",
+  appId: "1:839022857622:web:49d4f20245ddafc0f5e1b7",
+  measurementId: "G-8H2TBGYYXZ"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* 🔒 Popup login */
+const popup = document.getElementById("loginPopup");
+const closePopup = document.getElementById("closePopupBtn");
+closePopup.onclick = ()=> popup.style.display="none";
+function mostraPopup(){ popup.style.display="flex"; }
+
+/* Helper */
+function requireLogin(action){
+  const u = firebase.auth().currentUser;
+  if(!u){ mostraPopup(); return null; }
+  return action(u);
+}
+
+/* 🎨 Stato UI */
+const el = {
+  nick: document.getElementById('nickname'),
+  contact: document.getElementById('contact'),
+  text: document.getElementById('dreamText'),
+  post: document.getElementById('postBtn'),
+  clear: document.getElementById('clearBtn'),
+  list: document.getElementById('list'),
+  search: document.getElementById('search'),
+  searchBtn: document.getElementById('searchBtn'),
+  resetBtn: document.getElementById('resetBtn'),
+  order: document.getElementById('order'),
+  mineBtn: document.getElementById('mineBtn'),
+  youPill: document.getElementById('youPill')
+};
+
+/* 🔵 Overlay: stato e utilità */
+const threadOverlay = document.getElementById('threadOverlay');
+const threadDream   = document.getElementById('threadDream');
+const threadReplies = document.getElementById('threadReplies');
+const threadForm    = document.getElementById('threadForm');
+const threadClose   = document.getElementById('threadCloseBtn');
+const hintEl        = document.getElementById('replyHint');
+let threadUnsub = null;
+let replyTargetParentId = null;  // se set, stai rispondendo a un commento
+
+function closeThread(){
+  if(threadUnsub){ threadUnsub(); threadUnsub=null; }
+  replyTargetParentId = null;
+  threadReplies.innerHTML = "";
+  threadDream.innerHTML   = "";
+  hintEl.style.display = 'none';
+  threadOverlay.style.display = 'none';
+  threadOverlay.setAttribute('aria-hidden','true');
+}
+
+threadClose.onclick = closeThread;
+threadOverlay.addEventListener('click', (e)=>{
+  if(e.target === threadOverlay) closeThread();
+});
+
+/* Apri overlay per un sogno specifico */
+function openThread(d){
+  // header sogno
+  const created = formatDate(d.createdAt)||'';
+  const nick = (d.nickname || 'Anonimo');
+  const contact = d.contact ? `<span class="pill">${escapeHtml(d.contact)}</span>` : '';
+  threadDream.innerHTML = `
+    <div class="meta" style="display:flex;justify-content:space-between;gap:12px;margin-bottom:10px;">
+      <div class="who" style="display:flex;align-items:center;gap:10px;">
+        <span class="pill">${escapeHtml(nick)}</span>
+        ${contact}
+        <span class="pill">${d.likes||0} ❤️</span>
+      </div>
+      <div>${created}</div>
+    </div>
+    <p class="txt" style="white-space:pre-wrap;line-height:1.55">${escapeHtml(d.testo||'')}</p>
+  `;
+
+  // prepara form
+  const nickInput = threadForm.querySelector('.nick');
+  const msgInput  = threadForm.querySelector('.msg');
+  const sendBtn   = threadForm.querySelector('.send');
+  const cancelBtn = threadForm.querySelector('.cancel');
+  nickInput.value = el.nick.value;
+  msgInput.value  = "";
+  hintEl.style.display = 'none';
+  replyTargetParentId = null;
+
+  // invio
+  sendBtn.onclick = async ()=>{
+    if(!msgInput.value.trim()) return;
+    await addReply(d.id, msgInput, nickInput, replyTargetParentId);
+    msgInput.value = "";
+    replyTargetParentId = null;
+    hintEl.style.display = 'none';
+  };
+
+  // annulla form
+  cancelBtn.onclick = ()=>{
+    msgInput.value = "";
+    replyTargetParentId = null;
+    hintEl.style.display = 'none';
+  };
+
+  // stream risposte
+  if(threadUnsub){ threadUnsub(); threadUnsub=null; }
+  const uid = firebase.auth().currentUser?.uid || null;
+  threadReplies.innerHTML = "";
+  threadUnsub = db.collection('Obiettivo').doc(d.id).collection('replies')
+    .orderBy('createdAt','asc')
+    .onSnapshot(rs=>{
+      threadReplies.innerHTML = "";
+      const map = {}; // mappa commenti per ID
+
+      rs.forEach(r=>{
+        const v = r.data();
+        const rOwner = uid && v.userId === uid;
+        const item = document.createElement('div');
+        item.className = 'comment';
+        item.dataset.id = r.id;
+        item.innerHTML = `
+          <div class="meta" style="display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;color:#dcdcff;font-size:.9rem;">
+            <div><strong>${escapeHtml(v.nickname||'Anonimo')}</strong></div>
+            <div>${formatDate(v.createdAt)||''}</div>
+          </div>
+          <p style="white-space:pre-wrap">${escapeHtml(v.testo||'')}</p>
+          <div class="actions">
+            <button class="link reply" ${rOwner ? 'hidden' : ''}>💬 Rispondi</button>
+            ${rOwner ? `<button class="link" data-act="edit">✏️ Modifica</button>` : ``}
+            ${rOwner ? `<button class="link danger" data-act="del">🗑️ Elimina</button>` : ``}
+          </div>
+          <div class="replies"></div> <!-- 👈 contenitore risposte -->
+        `;
+
+        // rispondi
+        const replyBtn = item.querySelector('.reply');
+        if(replyBtn){
+          replyBtn.onclick = ()=>{
+            const mention = '@' + (v.nickname ? v.nickname : 'contatto mancante') + ' ';
+            const current = document.querySelector('.thread-dialog .reply-form .msg');
+            current.value = mention;
+            current.focus();
+            replyTargetParentId = r.id;
+            hintEl.textContent = `Rispondi a ${mention.trim()}`;
+            hintEl.style.display = 'inline';
+          };
+        }
+
+        if(rOwner){
+          const eb = item.querySelector('[data-act="edit"]');
+          if(eb) eb.onclick = ()=> editReply(d.id, r.id, v.testo);
+          const dbtn = item.querySelector('[data-act="del"]');
+          if(dbtn) dbtn.onclick = ()=> deleteReply(d.id, r.id);
+        }
+
+        // salva nel dizionario
+        map[r.id] = item;
+
+        // 👇 attacca al padre se esiste, altrimenti alla root
+        if(v.parentId && map[v.parentId]){
+          map[v.parentId].querySelector('.replies').appendChild(item);
+        } else {
+          threadReplies.appendChild(item);
+        }
+      });
+    });
+
+  // mostra overlay
+  threadOverlay.style.display = 'grid';
+  threadOverlay.setAttribute('aria-hidden','false');
+}
+
+/* Nickname/contatto solo locale */
+el.nick.value = localStorage.getItem("dreams_nick") || "";
+el.contact.value = localStorage.getItem("dreams_contact") || "";
+el.nick.addEventListener('input', ()=>localStorage.setItem("dreams_nick", el.nick.value.trim()));
+el.contact.addEventListener('input', ()=>localStorage.setItem("dreams_contact", el.contact.value.trim()));
+
+/* ✏️ Pubblica sogno */
+el.post.addEventListener('click', ()=>requireLogin(async (user)=>{
+  const testo = el.text.value.trim();
+  const nickname = el.nick.value.trim();
+  const contact = el.contact.value.trim();
+  if(!testo) return;
+
+  const doc = {
+    testo,
+    nickname: nickname || null,
+    contact: contact || null,
+    likes: 0,
+    likedBy: [],
+    userId: user.uid,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+  try{
+    await db.collection('Obiettivo').add(doc);
+    el.text.value = "";
+  }catch(e){
+    alert("Errore durante la pubblicazione");
+    console.error(e);
+  }
+}));
+el.clear.addEventListener('click', ()=> el.text.value = "");
+
+/* 🔍 Query dinamica */
+let unsub = null;
+let onlyMine = false;
+
+function attachListener(){
+  if(unsub) unsub();
+  let ref = db.collection('Obiettivo');
+
+  if(onlyMine){
+    const u = firebase.auth().currentUser;
+    if(!u) return;
+    ref = ref.where('userId', '==', u.uid);
+  }
+
+  if(el.order.value === 'top'){
+    try {
+      ref = ref.orderBy('likes','desc').orderBy('createdAt','desc');
+    } catch(e){
+      console.error("⚠️ Devi creare un indice su Firestore per ordinare per likes+createdAt");
+      alert("Devi creare un indice su Firestore per la classifica dei più apprezzati.");
+      ref = ref.orderBy('createdAt','desc');
+    }
+  } else {
+    ref = ref.orderBy('createdAt','desc');
+  }
+
+  unsub = ref.onSnapshot(snap=>{
+    const items = [];
+    snap.forEach(d=> items.push({id:d.id, ...d.data()}));
+    renderList(items);
+  });
+}
+
+el.searchBtn.addEventListener('click', attachListener);
+
+el.resetBtn.addEventListener('click', ()=>{
+  el.search.value = "";
+  if(onlyMine){ 
+    onlyMine=false; 
+    el.youPill.style.display='none'; 
+    el.mineBtn.style.display = 'inline-block';
+  }
+  el.order.value='new';
+  attachListener();
+});
+
+el.order.addEventListener('change', attachListener);
+
+el.mineBtn.addEventListener('click', async ()=>{
+  const u = firebase.auth().currentUser;
+
+  // caso: utente non loggato
+  if(!u){
+    el.list.innerHTML = `<div class="banner">⚠️ Devi registrarti per vedere solo i tuoi obiettivi.</div>`;
+    return;
+  }
+
+  // caso: loggato ma nessun sogno
+  const snap = await db.collection('Obiettivo').where('userId','==',u.uid).get();
+  if(snap.empty){
+    el.list.innerHTML = `<div class="banner">😴 Nessun obiettivo pubblicato ancora.</div>`;
+    return;
+  }
+
+  // caso: loggato con sogni → filtro attivo
+  onlyMine = true;
+  el.youPill.style.display = 'inline-block';
+  el.mineBtn.style.display = 'none';
+  attachListener();
+});
+
+
+/* ❤️ Like */
+function toggleLike(dreamId){
+  requireLogin(async (user)=>{
+    const ref = db.collection('Obiettivo').doc(dreamId);
+    await db.runTransaction(async tx=>{
+      const snap = await tx.get(ref);
+      if(!snap.exists) return;
+      const d = snap.data();
+      if(d.userId === user.uid) return; // 🚫 no like sul proprio sogno
+      const set = new Set(d.likedBy || []);
+      let likes = d.likes || 0;
+      if(set.has(user.uid)){ set.delete(user.uid); likes=Math.max(0,likes-1); }
+      else { set.add(user.uid); likes++; }
+      tx.update(ref,{ likedBy:Array.from(set), likes });
+    });
+  });
+}
+
+/* ✏️ Modifica / Elimina sogno */
+function editDream(d){
+  requireLogin(async (user)=>{
+    if(d.userId!==user.uid) return;
+    const nuovo = prompt("Modifica il tuo obiettivo:", d.testo||"");
+    if(!nuovo) return;
+    await db.collection('Obiettivo').doc(d.id).update({
+      testo: nuovo.trim(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  });
+}
+function deleteDream(d){
+  requireLogin(async (user)=>{
+    if(d.userId!==user.uid) return;
+    if(!confirm("Vuoi davvero eliminare questo obiettivo?")) return;
+    const rSnap = await db.collection('Obiettivo').doc(d.id).collection('replies').get();
+    const batch=db.batch();
+    rSnap.forEach(r=> batch.delete(r.ref));
+    batch.delete(db.collection('Obiettivo').doc(d.id));
+    await batch.commit();
+  });
+}
+
+/* ✏️ Modifica / 🗑️ Elimina reply */
+async function editReply(dreamId, replyId, oldText){
+  const user = firebase.auth().currentUser;
+  if(!user) return;
+  const nuovo = prompt("Modifica il tuo commento:", oldText || "");
+  if(!nuovo) return;
+  await db.collection('Obiettivo').doc(dreamId)
+           .collection('replies').doc(replyId)
+           .update({
+             testo: nuovo.trim(),
+             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+           });
+}
+async function deleteReply(dreamId, replyId){
+  const user = firebase.auth().currentUser;
+  if(!user) return;
+  if(!confirm("Vuoi davvero eliminare questo commento?")) return;
+  await db.collection('Obiettivo').doc(dreamId)
+           .collection('replies').doc(replyId)
+           .delete();
+}
+
+/* 💬 Aggiungi reply */
+async function addReply(dreamId, inputEl, nickEl, parentId = null){
+  const user = firebase.auth().currentUser;
+  if(!user){ mostraPopup(); return; }
+
+  const testo = inputEl.value.trim();
+  const nick = (nickEl?.value || "").trim() || el.nick.value.trim() || null;
+  if(!testo) return;
+
+  const dreamSnap = await db.collection('Obiettivo').doc(dreamId).get();
+  const dreamData = dreamSnap.data();
+  if(dreamData.userId === user.uid && parentId === null){
+    alert("Non puoi commentare il tuo obiettivo.");
+    return;
+  }
+
+  if(parentId){
+    const replySnap = await db.collection('Obiettivo').doc(dreamId)
+                              .collection('replies').doc(parentId).get();
+    const replyData = replySnap.data();
+    if(replyData && replyData.userId === user.uid){
+      alert("Non puoi commentare un tuo commento.");
+      return;
+    }
+  }
+
+  const ref = db.collection('Obiettivo').doc(dreamId).collection('replies');
+  await ref.add({
+    testo,
+    nickname: nick,
+    userId: user.uid,
+    parentId: parentId,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  inputEl.value = "";
+}
+
+/* 📅 Data */
+function formatDate(ts){
+  if(!ts || typeof ts.toDate !== 'function') return '';
+  const d = ts.toDate();
+  const pad = n => n < 10 ? '0'+n : n;
+  return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+/* 🖼️ Render lista sogni */
+function renderList(items){
+  console.log("RenderList chiamata con", items.length, "sogni"); // 👈
+
+  const q = el.search.value.trim().toLowerCase();
+  const filtered = q ? items.filter(x=>{
+    return (x.testo || '').toLowerCase().includes(q)
+        || (x.nickname || '').toLowerCase().includes(q)
+        || (x.contact || '').toLowerCase().includes(q);
+  }) : items;
+
+  if(!filtered.length){
+    el.list.innerHTML = `<div class="empty">Nessun obiettivo trovato.</div>`;
+    return;
+  }
+
+  el.list.innerHTML = "";
+  const uid = firebase.auth().currentUser?.uid || null;
+
+  filtered.forEach(d=>{
+    const wrap=document.createElement('div');
+    wrap.className='dream';
+    const owner = uid && d.userId===uid;
+
+    wrap.innerHTML=`
+      <div class="meta">
+        <div class="who">
+          <span class="pill">${escapeHtml(d.nickname||'Anonimo')}</span>
+          ${d.contact?`<span class="pill">${escapeHtml(d.contact)}</span>`:''}
+          <span class="pill">${d.likes||0} ❤️</span>
+        </div>
+        <div>${formatDate(d.createdAt)||''}</div>
+      </div>
+      <p class="txt">${escapeHtml(d.testo||'')}</p>
+      <div class="actions">
+        ${!owner ? `<button class="link like">❤️ Sostieni</button>` : ``}
+        ${!owner ? `<button class="link reply">💬 Rispondi</button>` : ``}
+        <button class="link toggleReplies">Mostra risposte</button>
+        ${owner?`<button class="link" data-act="edit">✏️ Modifica</button>`:''}
+        ${owner?`<button class="link danger" data-act="del">🗑️ Elimina</button>`:''}
+      </div>
+    `;
+
+    /* ❤️ Like */
+    const likeBtn = wrap.querySelector('.like');
+    if(likeBtn){ likeBtn.addEventListener('click',()=>toggleLike(d.id)); }
+
+    /* 💬 Rispondi al sogno → overlay */
+    const replyBtn = wrap.querySelector('.actions .reply');
+    if(replyBtn){
+      replyBtn.addEventListener('click',()=>{
+        openThread(d);
+        const msgInput = document.querySelector('#threadForm .msg');
+        if(msgInput) msgInput.focus();
+      });
+    }
+
+    /* 🔄 Mostra risposte → overlay */
+    const toggleBtn = wrap.querySelector('.toggleReplies');
+    if(toggleBtn){
+      toggleBtn.addEventListener('click',()=>{
+        openThread(d);
+      });
+    }
+
+    /* ✏️ Modifica / 🗑️ Elimina sogno */
+    if(owner){
+      const editBtn = wrap.querySelector('[data-act="edit"]');
+      if(editBtn) editBtn.addEventListener('click',()=>editDream(d));
+      const delBtn = wrap.querySelector('[data-act="del"]');
+      if(delBtn) delBtn.addEventListener('click',()=>deleteDream(d));
+    }
+
+    el.list.appendChild(wrap);
+  });
+}
+
+/* Escape HTML */
+function escapeHtml(s){
+  return String(s||'')
+    .replaceAll('&','&amp;').replaceAll('<','&lt;')
+    .replaceAll('>','&gt;').replaceAll('"','&quot;')
+    .replaceAll("'","&#039;");
+}
+
+/* 🚀 Avvio */
+attachListener();
+document.querySelector(".hamburger").onclick=()=> document.querySelector(".topbar").classList.toggle("open");
+
+/* --- Auth corretto con modali --- */
+function registraUtente(email, password) {
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(() => {
+      document.getElementById("registerMsg").textContent = "✅ Registrazione completata!";
+      setTimeout(() => closeModal("registerModal"), 1500);
+    })
+    .catch(err => {
+      document.getElementById("registerMsg").textContent = "❌ " + err.message;
+      setTimeout(() => closeModal("registerModal"), 2000);
+    });
+}
+
+function loginUtente(email, password) {
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(() => {
+      document.getElementById("loginMsg").textContent = "✅ Login effettuato!";
+      setTimeout(() => closeModal("loginModal"), 1500);
+    })
+    .catch(err => {
+      document.getElementById("loginMsg").textContent = "❌ " + err.message;
+      setTimeout(() => closeModal("loginModal"), 2000);
+    });
+}
+
+function logoutUtente() {
+  firebase.auth().signOut()
+    .then(() => {
+      openModal("logoutModal");
+    })
+    .catch(err => console.error("Errore logout:", err));
+}
+
+firebase.auth().onAuthStateChanged((user)=>{
+  const authArea=document.getElementById("authArea");
+  if(!authArea) return;
+
+  if(user){
+   const nome = user.email.split('@')[0];  // prende solo la parte prima di @
+authArea.innerHTML = `
+  <span style="margin-right:10px;">Ciao, ${nome}</span>
+  <button id="logoutBtn">Logout</button>
+`;
+    document.getElementById("logoutBtn").addEventListener("click", logoutUtente);
+
+  }else{
+    authArea.innerHTML=`
+      <button id="loginBtn">Accedi</button>
+      <button id="registerBtn">Registrati</button>
+    `;
+
+    document.getElementById("loginBtn").addEventListener("click", ()=>{
+      openModal("loginModal");   // ✅ apre il form di login
+    });
+
+    document.getElementById("registerBtn").addEventListener("click", ()=>{
+      openModal("registerModal"); // ✅ apre il form di registrazione
+    });
+  }
+});
+
+</script>
+
+<script>
+  const nav = document.querySelector('nav');
+let hideTimeout = null;
+let lastY = window.scrollY;
+let suppressShowUntil = 0;
+
+function scheduleHide(){
+  clearTimeout(hideTimeout);
+  hideTimeout = setTimeout(()=>{
+    nav.classList.add('nav-hidden');      // nasconde dopo 3s senza scroll
+  }, 3000);
+}
+
+// ignora scroll generati subito dopo interazioni
+document.addEventListener('click', ()=> suppressShowUntil = Date.now() + 600);
+document.addEventListener('focusin', ()=> suppressShowUntil = Date.now() + 600);
+
+function onScroll(){
+  const y = window.scrollY;
+  const delta = Math.abs(y - lastY);
+  lastY = y;
+
+  if (delta < 8) return;                   // niente “micro-scroll”
+  if (Date.now() < suppressShowUntil) return; // niente ri-comparsa da click
+
+  nav.classList.remove('nav-hidden');      // riappare solo su scroll vero
+  scheduleHide();                          // e poi parte il timer per nasconderla
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+
+// all’avvio: visibile, poi parte subito il timer per nasconderla
+nav.classList.remove('nav-hidden');
+scheduleHide();
+
+</script>
+<script>
+// --- Gestione modali ---
+function openModal(id) {
+  document.getElementById(id).style.display = "flex";
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = "none";
+}
+
+// Chiudi con la "X"
+document.querySelectorAll(".close").forEach(el=>{
+  el.addEventListener("click", ()=> closeModal(el.dataset.close));
+});
+
+// Chiudi con il pulsante "Chiudi" del logout
+document.getElementById("logoutOkBtn")
+  .addEventListener("click", ()=> closeModal("logoutModal"));
+
+// --- Submit form ---
+document.getElementById("loginForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  // qui richiami la tua funzione loginUtente()
+  loginUtente(
+    document.getElementById("loginEmail").value,
+    document.getElementById("loginPassword").value
+  );
+});
+document.getElementById("registerForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  // qui richiami la tua funzione registraUtente()
+  registraUtente(
+    document.getElementById("registerEmail").value,
+    document.getElementById("registerPassword").value
+  );
+});
+</script>
+
+</body>
+</html>

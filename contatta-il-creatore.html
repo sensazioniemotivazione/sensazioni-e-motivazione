@@ -1,0 +1,165 @@
+ <!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contatta il Creatore</title>
+  <style>
+    *{margin:0; padding:0; box-sizing:border-box;}
+    body {
+      font-family: "Poppins", sans-serif;
+      background:#000;
+      color:#fff;
+    }
+
+    section {
+      min-height:100vh; 
+      display:flex; 
+      align-items:center; 
+      justify-content:center;
+      text-align:center;
+      background:url('immagini_sitomotivazionale/letteraa.jpg') no-repeat center/cover;
+      padding:60px 20px;
+    }
+
+    .card {
+      background:rgba(255,255,255,0.1);
+      backdrop-filter:blur(8px);
+      padding:40px;
+      border-radius:20px;
+      max-width:700px;
+      margin:auto;
+    }
+
+    .card h2 {
+      font-size:2em;
+      margin-bottom:20px;
+    }
+
+    .card p {
+      max-width:600px;
+      margin:0 auto 25px;
+      font-size:1.1em;
+      line-height:1.6;
+    }
+
+    .card a {
+      display:inline-block;
+      padding:12px 25px;
+      border-radius:25px;
+      text-decoration:none;
+      font-weight:bold;
+      transition:transform 0.3s, opacity 0.3s;
+      margin:8px;
+      color:#fff;
+    }
+    .card a:hover { transform:scale(1.05); opacity:0.9; }
+
+    /* Bottoni */
+    .btn-email { background:#2563eb; }
+    .btn-telegram { background:#0088cc; }
+    .btn-insta {
+      background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
+    }
+
+    .hamburger {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  width: 30px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 1100; /* sopra la topbar */
+}
+
+.hamburger span {
+  display: block;
+  height: 4px;
+  background: #fff; /* linee bianche visibili */
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: -250px;   /* nascosto fuori dallo schermo */
+  width: 250px;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  padding: 60px 20px;
+  gap: 15px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+
+  overflow-y: auto;              /* 👈 abilita scroll */
+  -webkit-overflow-scrolling: touch; /* 👈 scroll fluido su mobile */
+}
+
+
+.topbar.open {
+  left: 0; /* quando si apre */
+}
+
+.topbar a {
+  text-decoration: none;
+  color: #fff;
+  background: #2d2d2d;   /* grigio scuro neutro */
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.topbar a:hover {
+  background: #444;      /* leggermente più chiaro in hover */
+}
+  </style>
+</head>
+<body>
+    <!-- Pulsante hamburger -->
+<div class="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+ <!-- Menu -->
+  <div class="topbar">
+   <a href="index.html" class="btn">← Torna alla Home</a>
+<a href="storie-motivazionali-personaggi-famosi.html" class="btn">← Leggi la storia di chi ce l’ha fatta</a>
+<a href="interpreta-i-tuoi-sogni.html" class="btn">← Impara ad interpretare i tuoi sogni</a> 
+<a href="scrivi-il-tuo-obiettivo.html" class="btn">← Scrivi il tuo obiettivo con il mondo</a>
+<a href="paure-umane.html" class="btn">← Scopri le tue paure</a>
+<a href="invenzioni-incredibili-dell-uomo.html" class="btn">← Leggi invenzioni ed idee</a>
+<a href="abitudini-comuni-umane.html" class="btn">← Sfoglia l’elenco delle abitudini più comuni dell’uomo</a>
+<a href="lampada-dell-umore.html" class="btn">← Fai sapere al mondo come ti senti</a>
+<a href="la-gara-contro-il-tempo.html" class="btn">← Sfida te stesso</a>
+<a href="coming-soon.html" class="btn">← COMING SOON</a>
+<a href="https://www.paypal.me/christianLenti" class="btn">← Offri supporto al creatore</a>
+  </div>
+
+  <section id="contatti">
+    <div class="card">
+      <h2>Contatta il Creatore</h2>
+      <p>Hai un consiglio, un’idea o un feedback? Scrivimi direttamente:</p>
+
+      <a href="mailto:sensazioniemotivazione@gmail.com" class="btn-email">Invia Email</a>
+      <a href="https://t.me/christianlenti" target="_blank" class="btn-telegram">Contattami su Telegram</a>
+      <a href="https://www.instagram.com/christian.lenti" target="_blank" class="btn-insta">Seguimi su Instagram</a>
+    </div>
+  </section>
+  <script>
+   /* --- Menu hamburger --- */
+document.querySelector(".hamburger").onclick = () => {
+  document.querySelector(".topbar").classList.toggle("open");
+}
+  </script>
+</body>
+</html>

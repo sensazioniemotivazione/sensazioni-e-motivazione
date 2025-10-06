@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interpretazioni Famose dei Sogni</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d0d15;
+      --fg: #f0f0f5;
+      --muted: #9aa0aa;
+      --accent: #6ea8fe;
+      --accent2: #a47bff;
+      --card: #151823;
+      --glow: 0 0 14px rgba(110,168,254,.4), 0 0 28px rgba(164,123,255,.3);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.7;
+    }
+    header {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(120deg, rgba(110,168,254,.25), rgba(164,123,255,.25)), url('immagini_sitomotivazionale/mare.jpg') center/cover no-repeat fixed;
+      padding: 0 20px;
+    }
+    header h1 {
+      font-size: 3rem;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: var(--glow);
+      margin-bottom: 18px;
+    }
+    header p {
+      max-width: 750px;
+      font-size: 1.2rem;
+      color: #ddd;
+    }
+    main {
+      max-width: 1100px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+    section {
+      margin-bottom: 80px;
+    }
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 24px;
+      color: var(--accent);
+      text-align: center;
+    }
+    /* Card */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 6px 20px rgba(0,0,0,.4);
+      transition: transform .3s, box-shadow .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--glow);
+    }
+    .card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      color: var(--accent2);
+    }
+    .card p {
+      font-size: 1rem;
+      color: var(--fg);
+    }
+    /* Timeline filosofica */
+    .timeline {
+      position: relative;
+      margin: 40px 0;
+      padding-left: 40px;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(var(--accent), var(--accent2));
+      border-radius: 2px;
+    }
+    .entry {
+      margin-bottom: 40px;
+      position: relative;
+    }
+    .entry::before {
+      content: "";
+      position: absolute;
+      left: -33px;
+      top: 6px;
+      width: 16px;
+      height: 16px;
+      background: var(--accent2);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(164,123,255,.6);
+    }
+    .entry h4 {
+      margin-bottom: 8px;
+      font-size: 1.2rem;
+      color: var(--accent);
+    }
+    .entry p {
+      font-size: 1rem;
+      color: var(--fg);
+    }
+    /* Parallax block */
+    .parallax {
+      height: 50vh;
+      background: url('immagini_sitomotivazionale/book.jpg') center/cover fixed no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      font-size: 2rem;
+      font-weight: 600;
+      text-shadow: 0 0 20px rgba(0,0,0,.7);
+    }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 30px 20px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      font-size: .9rem;
+    }
+
+    .hamburger {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  width: 30px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 1100; /* sopra la topbar */
+}
+
+.hamburger span {
+  display: block;
+  height: 4px;
+  background: #fff; /* linee bianche visibili */
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+    /* Menu nascosto */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: -250px;   /* nascosto fuori dallo schermo */
+  width: 250px;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  padding: 60px 20px;
+  gap: 15px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+
+
+  overflow-y: auto;              /* 👈 abilita scroll */
+  -webkit-overflow-scrolling: touch; /* 👈 scroll fluido su mobile */
+}
+
+.topbar.open {
+  left: 0; /* quando si apre */
+}
+
+.topbar a {
+  text-decoration: none;
+  color: #fff;
+  background: #2d2d2d;   /* grigio scuro neutro */
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.topbar a:hover {
+  background: #444;      /* leggermente più chiaro in hover */
+}
+
+.hidden {
+  display: none;
+}
+.load-more-wrapper {
+  display: flex;
+  justify-content: center;   /* centra orizzontalmente */
+  width: 100%;               /* prende tutta la larghezza della riga */
+  margin: 20px 0;
+}
+
+.cards .load-more-wrapper {
+  grid-column: 1 / -1;   /* il bottone occupa tutta la riga nella griglia */
+}
+
+.load-more {
+  padding: 10px 16px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .3s;
+  border: none;
+}
+.load-more:hover {
+  background: var(--accent2);
+}
+
+  </style>
+</head>
+<body>
+      <!-- Pulsante hamburger -->
+<div class="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+ <!-- Menu -->
+  <div class="topbar">
+   <a href="index.html" class="btn">← Torna alla Home</a>
+<a href="storie-motivazionali-personaggi-famosi.html" class="btn">← Leggi la storia di chi ce l’ha fatta</a>
+<a href="interpreta-i-tuoi-sogni.html" class="btn">← Impara ad interpretare i tuoi sogni</a> 
+<a href="scrivi-il-tuo-obiettivo.html" class="btn">← Scrivi il tuo obiettivo con il mondo</a>
+<a href="paure-umane.html" class="btn">← Scopri le tue paure</a>
+<a href="invenzioni-incredibili-dell-uomo.html" class="btn">← Leggi invenzioni ed idee</a>
+<a href="abitudini-comuni-umane.html" class="btn">← Sfoglia l’elenco delle abitudini più comuni dell’uomo</a>
+<a href="lampada-dell-umore.html" class="btn">← Fai sapere al mondo come ti senti</a>
+<a href="la-gara-contro-il-tempo.html" class="btn">← Sfida te stesso</a>
+<a href="coming-soon.html" class="btn">← COMING SOON</a>
+<a href="contatta-il-creatore.html" class="btn">← Contatta il creatore</a>
+<a href="https://www.paypal.me/christianLenti" class="btn">← Offri supporto al creatore</a>
+  </div>
+  
+  <header>
+    <h1>Interpretazioni Famose dei Sogni</h1>
+    <p>Dai padri della psicoanalisi ai filosofi dell’antichità, il sogno è stato visto come messaggio, simbolo, verità nascosta. Questa pagina raccoglie e presenta i pensieri più influenti.</p>
+  </header>
+
+  <main>
+   <section id="psicologi">
+  <h2>Interpretazione dei Sogni</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>Sigmund Freud</h3>
+      <p>Freud vedeva i sogni come una porta che ci permette di entrare nell’inconscio. Pensieri nascosti e desideri repressi compaiono travestiti da simboli. Secondo lui ogni sogno ha due livelli: quello che vediamo (contenuto manifesto) e quello nascosto, più profondo (contenuto latente).</p>
+    </div>
+    <div class="card">
+      <h3>Carl Gustav Jung</h3>
+      <p>Per Jung i sogni parlano attraverso simboli che fanno parte dell’umanità intera. Sono archetipi universali che collegano il singolo individuo a qualcosa di più grande, l’inconscio collettivo. I sogni aiutano a scoprire chi siamo e a crescere interiormente.</p>
+    </div>
+    <div class="card">
+      <h3>Alfred Adler</h3>
+      <p>Adler pensava che i sogni servissero come allenamento per la vita di tutti i giorni. Non solo desideri, ma piccole prove che ci preparano ad affrontare difficoltà reali, aiutandoci a trovare coraggio e a perseguire i nostri obiettivi.</p>
+    </div>
+    <div class="card">
+      <h3>Erich Fromm</h3>
+      <p>Fromm vedeva i sogni come una forma di arte spontanea. Un linguaggio simbolico che non solo racconta il nostro mondo interiore, ma ci permette anche di esprimerci in modo creativo e di arricchire la nostra vita.</p>
+    </div>
+    <div class="card">
+      <h3>Fritz Perls</h3>
+      <p>Perls, fondatore della Gestalt, pensava che nei sogni comparissero parti di noi che tendiamo a nascondere. Rivivere i sogni nel presente aiuta a reintegrare queste parti e a sentirci più completi e autentici.</p>
+    </div>
+    <div class="card">
+      <h3>Calvin S. Hall</h3>
+      <p>Hall studiava i sogni in modo molto pratico: per lui sono il riflesso dei nostri pensieri quotidiani. Analizzando migliaia di sogni, mostrò come essi rispecchino idee, credenze e conflitti che viviamo ogni giorno.</p>
+    </div>
+    <div class="card">
+      <h3>Rosalind Cartwright</h3>
+      <p>Cartwright vedeva i sogni come un aiuto per elaborare le emozioni difficili. Attraverso il sognare riusciamo a digerire le esperienze dolorose e a ritrovare un equilibrio emotivo più stabile.</p>
+    </div>
+    <div class="card">
+      <h3>Mark Solms</h3>
+      <p>Solms unisce psicoanalisi e neuroscienze. Secondo lui i sogni nascono soprattutto dal cervello emotivo e sono profondamente collegati ai nostri stati d’animo. Per questo sognare non è un caso, ma un processo utile a capire meglio noi stessi.</p>
+    </div>
+    <div class="card">
+      <h3>Allan Hobson</h3>
+      <p>Hobson propose una teoria molto diversa: i sogni nascono dall’attività casuale del cervello durante il sonno. La mente, per dare un senso a queste scariche, costruisce storie e immagini che chiamiamo sogni.</p>
+    </div>
+  </div>
+</section>
+
+
+    <div class="parallax">
+      “Il sogno è il linguaggio dimenticato della nostra anima”
+    </div>
+<br><br>
+    <section id="filosofi">
+  <h2>Pensiero Filosofico</h2>
+  <div class="timeline">
+
+    <div class="entry">
+      <h4>Platone (IV sec. a.C.)</h4>
+      <p>Considerava i sogni come momenti in cui l’anima si libera dai vincoli del corpo e può intravedere la verità.</p>
+    </div>
+
+    <div class="entry">
+      <h4>Aristotele (IV sec. a.C.)</h4>
+      <p>Scrisse opere dedicate al sogno, interpretandolo come fenomeno naturale legato alle percezioni e alla memoria sensibile.</p>
+    </div>
+
+    <div class="entry">
+      <h4>Artemidoro di Daldi (II sec. d.C.)</h4>
+      <p>Con la sua <em>Oneirocritica</em> offrì un manuale di interpretazione che influenzò secoli di tradizione onirica.</p>
+    </div>
+
+    <div class="entry">
+      <h4>Agostino d’Ippona (IV–V sec.)</h4>
+      <p>Vide nei sogni esperienze che potevano rivelare tentazioni, peccati nascosti e conflitti morali.</p>
+    </div>
+
+    <div class="entry">
+      <h4>Tommaso d’Aquino (XIII sec.)</h4>
+      <p>Considerava i sogni fenomeni naturali, ma ammetteva che in rari casi potessero avere valore profetico.</p>
+    </div>
+
+    <div class="entry">
+      <h4>René Descartes (Cartesio, 1596–1650)</h4>
+      <p>Nel 1619 i suoi sogni gli suggerirono una missione filosofica: fondare la conoscenza su basi nuove, solide e indubitabili.</p>
+    </div>
+
+    <div class="entry">
+      <h4>Immanuel Kant (1724–1804)</h4>
+      <p>Rifletté sui sogni come illusioni interne che mostrano i limiti della percezione sensibile e della ragione.</p>
+    </div>
+
+    <div class="entry">
+      <h4>Arthur Schopenhauer (1788–1860)</h4>
+      <p>Vide nei sogni un’espressione della volontà e dell’inconscio, anticipando la psicoanalisi moderna.</p>
+    </div>
+
+    <div class="entry">
+      <h4>Friedrich Nietzsche (1844–1900)</h4>
+      <p>Considerò i sogni come arte spontanea, una creazione estetica che rivela la potenza immaginativa dell’uomo.</p>
+    </div>
+
+    <div class="entry">
+      <h4>Sigmund Freud (1856–1939)</h4>
+      <p>Definì i sogni come “via regia all’inconscio”, distinguendo tra contenuto manifesto e latente.</p>
+    </div>
+
+    <div class="entry">
+      <h4>Carl Gustav Jung (1875–1961)</h4>
+      <p>Interpretò i sogni come messaggi dell’inconscio collettivo, popolati di simboli e archetipi universali.</p>
+    </div>
+
+    <div class="entry">
+      <h4>Erich Fromm (1900–1980)</h4>
+      <p>Vide nei sogni una forma di arte spontanea, espressione creativa che arricchisce l’esistenza umana.</p>
+    </div>
+
+    <div class="entry">
+      <h4>Michel Foucault (1926–1984)</h4>
+      <p>Analizzò i sogni come parte delle pratiche di sé e delle tecniche con cui gli individui interpretano la propria interiorità.</p>
+    </div>
+
+  </div>
+</section>
+
+
+   <section id="moderne">
+  <h2>Visioni Moderne</h2>
+  <p>Oggi neuroscienze e psicologia cognitiva cercano di spiegare il ruolo dei sogni con nuove prospettive. Non si parla più soltanto di simboli e desideri nascosti, ma di funzioni che riguardano evoluzione, memoria, emozioni e creatività. Le vecchie interpretazioni non sono scomparse: convivono e dialogano con queste idee moderne.</p>
+<br><br>
+  <div class="cards">
+    <div class="card">
+      <h3>Simulazione delle minacce</h3>
+      <p>Secondo la teoria evolutiva di Antti Revonsuo, i sogni mettono in scena pericoli e situazioni rischiose per prepararci a reagire meglio nella vita reale, come un allenamento notturno alla sopravvivenza.</p>
+    </div>
+
+    <div class="card">
+      <h3>Consolidamento della memoria</h3>
+      <p>Il sonno REM aiuta a rafforzare ricordi ed esperienze importanti e a eliminare quelle superflue. I sogni accompagnano questo processo, creando collegamenti tra ciò che abbiamo vissuto e imparato.</p>
+    </div>
+
+    <div class="card">
+      <h3>Regolazione emotiva</h3>
+      <p>Molti studiosi vedono nei sogni un modo naturale per gestire emozioni intense. Durante il sonno la mente rielabora traumi e tensioni, aiutandoci a ritrovare equilibrio e benessere.</p>
+    </div>
+
+    <div class="card">
+      <h3>Creatività e intuizione</h3>
+      <p>Nei sogni il cervello crea connessioni insolite tra idee lontane. Questo favorisce creatività, intuizioni e soluzioni originali, tanto che molte scoperte sono nate proprio da visioni oniriche.</p>
+    </div>
+
+    <div class="card">
+      <h3>Cervello predittivo</h3>
+      <p>Secondo le neuroscienze computazionali, il cervello non smette mai di simulare scenari. Nei sogni continua a testare ipotesi e a immaginare situazioni possibili, allenandosi ad affrontare il futuro.</p>
+    </div>
+
+    <div class="card">
+      <h3>Attivazione–sintesi</h3>
+      <p>Allan Hobson e Robert McCarley hanno proposto che i sogni nascano da scariche casuali del cervello durante il sonno REM. La mente le trasforma in storie per dare un senso a segnali disordinati.</p>
+    </div>
+
+    <div class="card">
+      <h3>Approccio neurobiologico</h3>
+      <p>Le ricerche moderne mostrano come neurotrasmettitori e aree cerebrali specifiche – come l’amigdala e l’ippocampo – influenzino la formazione e il contenuto dei sogni, regolando emozioni e memoria.</p>
+    </div>
+
+    <div class="card">
+      <h3>Sogni lucidi</h3>
+      <p>Alcune persone riescono a rendersi conto di stare sognando e a orientare la scena onirica. I sogni lucidi sono studiati per il loro potenziale nel ridurre incubi, allenare abilità e favorire la crescita personale.</p>
+    </div>
+
+    <div class="card">
+      <h3>Visione integrata</h3>
+      <p>Oggi prevale un approccio multifunzionale: i sogni non hanno una sola funzione, ma contribuiscono a memoria, emozioni, creatività e adattamento. Ogni notte è un mosaico di significati diversi.</p>
+    </div>
+  </div>
+</section>
+
+  </main>
+
+ <footer>
+    <p>&copy; 2025 Sensazioni e Motivazione - Tutti i diritti riservati</p>
+  </footer>
+
+<script>
+function initLoadMore(containerSelector, itemSelector, step) {
+  const container = document.querySelector(containerSelector);
+  if (!container) return;
+
+  const items = Array.from(container.querySelectorAll(itemSelector));
+  let visibleCount = step;
+
+  // nascondi oltre le prime `step`
+  items.forEach((item, i) => {
+    if (i >= step) item.classList.add("hidden");
+  });
+
+  function addLoadMore(afterIndex) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "load-more-wrapper";
+    const btn = document.createElement("button");
+    btn.className = "load-more";
+    btn.textContent = "Continua a leggere";
+    wrapper.appendChild(btn);
+    items[afterIndex].insertAdjacentElement("afterend", wrapper);
+
+    btn.addEventListener("click", () => {
+      // mostra il blocco successivo
+      const nextItems = items.slice(visibleCount, visibleCount + step);
+      nextItems.forEach(el => el.classList.remove("hidden"));
+      visibleCount += step;
+
+      // rimuovi il bottone attuale
+      wrapper.remove();
+
+      if (visibleCount < items.length) {
+        // se restano altri elementi → inserisci un nuovo "continua"
+        addLoadMore(visibleCount - 1);
+      } else {
+        // se ho mostrato tutto → inserisci il bottone "Nascondi" in fondo
+        const endWrapper = document.createElement("div");
+        endWrapper.className = "load-more-wrapper";
+        const hideBtn = document.createElement("button");
+        hideBtn.className = "load-more";
+        hideBtn.textContent = "Nascondi";
+        endWrapper.appendChild(hideBtn);
+        container.appendChild(endWrapper);
+
+        hideBtn.addEventListener("click", () => {
+          // nascondi tutte tranne le prime 3
+          items.forEach((item, i) => {
+            if (i >= step) item.classList.add("hidden");
+          });
+          visibleCount = step;
+          endWrapper.remove();
+          addLoadMore(step - 1);
+          // torna su
+          container.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+    });
+  }
+
+  // primo pulsante dopo le prime `step`
+  if (items.length > step) {
+    addLoadMore(step - 1);
+  }
+}
+
+// applica alle sezioni
+initLoadMore("#psicologi .cards", ".card", 3);
+initLoadMore("#moderne .cards", ".card", 3);
+initLoadMore("#filosofi .timeline", ".entry", 3);
+</script>
+
+<script>document.querySelector(".hamburger").onclick = () => {
+  document.querySelector(".topbar").classList.toggle("open");
+      }</script>
+</body>
+</html>

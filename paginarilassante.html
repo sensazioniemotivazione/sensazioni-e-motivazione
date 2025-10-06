@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Pagina Relax — Scenari</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#000;
+    --fg:#fff;
+    --accent:#6ea8fe;
+    --accent2:#a47bff;
+    --line: rgba(255,255,255,.2);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--fg);overflow:hidden}
+
+  .pickerWrap{
+    position:fixed; inset:0; display:flex; flex-direction:column; gap:18px;
+    padding:28px 20px; z-index:5; background:#000;
+    background: radial-gradient(circle at 20% 20%,rgba(110,168,254,.05),transparent 60%),
+                radial-gradient(circle at 80% 30%,rgba(164,123,255,.05),transparent 60%);
+  }
+  .pickerTitle{
+    text-align:center; font-size:1.8rem;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .grid{display:grid;gap:18px;max-width:1200px;margin:0 auto;width:100%;
+        grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  
+  .card{
+    position:relative; border-radius:14px; overflow:hidden;
+    min-height:200px; cursor:pointer;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    padding:16px; border:1px solid var(--line);
+    background-size:cover; background-position:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.5);
+    transition:.3s;
+  }
+  .card::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(to top,rgba(0,0,0,.65),rgba(0,0,0,.1));
+  }
+  .card h3,.card p{position:relative;z-index:1;text-shadow:0 2px 8px rgba(0,0,0,.8)}
+  .card h3{font-size:1.2rem;margin-bottom:4px}
+  .card p{font-size:.95rem;color:#eee}
+  .card:hover{transform:translateY(-4px); box-shadow:0 15px 40px rgba(110,168,254,.4)}
+  
+  .slideshow{position:fixed;inset:0;z-index:1}
+  .slideshow img{position:absolute;inset:0;width:100%;height:100%;
+                 object-fit:cover;opacity:0;transition:opacity 3s ease-in-out}
+  .slideshow img.active{opacity:1}
+  
+  .overlayText{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+               z-index:2;font-size:2rem;font-weight:600;text-align:center;
+               text-shadow:0 0 20px #000;display:none}
+  
+  .blackout{position:fixed;inset:0;background:#000;opacity:0;
+            transition:opacity 1.5s ease;z-index:9;pointer-events:none}
+  .blackout.active{opacity:1;pointer-events:auto}
+  
+  .backBtn{position:fixed;top:16px;left:16px;z-index:10;display:none;
+           background:linear-gradient(135deg,var(--accent),var(--accent2));
+           border:none;color:#fff;padding:10px 14px;border-radius:10px;cursor:pointer}
+
+           .hamburger {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  width: 30px;
+  height: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  z-index: 1100; /* sopra la topbar */
+}
+
+.hamburger span {
+  display: block;
+  height: 4px;
+  background: #fff; /* linee bianche visibili */
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+    /* Menu nascosto */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: -250px;   /* nascosto fuori dallo schermo */
+  width: 250px;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  padding: 60px 20px;
+  gap: 15px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+
+overflow-y: auto;              /* 👈 abilita scroll */
+  -webkit-overflow-scrolling: touch; /* 👈 scroll fluido su mobile */
+
+}
+
+.topbar.open {
+  left: 0; /* quando si apre */
+}
+
+.topbar a {
+  text-decoration: none;
+  color: #fff;
+  background: #2d2d2d;   /* grigio scuro neutro */
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.topbar a:hover {
+  background: #444;      /* leggermente più chiaro in hover */
+}
+</style>
+</head>
+<body>
+ <!-- Pulsante hamburger -->
+<div class="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+  <div class="topbar">
+
+<a href="index.html" class="btn">← Torna alla Home</a>
+<a href="storie.html" class="btn">← Leggi la storia di chi ce l’ha fatta</a>
+<a href="sogni.html" class="btn">← Impara ad interpretare i tuoi sogni</a> 
+<a href="obiettivo.html" class="btn">← Scrivi il tuo obiettivo con il mondo</a>
+<a href="paure.html" class="btn">← Scopri le tue paure</a>
+<a href="invenzioni.html" class="btn">← Leggi invenzioni ed idee</a>
+<a href="abitudini.html" class="btn">← Sfoglia l’elenco delle abitudini più comuni dell’uomo</a>
+<a href="lampada.html" class="btn">← Fai sapere al mondo come ti senti</a>
+<a href="coming.html" class="btn">← COMING SOON</a>
+
+</div>
+
+
+<section class="pickerWrap" id="picker">
+  <h1 class="pickerTitle">Scegli il tuo scenario preferito per rilassarti ed alza il volume!</h1>
+  <div class="grid">
+    <article class="card" data-scene="oceano" 
+style="background-image:url('fotooceano/1.jpg')">
+    <h3>Oceano</h3><p>Onde lente, respiro del mare.</p>
+    </article>
+
+    <article class="card" data-scene="natale"
+      style="background-image:url('')">
+      <h3>Natale</h3><p>Fuoco, coperte e luci calde.</p>
+    </article>
+
+    <article class="card" data-scene="inverno"
+ style="background-image:url('')">
+       <h3>Inverno</h3><p>Neve silenziosa, quiete profonda.</p>
+    </article>
+
+    <article class="card" data-scene="foresta"
+ style="background-image:url('')">
+       <h3>Foresta Nebbiosa</h3><p>Alberi e bruma.</p>
+    </article>
+
+    <article class="card" data-scene="pioggia"
+ style="background-image:url('')">
+       <h3>Pioggia in Città</h3><p>Gocce sui vetri, ritmo calmo.</p>
+    </article>
+
+    <article class="card" data-scene="montagna"
+ style="background-image:url('')">
+       <h3>Montagna all’Alba</h3><p>Luce nascente, aria pulita.</p>
+    </article>
+  </div>
+</section>
+
+<button class="backBtn" id="backBtn">← Torna alla scelta</button>
+<div class="slideshow" id="slideshow"></div>
+<div class="overlayText" id="overlayText">🌿 Goditi la tranquillità,<br>lavora sereno. 🌿</div>
+<div class="blackout" id="blackout"></div>
+
+<audio id="bg-music" loop></audio>
+
+<script>
+const IMAGES={
+  oceano: [
+  "fotooceano/2.jpg",
+  "fotooceano/3.jpg",
+  "fotooceano/4.jpg",
+  "fotooceano/5.jpg",
+  "fotooceano/6.jpg",
+  "fotooceano/7.jpg",
+  "fotooceano/8.jpg",
+  "fotooceano/9.jpg",
+  "fotooceano/10.jpg",
+  "fotooceano/11.jpg",
+  "fotooceano/12.jpg",
+  "fotooceano/13.jpg",
+  "fotooceano/14.jpg",
+  "fotooceano/15.jpg",
+  "fotooceano/16.jpg"
+],
+  natale:[
+    "https://images.unsplash.com/photo-1543589077-47d81606c1bf?auto=format&fit=crop&w=1920&q=80"
+  ],
+  inverno:[
+    "https://images.unsplash.com/photo-1608889177086-82a783fbf8cc?auto=format&fit=crop&w=1920&q=80"
+  ],
+  foresta:[
+    "https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=1920&q=80"
+  ],
+  pioggia:[
+    "https://images.unsplash.com/photo-1527766833261-b09c3163a791?auto=format&fit=crop&w=1920&q=80"
+  ],
+  montagna:[
+    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1920&q=80"
+  ]
+};
+
+// Qui puoi mettere i tuoi file audio reali
+const audioSources={
+  oceano:"sottofondo_mp3/underwater.mp3",
+  natale:"audio/natale.mp3",
+  inverno:"audio/inverno.mp3",
+  foresta:"audio/foresta.mp3",
+  pioggia:"audio/pioggia.mp3",
+  montagna:"audio/montagna.mp3"
+};
+
+const picker=document.getElementById('picker');
+const blackout=document.getElementById('blackout');
+const slideshow=document.getElementById('slideshow');
+const overlayText=document.getElementById('overlayText');
+const backBtn=document.getElementById('backBtn');
+const music=document.getElementById('bg-music');
+
+let timer=null,idx=0;
+const DELAY=9000;
+
+function buildSlideshow(arr){
+  slideshow.innerHTML="";
+  arr.forEach((src,i)=>{
+    let img=document.createElement("img");
+    img.src=src; if(i===0) img.classList.add("active");
+    slideshow.appendChild(img);
+  });
+}
+function startSlideshow(){
+  stopSlideshow();
+  const imgs=slideshow.querySelectorAll("img");
+  idx=0;
+  timer=setInterval(()=>{
+    imgs[idx].classList.remove("active");
+    idx=(idx+1)%imgs.length;
+    imgs[idx].classList.add("active");
+  },DELAY);
+}
+function stopSlideshow(){ if(timer){clearInterval(timer); timer=null;} }
+
+function switchScene(scene){
+  blackout.classList.add("active");
+  setTimeout(()=>{
+    picker.style.display="none";
+    backBtn.style.display="inline-block";
+    overlayText.style.display="block";
+    buildSlideshow(IMAGES[scene]); startSlideshow();
+    music.src=audioSources[scene]; music.play().catch(()=>{});
+    blackout.classList.remove("active");
+  },1500);
+}
+
+document.querySelectorAll(".card").forEach(c=>{
+  c.addEventListener("click",()=>switchScene(c.dataset.scene));
+});
+backBtn.addEventListener("click",()=>{
+  stopSlideshow(); music.pause(); music.removeAttribute("src");
+  slideshow.innerHTML=""; overlayText.style.display="none";
+  backBtn.style.display="none"; picker.style.display="flex";
+});
+
+document.querySelector(".hamburger").onclick = () => {
+  document.querySelector(".topbar").classList.toggle("open");
+      }
+</script>
+</body>
+</html>
