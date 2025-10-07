@@ -329,12 +329,14 @@ section:not(#carousel) {
     margin-bottom: 6px;
   }
   #collegamenti .card p {
-    font-size: 0.8em;
-    line-height: 1.2;
-    max-height: 6em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  font-size: 0.85em;      /* leggermente più leggibile */
+  line-height: 1.3;
+  max-height: none;       /* niente taglio verticale */
+  overflow: visible;      /* mostra tutto */
+  text-overflow: unset;   /* disattiva puntini */
+  white-space: normal;    /* va a capo normalmente */
+}
+
 }
 
 /* 🔹 Logo */
